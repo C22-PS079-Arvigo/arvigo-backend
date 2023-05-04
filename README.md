@@ -10,7 +10,7 @@ The Arvigo backend is built using the Go programming language and the Echo frame
 
 To get started with the Arvigo backend, follow these steps:
 
-1. Clone the repository: `git clone <repository-url>`
+1. Clone the repository: `git clone https://github.com/Arvigo-Capstone/arvigo-backend.git`
 2. Install the dependencies: `go mod download`
 3. Set up the environment variables by creating a `.env` file (refer to .env section below).
 4. Run the application: `make run-local`
