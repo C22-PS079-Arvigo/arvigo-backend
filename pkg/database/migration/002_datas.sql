@@ -187,8 +187,7 @@ CREATE TABLE detail_product_tags
     created_at timestamp default CURRENT_TIMESTAMP null,
     updated_at timestamp default CURRENT_TIMESTAMP null on update CURRENT_TIMESTAMP
 );
-CREATE INDEX idx_detail_product_tags_1 ON detail_product_tags (tag_id);
-CREATE INDEX idx_detail_product_tags_2 ON detail_product_tags (product_id);
+CREATE INDEX idx_detail_product_tags_1 ON detail_product_tags (product_id, tag_id);
 
 
 -- auto-generated definition
