@@ -1,4 +1,4 @@
-### Arvigo Backend
+# Arvigo Backend
 
 This repository contains the backend implementation for the Arvigo app, which is an application for trying out products before making a purchase.
 
