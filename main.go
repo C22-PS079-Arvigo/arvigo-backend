@@ -12,6 +12,11 @@ import (
 	"github.com/yusufwib/arvigo-backend/route"
 )
 
+const (
+	version = "1.0.0"
+	appName = "arvigo-backend"
+)
+
 func main() {
 	// Load environment variables
 	err := godotenv.Load(".env")
@@ -50,7 +55,8 @@ func main() {
 	if port == "" {
 		port = "8000"
 	}
-	log.Printf("Server listening on port %s", port)
+
+	log.Printf("Server listening on port %s. \nThis %s service's is using version %s", port, appName, version)
 	err = e.Start(":" + port)
 	if err != nil {
 		log.Fatal(err)
