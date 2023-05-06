@@ -32,7 +32,7 @@ The following environment variables are required to run the Arvigo backend:
 Make sure to set these variables in the `.env` file before running the application.
 
 ## Project Structure
-
+```bash
 ├── CHANGELOG.md
 ├── Dockerfile
 ├── Makefile
@@ -75,7 +75,7 @@ Make sure to set these variables in the `.env` file before running the applicati
     ├── string.go
     ├── response.go
     ├── others file ...
-
+```
 
 ## Branch Naming Convention
 When naming branches, it is recommended to use the following prefixes:
