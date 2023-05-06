@@ -10,12 +10,12 @@ import (
 
 func RegisterLocationRoutes(e *echo.Echo) {
 	v1Group := e.Group("/v1")
-	authGroup := v1Group.Group("/location")
-	authGroup.GET("/provinces", getProvince)
-	authGroup.GET("/cities", getCity)
-	authGroup.GET("/districts", getDistricts)
-	authGroup.GET("/subdistricts", getSubDistricts)
-	authGroup.GET("/postal_codes", getPostalCode)
+	locationGroup := v1Group.Group("/location")
+	locationGroup.GET("/provinces", getProvince)
+	locationGroup.GET("/cities", getCity)
+	locationGroup.GET("/districts", getDistricts)
+	locationGroup.GET("/subdistricts", getSubDistricts)
+	locationGroup.GET("/postal_codes", getPostalCode)
 }
 
 func getProvince(c echo.Context) error {
