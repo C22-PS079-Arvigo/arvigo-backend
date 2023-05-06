@@ -217,8 +217,7 @@ CREATE TABLE wishlists
     updated_at timestamp default CURRENT_TIMESTAMP null on update CURRENT_TIMESTAMP
 );
 
-CREATE INDEX idx_wishlists_1 ON wishlists (product_id);
-CREATE INDEX idx_wishlists_2 ON wishlists (user_id);
+CREATE INDEX idx_wishlists_1 ON wishlists (user_id, product_id);
 
 -- auto-generated definition
 DROP TABLE IF EXISTS detail_user_subscriptions;
