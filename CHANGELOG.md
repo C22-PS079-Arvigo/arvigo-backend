@@ -13,3 +13,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add login, register, get users and get user by id
 - Add validator pkg
 - Add response helper
+- Add location module

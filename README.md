@@ -31,6 +31,52 @@ The following environment variables are required to run the Arvigo backend:
 
 Make sure to set these variables in the `.env` file before running the application.
 
+## Project Structure
+
+├── CHANGELOG.md
+├── Dockerfile
+├── Makefile
+├── README.md
+├── constant
+│   ├── date.go
+│   └── role.go
+├── datastruct
+│   ├── address.go
+│   ├── brand.go
+│   ├── category.go
+│   ├── location.go
+│   ├── marketplace.go
+│   ├── others file ...
+├── go.mod
+├── go.sum
+├── main.go
+├── middleware
+│   └── auth.go
+├── pkg
+│   └── database
+│       ├── conn.go
+│       └── migration
+│           ├── 001_indonesian.sql
+│           ├── 002_datas.sql
+│           └── 003_seeders.sql
+├── repository
+│   ├── auth_repository.go
+│   ├── controller.go
+│   ├── location_repository.go
+│   └── others file ...
+├── route
+│   ├── auth.go
+│   ├── location.go
+│   └── user.go
+└── utils
+    ├── array.go
+    ├── converter.go
+    ├── response.go
+    ├── string.go
+    ├── response.go
+    ├── others file ...
+
+
 ## Branch Naming Convention
 When naming branches, it is recommended to use the following prefixes:
 
@@ -42,3 +88,6 @@ When naming branches, it is recommended to use the following prefixes:
 ## License
 
 This project is licensed under the MIT License.
+
+
+    
