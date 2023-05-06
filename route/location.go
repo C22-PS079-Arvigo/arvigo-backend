@@ -12,10 +12,10 @@ func RegisterLocationRoutes(e *echo.Echo) {
 	v1Group := e.Group("/v1")
 	locationGroup := v1Group.Group("/location")
 	locationGroup.GET("/provinces", getProvince)
-	locationGroup.GET("/cities", getCity)
-	locationGroup.GET("/districts", getDistricts)
-	locationGroup.GET("/subdistricts", getSubDistricts)
-	locationGroup.GET("/postal_codes", getPostalCode)
+	locationGroup.GET("/cities", getCity)               // province_id
+	locationGroup.GET("/districts", getDistricts)       // city_id
+	locationGroup.GET("/subdistricts", getSubDistricts) // district_id
+	locationGroup.GET("/postal_codes", getPostalCode)   // subdistrict_id
 }
 
 func getProvince(c echo.Context) error {
