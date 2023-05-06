@@ -6,16 +6,14 @@ import (
 
 	"github.com/dgrijalva/jwt-go"
 	"github.com/spf13/viper"
-	"github.com/yusufwib/arvigo-backend/constant"
 	"github.com/yusufwib/arvigo-backend/datastruct"
 	"golang.org/x/crypto/bcrypt"
 )
 
 type Claims struct {
-	ID        uint64 `json:"id"`
-	FisrtName string `json:"first_name"`
-	LastName  string `json:"last_name"`
-	Role      string `json:"role"`
+	ID       uint64 `json:"id"`
+	FullName string `json:"full_name"`
+	Role     string `json:"role"`
 	jwt.StandardClaims
 }
 
@@ -56,13 +54,12 @@ func Register(userData datastruct.User) (tokenResponse datastruct.LoginRegisterR
 	}
 
 	userPayload := datastruct.User{
-		FisrtName: userData.FisrtName,
-		LastName:  userData.LastName,
-		Email:     userData.Email,
-		Password:  string(hashedPassword),
-		Role:      userData.Role,
-		CreatedAt: time.Now().Format(constant.DateTimeFormat),
-		UpdatedAt: time.Now().Format(constant.DateTimeFormat),
+		FullName: userData.FullName,
+		Email:    userData.Email,
+		Password: string(hashedPassword),
+		// Role:      userData.Role,
+		CreatedAt: time.Now(),
+		UpdatedAt: time.Now(),
 	}
 
 	if err = db.Create(&userPayload).Error; err != nil {
@@ -82,10 +79,9 @@ func Register(userData datastruct.User) (tokenResponse datastruct.LoginRegisterR
 func generateToken(user datastruct.User) (tokenString string, err error) {
 	expirationTime := time.Now().Add(24 * 365 * time.Hour)
 	claims := &Claims{
-		ID:        user.ID,
-		FisrtName: user.FisrtName,
-		LastName:  user.LastName,
-		Role:      user.Role,
+		ID:       user.ID,
+		FullName: user.FullName,
+		// Role:      user.Role,
 		StandardClaims: jwt.StandardClaims{
 			ExpiresAt: expirationTime.Unix(),
 		},
