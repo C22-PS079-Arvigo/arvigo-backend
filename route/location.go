@@ -24,7 +24,7 @@ func getProvince(c echo.Context) error {
 		return utils.ResponseJSON(c, err.Error(), data, statusCode)
 	}
 
-	return utils.ResponseJSON(c, "Success", data, http.StatusOK)
+	return utils.ResponseJSON(c, "Success get data", data, http.StatusOK)
 }
 
 func getCity(c echo.Context) error {
@@ -35,38 +35,38 @@ func getCity(c echo.Context) error {
 		return utils.ResponseJSON(c, err.Error(), data, statusCode)
 	}
 
-	return utils.ResponseJSON(c, "Success", data, http.StatusOK)
+	return utils.ResponseJSON(c, "Success get data", data, http.StatusOK)
 }
 
 func getDistricts(c echo.Context) error {
 	cityID := utils.StrToUint64(c.QueryParam("city_id"), 0)
 
-	data, statusCode, err := repository.GetCities(cityID)
+	data, statusCode, err := repository.GetDistricts(cityID)
 	if err != nil {
 		return utils.ResponseJSON(c, err.Error(), data, statusCode)
 	}
 
-	return utils.ResponseJSON(c, "Success", data, http.StatusOK)
+	return utils.ResponseJSON(c, "Success get data", data, http.StatusOK)
 }
 
 func getSubDistricts(c echo.Context) error {
 	districtID := utils.StrToUint64(c.QueryParam("district_id"), 0)
 
-	data, statusCode, err := repository.GetCities(districtID)
+	data, statusCode, err := repository.GetSubDistricts(districtID)
 	if err != nil {
 		return utils.ResponseJSON(c, err.Error(), data, statusCode)
 	}
 
-	return utils.ResponseJSON(c, "Success", data, http.StatusOK)
+	return utils.ResponseJSON(c, "Success get data", data, http.StatusOK)
 }
 
 func getPostalCode(c echo.Context) error {
 	subDistrictID := utils.StrToUint64(c.QueryParam("subdistrict_id"), 0)
 
-	data, statusCode, err := repository.GetCities(subDistrictID)
+	data, statusCode, err := repository.GetPostalCodes(subDistrictID)
 	if err != nil {
 		return utils.ResponseJSON(c, err.Error(), data, statusCode)
 	}
 
-	return utils.ResponseJSON(c, "Success", data, http.StatusOK)
+	return utils.ResponseJSON(c, "Success get data", data, http.StatusOK)
 }

@@ -28,7 +28,7 @@ func GetCities(provinceID uint64) (res []datastruct.City, statusCode int, err er
 	return
 }
 
-func getDistricts(cityID uint64) (res []datastruct.District, statusCode int, err error) {
+func GetDistricts(cityID uint64) (res []datastruct.District, statusCode int, err error) {
 	db := Database()
 	statusCode = http.StatusOK
 
@@ -39,7 +39,7 @@ func getDistricts(cityID uint64) (res []datastruct.District, statusCode int, err
 	return
 }
 
-func getSubDistricts(districtID uint64) (res []datastruct.SubDistrict, statusCode int, err error) {
+func GetSubDistricts(districtID uint64) (res []datastruct.SubDistrict, statusCode int, err error) {
 	db := Database()
 	statusCode = http.StatusOK
 
@@ -50,7 +50,7 @@ func getSubDistricts(districtID uint64) (res []datastruct.SubDistrict, statusCod
 	return
 }
 
-func getPostalCodes(subDistrictID uint64) (res []datastruct.PostalCode, statusCode int, err error) {
+func GetPostalCodes(subDistrictID uint64) (res []datastruct.PostalCode, statusCode int, err error) {
 	db := Database()
 	statusCode = http.StatusOK
 
