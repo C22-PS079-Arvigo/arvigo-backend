@@ -1,87 +1,53 @@
 package route
 
 import (
+	"net/http"
+
 	"github.com/labstack/echo/v4"
 
 	"github.com/yusufwib/arvigo-backend/middleware"
+	"github.com/yusufwib/arvigo-backend/repository"
+	"github.com/yusufwib/arvigo-backend/utils"
 )
 
 func RegisterUserRoutes(e *echo.Echo) {
 	v1Group := e.Group("/v1")
-	_ = v1Group.Group("/users", middleware.AuthMiddleware)
+	userGroup := v1Group.Group("/users", middleware.AuthMiddleware)
 
-	// userGroup.GET("", getUsersHandler)
-	// userGroup.GET("/:id", getUserHandler)
-	// userGroup.POST("", func(c echo.Context) error {
-	// 	return
-	// })
-	// userGroup.PUT("/:id", updateUserHandler)
-	// userGroup.DELETE("/:id", deleteUserHandler)
+	userGroup.GET("/:id", getUserbyIDHandler)
+	userGroup.GET("/user-list", getAllUsersHandler)
+	userGroup.GET("/partner-list", getAllPartnersHandler)
 }
 
 // move handler! rename repository to repositroy!
-// func createUserHandler(c echo.Context) error {
-// 	user, err := repository.Register(c)
-// 	if err != nil {
-// 		return utils.ResponseJSON(c, err.Error(), nil, http.StatusBadRequest)
-// 	}
+func getUserbyIDHandler(c echo.Context) error {
+	userID := utils.StrToUint64(c.Param("id"), 0)
+	if userID == 0 {
+		return echo.NewHTTPError(http.StatusBadRequest, "Invalid user ID")
+	}
 
-// 	return utils.ResponseJSON(c, "Created", user, http.StatusCreated)
-// }
+	user, statusCode, err := repository.GetUserByID(userID)
+	if err != nil {
+		return utils.ResponseJSON(c, err.Error(), nil, statusCode)
+	}
 
-// func getUsersHandler(c echo.Context) error {
-// 	users, err := repository.GetUsers()
-// 	if err != nil {
-// 		return err
-// 	}
+	return utils.ResponseJSON(c, "Success", user, statusCode)
+}
 
-// 	return c.JSON(http.StatusOK, users)
-// }
+func getAllUsersHandler(c echo.Context) error {
+	user, statusCode, err := repository.GetUsers()
+	if err != nil {
+		return utils.ResponseJSON(c, err.Error(), nil, statusCode)
+	}
 
-// func getUserHandler(c echo.Context) error {
-// 	userID, err := strconv.Atoi(c.Param("id"))
-// 	if err != nil {
-// 		return echo.NewHTTPError(http.StatusBadRequest, "Invalid user ID")
-// 	}
+	return utils.ResponseJSON(c, "Success", user, statusCode)
+}
 
-// 	user, err := repository.GetUser(userID)
-// 	if err != nil {
-// 		return err
-// 	}
+func getAllPartnersHandler(c echo.Context) error {
+	user, statusCode, err := repository.GetUsers()
+	if err != nil {
+		return utils.ResponseJSON(c, err.Error(), nil, statusCode)
+	}
 
-// 	return c.JSON(http.StatusOK, user)
-// }
-
-// func updateUserHandler(c echo.Context) error {
-// 	userID, err := strconv.Atoi(c.Param("id"))
-// 	if err != nil {
-// 		return echo.NewHTTPError(http.StatusBadRequest, "Invalid user ID")
-// 	}
-
-// 	var userData repository.UpdateUserInput
-// 	err = c.Bind(&userData)
-// 	if err != nil {
-// 		return err
-// 	}
-
-// 	user, err := repository.UpdateUser(userID, userData)
-// 	if err != nil {
-// 		return err
-// 	}
-
-// 	return c.JSON(http.StatusOK, user)
-// }
-
-// func deleteUserHandler(c echo.Context) error {
-// 	userID, err := strconv.Atoi(c.Param("id"))
-// 	if err != nil {
-// 		return echo.NewHTTPError(http.StatusBadRequest, "Invalid user ID")
-// 	}
-
-// 	err = repository.DeleteUser(userID)
-// 	if err != nil {
-// 		return err
-// 	}
-
-// 	return c.NoContent(http.StatusOK)
-// }
+	return utils.ResponseJSON(c, "Success", user, statusCode)
+}

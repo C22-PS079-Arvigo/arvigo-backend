@@ -6,6 +6,7 @@ import (
 
 	"github.com/dgrijalva/jwt-go"
 	"github.com/spf13/viper"
+	"github.com/yusufwib/arvigo-backend/constant"
 	"github.com/yusufwib/arvigo-backend/datastruct"
 	"golang.org/x/crypto/bcrypt"
 )
@@ -22,7 +23,10 @@ func Login(loginData datastruct.LoginUserInput) (tokenResponse datastruct.LoginR
 	statusCode = http.StatusOK
 
 	var user datastruct.User
-	if err = db.Where(&datastruct.User{Email: loginData.Email}).First(&user).Error; err != nil {
+	if err = db.Where(&datastruct.User{
+		Email:  loginData.Email,
+		RoleID: constant.ConvertRoleID[loginData.Role],
+	}).First(&user).Error; err != nil {
 		return tokenResponse, http.StatusNotFound, err
 	}
 
