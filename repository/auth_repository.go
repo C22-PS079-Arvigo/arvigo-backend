@@ -7,7 +7,6 @@ import (
 	"time"
 
 	"github.com/dgrijalva/jwt-go"
-	"github.com/spf13/viper"
 	"github.com/yusufwib/arvigo-backend/constant"
 	"github.com/yusufwib/arvigo-backend/datastruct"
 	"golang.org/x/crypto/bcrypt"
@@ -41,7 +40,7 @@ func Login(loginData datastruct.LoginUserInput) (tokenResponse datastruct.LoginR
 		return tokenResponse, http.StatusInternalServerError, err
 	}
 
-	tokenString, err := generateToken(user)
+	tokenString, err := GenerateToken(user)
 	if err != nil {
 		return tokenResponse, http.StatusInternalServerError, err
 	}
@@ -78,7 +77,7 @@ func RegisterUser(userData datastruct.UserRegisterInput) (tokenResponse datastru
 		return tokenResponse, http.StatusInternalServerError, err
 	}
 
-	tokenString, err := generateToken(userPayload)
+	tokenString, err := GenerateToken(userPayload)
 	if err != nil {
 		return tokenResponse, http.StatusInternalServerError, err
 	}
@@ -88,24 +87,4 @@ func RegisterUser(userData datastruct.UserRegisterInput) (tokenResponse datastru
 		Token:  tokenString,
 	}
 	return tokenResponse, http.StatusCreated, nil
-}
-
-func generateToken(user datastruct.User) (tokenString string, err error) {
-	expirationTime := time.Now().Add(24 * 365 * time.Hour)
-	claims := &Claims{
-		ID:       user.ID,
-		FullName: user.FullName,
-		// Role:      user.Role,
-		StandardClaims: jwt.StandardClaims{
-			ExpiresAt: expirationTime.Unix(),
-		},
-	}
-
-	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-	tokenString, err = token.SignedString([]byte(viper.GetString("jwt_secret")))
-	if err != nil {
-		return
-	}
-
-	return
 }
