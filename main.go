@@ -8,8 +8,8 @@ import (
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 
+	"github.com/yusufwib/arvigo-backend/handler"
 	"github.com/yusufwib/arvigo-backend/pkg/database"
-	"github.com/yusufwib/arvigo-backend/route"
 )
 
 const (
@@ -47,9 +47,9 @@ func main() {
 	e.Use(middleware.CORS())
 
 	// Register routes
-	route.RegisterAuthRoutes(e)
-	route.RegisterUserRoutes(e)
-	route.RegisterLocationRoutes(e)
+	handler.RegisterAuthRoutes(e)
+	handler.RegisterUserRoutes(e)
+	handler.RegisterLocationRoutes(e)
 
 	// Start the server
 	port := os.Getenv("PORT")
