@@ -66,13 +66,12 @@ func RegisterUser(userData datastruct.UserRegisterInput) (tokenResponse datastru
 	}
 
 	userPayload := datastruct.User{
-		FullName:    userData.FullName,
-		Email:       userData.Email,
-		Password:    string(hashedPassword),
-		RoleID:      constant.MobileApp,
-		DateOfBirth: nil,
-		CreatedAt:   time.Now(),
-		UpdatedAt:   time.Now(),
+		FullName:  userData.FullName,
+		Email:     userData.Email,
+		Password:  string(hashedPassword),
+		RoleID:    constant.MobileApp,
+		CreatedAt: time.Now(),
+		UpdatedAt: time.Now(),
 	}
 
 	if err = db.Create(&userPayload).Error; err != nil {

@@ -29,7 +29,5 @@ func ConnectDB() (db *gorm.DB, err error) {
 		log.Fatalf("Error opening database: %v", err)
 	}
 
-	log.Println("Database connection established")
-
 	return
 }
