@@ -13,7 +13,7 @@ func RegisterAuthRoutes(e *echo.Echo) {
 	v1Group := e.Group("/v1")
 	authGroup := v1Group.Group("/auth")
 	authGroup.POST("/login", loginHandler)
-	authGroup.POST("/register", registerHandler)
+	authGroup.POST("/register", registerUserHandler)
 }
 
 func loginHandler(c echo.Context) error {
@@ -35,14 +35,14 @@ func loginHandler(c echo.Context) error {
 	return utils.ResponseJSON(c, "Login success", token, http.StatusOK)
 }
 
-func registerHandler(c echo.Context) error {
-	var userData datastruct.User
+func registerUserHandler(c echo.Context) error {
+	var userData datastruct.UserRegisterInput
 	err := c.Bind(&userData)
 	if err != nil {
 		return err
 	}
 
-	user, statusCode, err := repository.Register(userData)
+	user, statusCode, err := repository.RegisterUser(userData)
 	if err != nil {
 		return utils.ResponseJSON(c, err.Error(), nil, statusCode)
 	}

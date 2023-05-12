@@ -44,7 +44,7 @@ func getAllUsersHandler(c echo.Context) error {
 }
 
 func getAllPartnersHandler(c echo.Context) error {
-	user, statusCode, err := repository.GetUsers()
+	user, statusCode, err := repository.GetPartners()
 	if err != nil {
 		return utils.ResponseJSON(c, err.Error(), nil, statusCode)
 	}

@@ -1,7 +1,9 @@
 package repository
 
 import (
+	"errors"
 	"net/http"
+	"strings"
 	"time"
 
 	"github.com/dgrijalva/jwt-go"
@@ -23,11 +25,10 @@ func Login(loginData datastruct.LoginUserInput) (tokenResponse datastruct.LoginR
 	statusCode = http.StatusOK
 
 	var user datastruct.User
-	if err = db.Where(&datastruct.User{
-		Email:  loginData.Email,
-		RoleID: constant.ConvertRoleID[loginData.Role],
-	}).First(&user).Error; err != nil {
-		return tokenResponse, http.StatusNotFound, err
+	if err = db.Where("email = ?", loginData.Email).
+		Where("role_id = ?", constant.ConvertRoleID[loginData.Role]).
+		First(&user).Debug().Error; err != nil {
+		return tokenResponse, http.StatusNotFound, errors.New("user not found")
 	}
 
 	err = bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(loginData.Password))
@@ -42,15 +43,22 @@ func Login(loginData datastruct.LoginUserInput) (tokenResponse datastruct.LoginR
 
 	tokenString, err := generateToken(user)
 	if err != nil {
-		return
+		return tokenResponse, http.StatusInternalServerError, err
 	}
 
-	tokenResponse.Token = tokenString
+	tokenResponse = datastruct.LoginRegisterResponse{
+		UserID: user.ID,
+		Token:  tokenString,
+	}
 	return
 }
 
-func Register(userData datastruct.User) (tokenResponse datastruct.LoginRegisterResponse, statusCode int, err error) {
+func RegisterUser(userData datastruct.UserRegisterInput) (tokenResponse datastruct.LoginRegisterResponse, statusCode int, err error) {
 	db := Database()
+
+	if strings.TrimSpace(userData.Password) != strings.TrimSpace(userData.PasswordConfirmation) {
+		return tokenResponse, http.StatusBadRequest, errors.New("password is doesn't match")
+	}
 
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(userData.Password), bcrypt.MinCost)
 	if err != nil {
@@ -58,12 +66,13 @@ func Register(userData datastruct.User) (tokenResponse datastruct.LoginRegisterR
 	}
 
 	userPayload := datastruct.User{
-		FullName: userData.FullName,
-		Email:    userData.Email,
-		Password: string(hashedPassword),
-		// Role:      userData.Role,
-		CreatedAt: time.Now(),
-		UpdatedAt: time.Now(),
+		FullName:    userData.FullName,
+		Email:       userData.Email,
+		Password:    string(hashedPassword),
+		RoleID:      constant.MobileApp,
+		DateOfBirth: nil,
+		CreatedAt:   time.Now(),
+		UpdatedAt:   time.Now(),
 	}
 
 	if err = db.Create(&userPayload).Error; err != nil {
@@ -75,8 +84,10 @@ func Register(userData datastruct.User) (tokenResponse datastruct.LoginRegisterR
 		return tokenResponse, http.StatusInternalServerError, err
 	}
 
-	tokenResponse.Token = tokenString
-
+	tokenResponse = datastruct.LoginRegisterResponse{
+		UserID: userPayload.ID,
+		Token:  tokenString,
+	}
 	return tokenResponse, http.StatusCreated, nil
 }
 

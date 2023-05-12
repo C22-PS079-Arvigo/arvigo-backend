@@ -7,6 +7,13 @@ type (
 		Role     string `json:"role" validate:"required"`
 	}
 
+	UserRegisterInput struct {
+		Email                string `json:"email" validate:"required,email"`
+		Password             string `json:"password" validate:"required"`
+		PasswordConfirmation string `json:"password_confirmation" validate:"required"`
+		FullName             string `json:"full_name" validate:"required"`
+	}
+
 	SearchCity struct {
 		ProvinceID string `query:"province_id" validate:"required,numeric"`
 	}
