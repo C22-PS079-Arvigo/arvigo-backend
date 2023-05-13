@@ -88,3 +88,67 @@ func RegisterUser(userData datastruct.UserRegisterInput) (tokenResponse datastru
 	}
 	return tokenResponse, http.StatusCreated, nil
 }
+
+func RegisterPartner(partnerData datastruct.PartnerRegisterInput) (tokenResponse datastruct.LoginRegisterResponse, statusCode int, err error) {
+	db := Database()
+
+	if strings.TrimSpace(partnerData.Password) != strings.TrimSpace(partnerData.PasswordConfirmation) {
+		return tokenResponse, http.StatusBadRequest, errors.New("password is doesn't match")
+	}
+
+	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(partnerData.Password), bcrypt.MinCost)
+	if err != nil {
+		return tokenResponse, http.StatusBadRequest, err
+	}
+
+	merchantPayload := datastruct.Merchant{
+		Name:             partnerData.StoreName,
+		IsRecommendation: 0, // default
+		CreatedAt:        time.Now(),
+		UpdatedAt:        time.Now(),
+	}
+
+	if err = db.Create(&merchantPayload).Error; err != nil {
+		return tokenResponse, http.StatusInternalServerError, err
+	}
+
+	addressPayload := datastruct.Address{
+		Street:        partnerData.Street,
+		ProvinceID:    partnerData.ProvinceID,
+		DistrictID:    partnerData.DistrictID,
+		SubdistrictID: partnerData.SubdistrictID,
+		PostalCodeID:  partnerData.PostalCodeID,
+		CreatedAt:     time.Now(),
+		UpdatedAt:     time.Now(),
+	}
+
+	if err = db.Create(&addressPayload).Error; err != nil {
+		return tokenResponse, http.StatusInternalServerError, err
+	}
+
+	userPayload := datastruct.User{
+		FullName:   partnerData.StoreName,
+		Email:      partnerData.Email,
+		Password:   string(hashedPassword),
+		RoleID:     constant.PartnerApp,
+		MerchantID: merchantPayload.ID,
+		AddressID:  addressPayload.ID,
+		CreatedAt:  time.Now(),
+		UpdatedAt:  time.Now(),
+	}
+
+	if err = db.Create(&userPayload).Error; err != nil {
+		return tokenResponse, http.StatusInternalServerError, err
+	}
+
+	tokenString, err := GenerateToken(userPayload)
+	if err != nil {
+		return tokenResponse, http.StatusInternalServerError, err
+	}
+
+	tokenResponse = datastruct.LoginRegisterResponse{
+		UserID: userPayload.ID,
+		Token:  tokenString,
+	}
+	return tokenResponse, http.StatusCreated, nil
+}

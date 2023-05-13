@@ -17,8 +17,8 @@ type User struct {
 	FaceShapeTagID            bool       `gorm:"column:face_shape_tag_id" json:"face_shape_tag_id"`
 	IsVerified                bool       `gorm:"column:is_verified" json:"is_verified"`
 	Avatar                    string     `gorm:"column:avatar" json:"avatar"`
-	AddressID                 int        `gorm:"column:addresses_id" json:"addresses_id"`
-	MerchantID                int        `gorm:"column:merchant_id" json:"merchant_id"`
+	AddressID                 uint64     `gorm:"column:addresses_id" json:"addresses_id"`
+	MerchantID                uint64     `gorm:"column:merchant_id" json:"merchant_id"`
 	CreatedAt                 time.Time  `gorm:"column:created_at" json:"created_at"`
 	UpdatedAt                 time.Time  `gorm:"column:updated_at" json:"updated_at"`
 }

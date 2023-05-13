@@ -3,17 +3,16 @@ DROP TABLE IF EXISTS addresses;
 CREATE TABLE addresses
 (
     id int unsigned auto_increment primary key,
-    user_id int not null,
     street text not null,
     province_id int not null,
+    city_id int not null,
     district_id int not null,
     subdistrict_id int not null,
     postal_code_id int not null,
     created_at timestamp default CURRENT_TIMESTAMP null,
     updated_at timestamp default CURRENT_TIMESTAMP null on update CURRENT_TIMESTAMP
 );
-CREATE INDEX idx_addresses_1 ON addresses (user_id);
-CREATE INDEX idx_addresses_2 ON addresses (province_id, district_id, subdistrict_id, postal_code_id);
+CREATE INDEX idx_addresses_1 ON addresses (province_id, district_id, subdistrict_id, postal_code_id);
 
 
 -- auto-generated definition
@@ -94,11 +93,10 @@ CREATE TABLE merchants
     id int unsigned auto_increment primary key,
     name varchar(50) not null,
     is_recomendation int default 0 not null,
-    addresses_id int default 0 not null,
     created_at timestamp default CURRENT_TIMESTAMP null,
     updated_at timestamp default CURRENT_TIMESTAMP null on update CURRENT_TIMESTAMP
 );
-CREATE INDEX idx_merchants_1 ON merchants (addresses_id);
+CREATE INDEX idx_merchants_1 ON merchants (is_recomendation);
 
 
 

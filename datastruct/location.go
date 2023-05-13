@@ -25,6 +25,7 @@ type (
 	}
 
 	PostalCode struct {
+		PostalCodeID     uint64 `json:"postal_code_id" gorm:"column:postal_id"`
 		PostalCodeNumber uint64 `json:"postal_code" gorm:"column:postal_code"`
 		// SubDistrictID uint64 `json:"subdistrict_id" gorm:"column:subdis_id"`
 	}
