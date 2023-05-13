@@ -19,7 +19,6 @@ func RegisterUserRoutes(e *echo.Echo) {
 	userGroup.GET("/partner-list", getAllPartnersHandler)
 }
 
-// move handler! rename repository to repositroy!
 func getUserbyIDHandler(c echo.Context) error {
 	userID := utils.StrToUint64(c.Param("id"), 0)
 	if userID == 0 {
