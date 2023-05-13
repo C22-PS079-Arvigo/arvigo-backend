@@ -13,7 +13,7 @@ type User struct {
 	PlaceOfBirth              string     `gorm:"column:place_of_birth" json:"place_of_birth"`
 	IsCompletePersonalityTest bool       `gorm:"column:is_complete_personality_test" json:"is_complete_personality_test"`
 	IsCompleteFaceTest        bool       `gorm:"column:is_complete_face_test" json:"is_complete_face_test"`
-	PersonalityTagID          bool       `gorm:"column:personality_tag_id" json:"personality_tag_id"`
+	PersonalityID             bool       `gorm:"column:personality_id" json:"personality_id"`
 	FaceShapeTagID            bool       `gorm:"column:face_shape_tag_id" json:"face_shape_tag_id"`
 	IsVerified                bool       `gorm:"column:is_verified" json:"is_verified"`
 	Avatar                    string     `gorm:"column:avatar" json:"avatar"`
