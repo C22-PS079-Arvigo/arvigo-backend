@@ -7,11 +7,6 @@ VALUES
     ('oval', 'face-shape', DEFAULT, DEFAULT),
     ('square', 'face-shape', DEFAULT, DEFAULT),
     ('triangle', 'face-shape', DEFAULT, DEFAULT),
-    ('0', 'personality', DEFAULT, DEFAULT),
-    ('1', 'personality', DEFAULT, DEFAULT),
-    ('2', 'personality', DEFAULT, DEFAULT),
-    ('3', 'personality', DEFAULT, DEFAULT),
-    ('4', 'personality', DEFAULT, DEFAULT);
 
 -- auto-generated definition
 INSERT INTO roles (name, created_at, updated_at)

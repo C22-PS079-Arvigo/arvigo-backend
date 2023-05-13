@@ -1,35 +1,37 @@
-drop table addresses;
+drop table if exists addresses;
 
-drop table brand;
+drop table if exists brand;
 
-drop table categories;
+drop table if exists categories;
 
-drop table detail_product_categories;
+drop table if exists detail_product_categories;
 
-drop table detail_product_marketplaces;
+drop table if exists detail_product_marketplaces;
 
-drop table detail_product_reviews;
+drop table if exists detail_product_reviews;
 
-drop table detail_product_tags;
+drop table if exists detail_product_tags;
 
-drop table detail_product_variants;
+drop table if exists detail_product_variants;
 
-drop table detail_user_subscriptions;
+drop table if exists detail_user_subscriptions;
 
-drop table marketplaces;
+drop table if exists marketplaces;
 
-drop table merchants;
+drop table if exists merchants;
 
-drop table personality_questionnaires;
+drop table if exists personality_questionnaires;
 
-drop table products;
+drop table if exists products;
 
-drop table roles;
+drop table if exists roles;
 
-drop table tags;
+drop table if exists tags;
 
-drop table user_personalities;
+drop table if exists user_personalities;
 
-drop table users;
+drop table if exists users;
 
-drop table wishlists;
+drop table if exists wishlists;
+
+drop table if exists schema_migrations;
