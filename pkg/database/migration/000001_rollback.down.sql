@@ -8,7 +8,9 @@ drop table if exists detail_product_categories;
 
 drop table if exists detail_product_marketplaces;
 
-drop table if exists detail_product_reviews;
+-- drop table if exists detail_product_reviews;
+
+drop table if exists detail_product_brands;
 
 drop table if exists detail_product_tags;
 

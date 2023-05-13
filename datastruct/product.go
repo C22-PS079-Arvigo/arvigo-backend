@@ -22,16 +22,24 @@ type (
 		UpdatedAt  time.Time `gorm:"column:updated_at" json:"updated_at"`
 	}
 
-	DetailProductReview struct {
+	DetailProductBrand struct {
 		ID        uint64    `gorm:"column:id;primaryKey;autoIncrement" json:"id"`
 		ProductID int       `gorm:"column:product_id" json:"product_id"`
-		UserID    int       `gorm:"column:user_id" json:"user_id"`
-		Comment   string    `gorm:"column:comment" json:"comment"`
-		Rating    float64   `gorm:"column:rating;default:0" json:"rating"`
-		Images    string    `gorm:"column:images" json:"images"`
+		BrandID   int       `gorm:"column:brand_id" json:"brand_id"`
 		CreatedAt time.Time `gorm:"column:created_at" json:"created_at"`
 		UpdatedAt time.Time `gorm:"column:updated_at" json:"updated_at"`
 	}
+
+	// DetailProductReview struct {
+	// 	ID        uint64    `gorm:"column:id;primaryKey;autoIncrement" json:"id"`
+	// 	ProductID int       `gorm:"column:product_id" json:"product_id"`
+	// 	UserID    int       `gorm:"column:user_id" json:"user_id"`
+	// 	Comment   string    `gorm:"column:comment" json:"comment"`
+	// 	Rating    float64   `gorm:"column:rating;default:0" json:"rating"`
+	// 	Images    string    `gorm:"column:images" json:"images"`
+	// 	CreatedAt time.Time `gorm:"column:created_at" json:"created_at"`
+	// 	UpdatedAt time.Time `gorm:"column:updated_at" json:"updated_at"`
+	// }
 
 	DetailProductVariant struct {
 		ID               uint64    `gorm:"column:id;primaryKey;autoIncrement" json:"id"`
@@ -70,8 +78,12 @@ func (DetailProductCategory) TableName() string {
 	return "detail_product_categories"
 }
 
-func (DetailProductReview) TableName() string {
-	return "detail_product_reviews"
+// func (DetailProductReview) TableName() string {
+// 	return "detail_product_reviews"
+// }
+
+func (DetailProductBrand) TableName() string {
+	return "detail_product_brands"
 }
 
 func (DetailProductVariant) TableName() string {

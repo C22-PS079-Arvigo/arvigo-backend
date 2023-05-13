@@ -109,7 +109,7 @@ CREATE TABLE products
     description text null,
     images text null,
     link_external varchar(100) not null,
-    merchant_id int not null,
+    merchant_id int default 0 not null, -- set 0 for product admin
     created_at timestamp default CURRENT_TIMESTAMP null,
     updated_at timestamp default CURRENT_TIMESTAMP null on update CURRENT_TIMESTAMP
 );
@@ -126,25 +126,36 @@ CREATE TABLE detail_product_categories
     created_at timestamp default CURRENT_TIMESTAMP null,
     updated_at timestamp default CURRENT_TIMESTAMP null on update CURRENT_TIMESTAMP
 );
-CREATE INDEX idx_detail_product_categories_1 ON detail_product_categories (product_id);
-CREATE INDEX idx_detail_product_categories_2 ON detail_product_categories (category_id);
+CREATE INDEX idx_detail_product_categories_1 ON detail_product_categories (product_id, category_id);
 
 
 -- auto-generated definition
-DROP TABLE IF EXISTS detail_product_reviews;
-CREATE TABLE detail_product_reviews
+DROP TABLE IF EXISTS detail_product_brands;
+CREATE TABLE detail_product_brands
 (
     id int unsigned auto_increment primary key,
     product_id int not null,
-    user_id int not null,
-    comment varchar(200) not null,
-    rating double default 0 not null,
-    images text null,
+    brand_id int not null,
     created_at timestamp default CURRENT_TIMESTAMP null,
     updated_at timestamp default CURRENT_TIMESTAMP null on update CURRENT_TIMESTAMP
 );
-CREATE INDEX idx_detail_product_reviews_1 ON detail_product_reviews (product_id);
-CREATE INDEX idx_detail_product_reviews_2 ON detail_product_reviews (user_id);
+CREATE INDEX idx_detail_product_brands_1 ON detail_product_brands (product_id, brand_id);
+
+-- auto-generated definition
+-- DROP TABLE IF EXISTS detail_product_reviews;
+-- CREATE TABLE detail_product_reviews
+-- (
+--     id int unsigned auto_increment primary key,
+--     product_id int not null,
+--     user_id int not null,
+--     comment varchar(200) not null,
+--     rating double default 0 not null,
+--     images text null,
+--     created_at timestamp default CURRENT_TIMESTAMP null,
+--     updated_at timestamp default CURRENT_TIMESTAMP null on update CURRENT_TIMESTAMP
+-- );
+-- CREATE INDEX idx_detail_product_reviews_1 ON detail_product_reviews (product_id);
+-- CREATE INDEX idx_detail_product_reviews_2 ON detail_product_reviews (user_id);
 
 
 -- auto-generated definition
