@@ -30,7 +30,7 @@ CREATE TABLE users
     is_complete_personality_test int default 0 not null,
     is_complete_face_test int default 0 not null,
     personality_id int null,
-    face_shape_tag_id int null,
+    face_shape_id int null,
     is_verified int default 0 not null,
     avatar varchar(200) null,
     addresses_id int null,
@@ -42,7 +42,7 @@ CREATE TABLE users
 CREATE INDEX idx_users_1 ON users (addresses_id);
 CREATE INDEX idx_users_2 ON users (merchant_id);
 CREATE INDEX idx_users_3 ON users (personality_id);
-CREATE INDEX idx_users_4 ON users (face_shape_tag_id);
+CREATE INDEX idx_users_4 ON users (face_shape_id);
 
 
 -- auto-generated definition
@@ -66,11 +66,12 @@ CREATE TABLE categories
 );
 
 -- auto-generated definition
-DROP TABLE IF EXISTS brand;
-CREATE TABLE brand
+DROP TABLE IF EXISTS brands;
+CREATE TABLE brands
 (
     id int unsigned auto_increment primary key,
     name varchar(50) not null,
+    category_id int not null,
     created_at timestamp default CURRENT_TIMESTAMP null,
     updated_at timestamp default CURRENT_TIMESTAMP null on update CURRENT_TIMESTAMP
 );
@@ -109,6 +110,8 @@ CREATE TABLE products
     description text null,
     images text null,
     link_external varchar(100) not null,
+    category_id int not null,
+    brand_id int not null,
     merchant_id int default 0 not null, -- set 0 for product admin
     created_at timestamp default CURRENT_TIMESTAMP null,
     updated_at timestamp default CURRENT_TIMESTAMP null on update CURRENT_TIMESTAMP
@@ -116,30 +119,30 @@ CREATE TABLE products
 CREATE INDEX idx_products_1 ON products (merchant_id);
 
 
--- auto-generated definition
-DROP TABLE IF EXISTS detail_product_categories;
-CREATE TABLE detail_product_categories
-(
-    id int unsigned auto_increment primary key,
-    product_id int not null,
-    category_id int not null,
-    created_at timestamp default CURRENT_TIMESTAMP null,
-    updated_at timestamp default CURRENT_TIMESTAMP null on update CURRENT_TIMESTAMP
-);
-CREATE INDEX idx_detail_product_categories_1 ON detail_product_categories (product_id, category_id);
+-- -- auto-generated definition
+-- DROP TABLE IF EXISTS detail_product_categories;
+-- CREATE TABLE detail_product_categories
+-- (
+--     id int unsigned auto_increment primary key,
+--     product_id int not null,
+--     category_id int not null,
+--     created_at timestamp default CURRENT_TIMESTAMP null,
+--     updated_at timestamp default CURRENT_TIMESTAMP null on update CURRENT_TIMESTAMP
+-- );
+-- CREATE INDEX idx_detail_product_categories_1 ON detail_product_categories (product_id, category_id);
 
 
--- auto-generated definition
-DROP TABLE IF EXISTS detail_product_brands;
-CREATE TABLE detail_product_brands
-(
-    id int unsigned auto_increment primary key,
-    product_id int not null,
-    brand_id int not null,
-    created_at timestamp default CURRENT_TIMESTAMP null,
-    updated_at timestamp default CURRENT_TIMESTAMP null on update CURRENT_TIMESTAMP
-);
-CREATE INDEX idx_detail_product_brands_1 ON detail_product_brands (product_id, brand_id);
+-- -- auto-generated definition
+-- DROP TABLE IF EXISTS detail_product_brands;
+-- CREATE TABLE detail_product_brands
+-- (
+--     id int unsigned auto_increment primary key,
+--     product_id int not null,
+--     brand_id int not null,
+--     created_at timestamp default CURRENT_TIMESTAMP null,
+--     updated_at timestamp default CURRENT_TIMESTAMP null on update CURRENT_TIMESTAMP
+-- );
+-- CREATE INDEX idx_detail_product_brands_1 ON detail_product_brands (product_id, brand_id);
 
 -- auto-generated definition
 -- DROP TABLE IF EXISTS detail_product_reviews;
@@ -179,12 +182,33 @@ CREATE TABLE tags
 (
     id int unsigned auto_increment primary key,
     name varchar(200) not null,
-    type varchar(50) not null,
+    category_id int not null,
     created_at timestamp default CURRENT_TIMESTAMP null,
     updated_at timestamp default CURRENT_TIMESTAMP null on update CURRENT_TIMESTAMP
 );
-CREATE INDEX idx_tags_1 ON tags (type);
+CREATE INDEX idx_tags_1 ON tags (category_id);
 
+
+-- auto-generated definition
+DROP TABLE IF EXISTS face_shapes;
+CREATE TABLE face_shapes
+(
+    id int unsigned auto_increment primary key,
+    name varchar(50) not null,
+    created_at timestamp default CURRENT_TIMESTAMP null,
+    updated_at timestamp default CURRENT_TIMESTAMP null on update CURRENT_TIMESTAMP
+);
+
+-- auto-generated definition
+DROP TABLE IF EXISTS detail_face_shape_tags;
+CREATE TABLE detail_face_shape_tags
+(
+    id int unsigned auto_increment primary key,
+    face_shape_id int not null,
+    tag_id int not null,
+    created_at timestamp default CURRENT_TIMESTAMP null,
+    updated_at timestamp default CURRENT_TIMESTAMP null on update CURRENT_TIMESTAMP
+);
 
 -- auto-generated definition
 DROP TABLE IF EXISTS detail_product_tags;

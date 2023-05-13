@@ -9,26 +9,28 @@ type (
 		Descripion   string    `gorm:"column:description" json:"description"`
 		Images       string    `gorm:"column:images" json:"images"`
 		LinkExternal string    `gorm:"column:link_external" json:"link_external"`
-		MerchantID   int       `gorm:"column:merchant_id" json:"merchant_id"`
+		CategoryID   uint64    `gorm:"column:category_id" json:"category_id"`
+		BrandID      uint64    `gorm:"column:brand_id" json:"brand_id"`
+		MerchantID   uint64    `gorm:"column:merchant_id" json:"merchant_id"`
 		CreatedAt    time.Time `gorm:"column:created_at" json:"created_at"`
 		UpdatedAt    time.Time `gorm:"column:updated_at" json:"updated_at"`
 	}
 
-	DetailProductCategory struct {
-		ID         uint64    `gorm:"column:id;primaryKey;autoIncrement" json:"id"`
-		ProductID  int       `gorm:"column:product_id" json:"product_id"`
-		CategoryID int       `gorm:"column:category_id" json:"category_id"`
-		CreatedAt  time.Time `gorm:"column:created_at" json:"created_at"`
-		UpdatedAt  time.Time `gorm:"column:updated_at" json:"updated_at"`
-	}
+	// DetailProductCategory struct {
+	// 	ID         uint64    `gorm:"column:id;primaryKey;autoIncrement" json:"id"`
+	// 	ProductID  int       `gorm:"column:product_id" json:"product_id"`
+	// 	CategoryID int       `gorm:"column:category_id" json:"category_id"`
+	// 	CreatedAt  time.Time `gorm:"column:created_at" json:"created_at"`
+	// 	UpdatedAt  time.Time `gorm:"column:updated_at" json:"updated_at"`
+	// }
 
-	DetailProductBrand struct {
-		ID        uint64    `gorm:"column:id;primaryKey;autoIncrement" json:"id"`
-		ProductID int       `gorm:"column:product_id" json:"product_id"`
-		BrandID   int       `gorm:"column:brand_id" json:"brand_id"`
-		CreatedAt time.Time `gorm:"column:created_at" json:"created_at"`
-		UpdatedAt time.Time `gorm:"column:updated_at" json:"updated_at"`
-	}
+	// DetailProductBrand struct {
+	// 	ID        uint64    `gorm:"column:id;primaryKey;autoIncrement" json:"id"`
+	// 	ProductID int       `gorm:"column:product_id" json:"product_id"`
+	// 	BrandID   int       `gorm:"column:brand_id" json:"brand_id"`
+	// 	CreatedAt time.Time `gorm:"column:created_at" json:"created_at"`
+	// 	UpdatedAt time.Time `gorm:"column:updated_at" json:"updated_at"`
+	// }
 
 	// DetailProductReview struct {
 	// 	ID        uint64    `gorm:"column:id;primaryKey;autoIncrement" json:"id"`
@@ -61,10 +63,10 @@ type (
 
 	DetailProductMarketplace struct {
 		ID            uint64    `gorm:"column:id;primaryKey;autoIncrement" json:"id"`
-		MarketplaceID int       `gorm:"column:marketplace_id" json:"marketplace_id"`
-		ProductID     int       `gorm:"column:product_id" json:"product_id"`
+		MarketplaceID uint64    `gorm:"column:marketplace_id" json:"marketplace_id"`
+		ProductID     uint64    `gorm:"column:product_id" json:"product_id"`
 		Link          string    `gorm:"column:link" json:"link"`
-		Clicked       int       `gorm:"column:clicked" json:"clicked"`
+		Clicked       uint64    `gorm:"column:clicked" json:"clicked"`
 		CreatedAt     time.Time `gorm:"column:created_at" json:"created_at"`
 		UpdatedAt     time.Time `gorm:"column:updated_at" json:"updated_at"`
 	}
@@ -74,17 +76,17 @@ func (Product) TableName() string {
 	return "products"
 }
 
-func (DetailProductCategory) TableName() string {
-	return "detail_product_categories"
-}
+// func (DetailProductCategory) TableName() string {
+// 	return "detail_product_categories"
+// }
 
 // func (DetailProductReview) TableName() string {
 // 	return "detail_product_reviews"
 // }
 
-func (DetailProductBrand) TableName() string {
-	return "detail_product_brands"
-}
+// func (DetailProductBrand) TableName() string {
+// 	return "detail_product_brands"
+// }
 
 func (DetailProductVariant) TableName() string {
 	return "detail_product_variants"

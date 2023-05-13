@@ -14,7 +14,7 @@ type User struct {
 	IsCompletePersonalityTest bool       `gorm:"column:is_complete_personality_test" json:"is_complete_personality_test"`
 	IsCompleteFaceTest        bool       `gorm:"column:is_complete_face_test" json:"is_complete_face_test"`
 	PersonalityID             bool       `gorm:"column:personality_id" json:"personality_id"`
-	FaceShapeTagID            bool       `gorm:"column:face_shape_tag_id" json:"face_shape_tag_id"`
+	FaceShapeID               bool       `gorm:"column:face_shape_id" json:"face_shape_id"`
 	IsVerified                bool       `gorm:"column:is_verified" json:"is_verified"`
 	Avatar                    string     `gorm:"column:avatar" json:"avatar"`
 	AddressID                 uint64     `gorm:"column:addresses_id" json:"addresses_id"`

@@ -1,16 +1,16 @@
 drop table if exists addresses;
 
-drop table if exists brand;
+drop table if exists brands;
 
 drop table if exists categories;
 
-drop table if exists detail_product_categories;
+-- drop table if exists detail_product_categories;
 
 drop table if exists detail_product_marketplaces;
 
 -- drop table if exists detail_product_reviews;
 
-drop table if exists detail_product_brands;
+-- drop table if exists detail_product_brands;
 
 drop table if exists detail_product_tags;
 
@@ -35,5 +35,9 @@ drop table if exists user_personalities;
 drop table if exists users;
 
 drop table if exists wishlists;
+
+drop table if exists face_shapes;
+
+drop table if exists detail_face_shape_tags;
 
 drop table if exists schema_migrations;

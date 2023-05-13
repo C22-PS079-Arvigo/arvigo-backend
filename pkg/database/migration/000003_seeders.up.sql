@@ -1,16 +1,94 @@
 -- auto-generated definition
-INSERT INTO tags (name, type, created_at, updated_at)
-VALUES 
-    ('circle', 'face-shape', DEFAULT, DEFAULT),
-    ('heart', 'face-shape', DEFAULT, DEFAULT),
-    ('oblong', 'face-shape', DEFAULT, DEFAULT),
-    ('oval', 'face-shape', DEFAULT, DEFAULT),
-    ('square', 'face-shape', DEFAULT, DEFAULT),
-    ('triangle', 'face-shape', DEFAULT, DEFAULT);
+INSERT INTO face_shapes (name, created_at, updated_at)
+VALUES
+    ('circle', DEFAULT, DEFAULT),
+    ('heart', DEFAULT, DEFAULT),
+    ('oblong', DEFAULT, DEFAULT),
+    ('oval', DEFAULT, DEFAULT),
+    ('square', DEFAULT, DEFAULT),
+    ('triangle', DEFAULT, DEFAULT);
+
+-- auto-generated definition
+INSERT INTO categories (name, created_at, updated_at)
+VALUES
+    ('Glasses', DEFAULT, DEFAULT),
+    ('Makeup', DEFAULT, DEFAULT);
+
+-- auto-generated definition
+INSERT INTO brands (name, category_id, created_at, updated_at)
+VALUES
+    ('CHANEL', 1, DEFAULT, DEFAULT),
+    ('Oakley', 1, DEFAULT, DEFAULT),
+    ('Ray-Ban', 1, DEFAULT, DEFAULT),
+    ('Baleno', 1, DEFAULT, DEFAULT),
+    ('Calvin Klein', 1, DEFAULT, DEFAULT),
+    ('Emporio Armani', 1, DEFAULT, DEFAULT),
+    ('Police', 1, DEFAULT, DEFAULT),
+    ('Quiksilver', 1, DEFAULT, DEFAULT),
+    ('Gucci', 1, DEFAULT, DEFAULT),
+    ('Bottega Veneta', 1, DEFAULT, DEFAULT),
+    ('Skintific', 2, DEFAULT, DEFAULT),
+    ('Wardah', 2, DEFAULT, DEFAULT),
+    ('Purbasari', 2, DEFAULT, DEFAULT),
+    ('Somethinc', 2, DEFAULT, DEFAULT),
+    ('Y.O.U', 2, DEFAULT, DEFAULT),
+    ('Luxcrime', 2, DEFAULT, DEFAULT),
+    ('Inez', 2, DEFAULT, DEFAULT),
+    ('Viva Cosmetics', 2, DEFAULT, DEFAULT),
+    ('Sariayu', 2, DEFAULT, DEFAULT),
+    ('Emina', 2, DEFAULT, DEFAULT);
+
+
+-- auto-generated definition
+INSERT INTO tags (name, category_id, created_at, updated_at)
+VALUES
+    ('Aviator', 1, DEFAULT, DEFAULT),
+    ('Wayfarer', 1, DEFAULT, DEFAULT),
+    ('Round', 1, DEFAULT, DEFAULT),
+    ('Cat Eye', 1, DEFAULT, DEFAULT),
+    ('Rectangle', 1, DEFAULT, DEFAULT),
+    ('Square', 1, DEFAULT, DEFAULT),
+    ('Oval', 1, DEFAULT, DEFAULT),
+    ('Butterfly', 1, DEFAULT, DEFAULT),
+    ('Clubmaster', 1, DEFAULT, DEFAULT),
+    ('Rimless', 1, DEFAULT, DEFAULT),
+    ('Foundation', 2, DEFAULT, DEFAULT),
+    ('Concealer', 2, DEFAULT, DEFAULT),
+    ('Powder', 2, DEFAULT, DEFAULT),
+    ('Blush', 2, DEFAULT, DEFAULT),
+    ('Highlighter', 2, DEFAULT, DEFAULT),
+    ('Bronzer', 2, DEFAULT, DEFAULT),
+    ('Eyeshadow', 2, DEFAULT, DEFAULT),
+    ('Eyeliner', 2, DEFAULT, DEFAULT),
+    ('Mascara', 2, DEFAULT, DEFAULT),
+    ('Lipstick', 2, DEFAULT, DEFAULT),
+    ('Lip Gloss', 2, DEFAULT, DEFAULT),
+    ('Lip Liner', 2, DEFAULT, DEFAULT),
+    ('Eyebrow', 2, DEFAULT, DEFAULT),
+    ('Setting Spray', 2, DEFAULT, DEFAULT);
+
+-- auto-generated definition
+INSERT INTO detail_face_shape_tags (face_shape_id, tag_id, created_at, updated_at)
+VALUES
+    (1, 1, DEFAULT, DEFAULT),
+    (1, 2, DEFAULT, DEFAULT),
+    (2, 3, DEFAULT, DEFAULT),
+    (2, 4, DEFAULT, DEFAULT),
+    (3, 1, DEFAULT, DEFAULT),
+    (3, 5, DEFAULT, DEFAULT),
+    (4, 7, DEFAULT, DEFAULT),
+    (4, 9, DEFAULT, DEFAULT),
+    (5, 2, DEFAULT, DEFAULT),
+    (5, 1, DEFAULT, DEFAULT),
+    (5, 4, DEFAULT, DEFAULT),
+    (5, 3, DEFAULT, DEFAULT),
+    (1, 6, DEFAULT, DEFAULT),
+    (2, 1, DEFAULT, DEFAULT);
+
 
 -- auto-generated definition
 INSERT INTO roles (name, created_at, updated_at)
-VALUES 
+VALUES
     ('dashboard-app', DEFAULT, DEFAULT),
     ('user', DEFAULT, DEFAULT),
     ('merchant', DEFAULT, DEFAULT);
