@@ -14,3 +14,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add validator pkg
 - Add response helper
 - Add location module
+- Add face shape module
+- Add gcs bucket integration
+- Add utils: random, base64, converter, response, validator, string, array
