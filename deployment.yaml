@@ -15,9 +15,9 @@ spec:
   selector:
     app: arvigo-backend
   ports:
-  - port: 8080
+  - port: 80
     name: http
-    targetPort: 8080
+    targetPort: 80
   type: NodePort
 
 ---
@@ -42,7 +42,7 @@ spec:
         image:  asia.gcr.io/$PROJECT_ID/production/arvigo-backend:$SHORT_SHA
         imagePullPolicy: Always
         ports:
-        - containerPort: 8080
+        - containerPort: 80
           name: arvigo-backend
         resources:
           requests:
@@ -72,7 +72,7 @@ spec:
                 number: 80
 
 ---
-apiVersion: networking.gke.io/v1beta2
+apiVersion: networking.gke.io/v1
 kind: ManagedCertificate
 metadata:
   name: arvigo-backend
