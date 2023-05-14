@@ -78,6 +78,10 @@ Make sure to set these variables in the `.env` file before running the applicati
 ```
 
 ## Branch Naming Convention
+This project aims to demonstrate the application of Trunk-Based Development (TBD) methodology in software development. TBD promotes a streamlined and collaborative approach to version control and continuous integration, enabling teams to deliver high-quality software with shorter lead times.
+
+For more information about Trunk-Based Development, please visit [https://trunkbaseddevelopment.com/](https://trunkbaseddevelopment.com/).
+
 When naming branches, it is recommended to use the following prefixes:
 
 1. `feature/`: Use this prefix for adding new features.
@@ -90,4 +94,3 @@ When naming branches, it is recommended to use the following prefixes:
 This project is licensed under the MIT License.
 
 
-    
