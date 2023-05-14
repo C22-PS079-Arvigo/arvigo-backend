@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"io"
+	"io/ioutil"
 	"log"
 	"os"
 
@@ -16,8 +17,13 @@ func UploadImageToGCS(bucketName, objectName, imagePath string) error {
 	// Create a context using your project's default authentication credentials
 	ctx := context.Background()
 
+	keyJSON, err := ioutil.ReadFile("gcp-cred.json")
+	if err != nil {
+		return fmt.Errorf("failed to read service account key JSON file: %v", err)
+	}
+
 	// Set up authentication using the service account key JSON file
-	creds, err := google.CredentialsFromJSON(ctx, []byte("<your-service-account-key-json>"), storage.ScopeReadWrite)
+	creds, err := google.CredentialsFromJSON(ctx, keyJSON, storage.ScopeReadWrite)
 	if err != nil {
 		return fmt.Errorf("failed to create GCS client: %v", err)
 	}
