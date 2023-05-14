@@ -50,6 +50,7 @@ func main() {
 	handler.RegisterAuthRoutes(e)
 	handler.RegisterUserRoutes(e)
 	handler.RegisterLocationRoutes(e)
+	handler.RegisterFaceShapeRoutes(e)
 
 	// Start the server
 	port := os.Getenv("PORT")

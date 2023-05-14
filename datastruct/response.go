@@ -13,6 +13,11 @@ type (
 		Address UserAddress `json:"address"`
 	}
 
+	FaceShapeResponse struct {
+		ImageUrl string `json:"image_url"`
+		Result   string `json:"result"`
+	}
+
 	UserDetail struct {
 		ID                        uint64     `json:"id"`
 		Email                     string     `json:"email"`

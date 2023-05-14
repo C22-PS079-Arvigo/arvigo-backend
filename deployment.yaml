@@ -1,0 +1,82 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: production
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: arvigo-backend
+  namespace: production
+  labels:
+    app: arvigo-backend
+spec:
+  selector:
+    app: arvigo-backend
+  ports:
+  - port: 8080
+    name: http
+    targetPort: 8080
+  type: NodePort
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: arvigo-backend
+  namespace: production
+spec:
+  selector:
+    matchLabels:
+      app: arvigo-backend
+  strategy:
+    type: RollingUpdate
+  template: #Template for container
+    metadata:
+      labels:
+        app: arvigo-backend
+    spec:
+      containers:
+      - name: arvigo-backend
+        image:  asia.gcr.io/$PROJECT_ID/production/arvigo-backend:$SHORT_SHA
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8080
+          name: arvigo-backend
+        resources:
+          requests:
+            cpu: 50m
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: arvigo-backend
+  namespace: production
+  annotations:
+    kubernetes.io/ingress.global-static-ip-name: arvigo-ip-ex-backend
+    kubernetes.io/ingress.allow-http: "true"
+    networking.gke.io/managed-certificates: arvigo-backend
+spec:
+  rules:
+    - host: api.arvigo.site
+      http:
+        paths:
+        - path: /*
+          pathType: ImplementationSpecific
+          backend:
+            service:
+              name: arvigo-backend
+              port: 
+                number: 80
+
+---
+apiVersion: networking.gke.io/v1beta2
+kind: ManagedCertificate
+metadata:
+  name: arvigo-backend
+  namespace: production
+spec:
+  domains:
+    - api.arvigo.site

@@ -1,2 +1,2 @@
 .env
-pkg/storage/gcp-cred.json
+gcp-cred.json

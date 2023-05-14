@@ -5,52 +5,54 @@ import (
 	"fmt"
 	"io"
 	"io/ioutil"
-	"log"
 	"os"
 
 	"cloud.google.com/go/storage"
+	"github.com/yusufwib/arvigo-backend/utils"
 	"golang.org/x/oauth2/google"
 	"google.golang.org/api/option"
 )
 
-func UploadImageToGCS(bucketName, objectName, imagePath string) error {
-	// Create a context using your project's default authentication credentials
+func UploadImageToGCS(filename, imagePath, folder string) (publicURL string, err error) {
 	ctx := context.Background()
 
-	keyJSON, err := ioutil.ReadFile("gcp-cred.json")
-	if err != nil {
-		return fmt.Errorf("failed to read service account key JSON file: %v", err)
+	bucketName := os.Getenv("STORAGE_BUCKET_NAME")
+	if bucketName == "" {
+		bucketName = "arvigo-bucket"
 	}
 
-	// Set up authentication using the service account key JSON file
+	keyJSON, err := ioutil.ReadFile("./gcp-cred.json")
+	if err != nil {
+		return publicURL, fmt.Errorf("failed to read service account key JSON file: %v", err)
+	}
+
 	creds, err := google.CredentialsFromJSON(ctx, keyJSON, storage.ScopeReadWrite)
 	if err != nil {
-		return fmt.Errorf("failed to create GCS client: %v", err)
+		return publicURL, fmt.Errorf("failed to create GCS client: %v", err)
 	}
 
-	// Create a new GCS client using the authenticated credentials
 	client, err := storage.NewClient(ctx, option.WithCredentials(creds))
 	if err != nil {
-		return fmt.Errorf("failed to create GCS client: %v", err)
+		return publicURL, fmt.Errorf("failed to create GCS client: %v", err)
 	}
 	defer client.Close()
 
-	// Open the image file
 	file, err := os.Open(imagePath)
 	if err != nil {
-		return fmt.Errorf("failed to open image file: %v", err)
+		return publicURL, fmt.Errorf("failed to open image file: %v", err)
 	}
 	defer file.Close()
 
-	// Create a new GCS writer for the object
+	// Create the object name with the desired folder and new filename
+	objectName := fmt.Sprintf("%s/%s_%s", folder, utils.GenerateRandomStringWithTimestamp(10), filename)
+
 	writer := client.Bucket(bucketName).Object(objectName).NewWriter(ctx)
 	defer writer.Close()
 
-	// Copy the image file contents to the GCS writer
 	if _, err := io.Copy(writer, file); err != nil {
-		return fmt.Errorf("failed to upload image to GCS: %v", err)
+		return publicURL, fmt.Errorf("failed to upload image to GCS: %v", err)
 	}
 
-	log.Printf("Image uploaded successfully to gs://%s/%s", bucketName, objectName)
-	return nil
+	publicURL = fmt.Sprintf("https://storage.googleapis.com/%s/%s", bucketName, objectName)
+	return publicURL, nil
 }
