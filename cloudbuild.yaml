@@ -6,12 +6,11 @@ steps:
 - id: change-variable-env
   name: 'gcr.io/$PROJECT_ID/envsubst'
   env:
-    - '_DB_USER=$DB_USER'
-    - '_DB_PASSWORD=$DB_PASSWORD'
-    - '_DB_HOST=$DB_HOST'
-    - '_DB_NAME=$DB_NAME'
-    - '_JWT_SECRET=$JWT_SECRET'
-    - '_SALT_SECRET=$SALT_SECRET'
+    - '_DB_USER=${_DB_HOST}'
+    - '_DB_PASSWORD=${_DB_NAME}'
+    - '_DB_HOST=${_DB_PASSWORD}'
+    - '_JWT_SECRET=${_JWT_SECRET}'
+    - '_SALT_SECRET=${_SALT_SECRET}'
   args: ['.env']
 
 - id: Build-docker
