@@ -1,18 +1,4 @@
 steps:
-- id: make-env-file
-  name: 'ubuntu'
-  args: ['cp', '.env.example', '.env']
-
-- id: change-variable-env
-  name: 'gcr.io/$PROJECT_ID/envsubst'
-  env:
-    - '_DB_USER=${_DB_HOST}'
-    - '_DB_PASSWORD=${_DB_NAME}'
-    - '_DB_HOST=${_DB_PASSWORD}'
-    - '_JWT_SECRET=${_JWT_SECRET}'
-    - '_SALT_SECRET=${_SALT_SECRET}'
-  args: ['.env']
-
 - id: Build-docker
   name: 'gcr.io/cloud-builders/docker'
   args: ['build', '-t', 'asia.gcr.io/$PROJECT_ID/production/arvigo-backend:$SHORT_SHA', '.']
