@@ -1,85 +1,131 @@
-apiVersion: v1
-kind: Namespace
-metadata:
-  name: production
+# apiVersion: v1
+# kind: Namespace
+# metadata:
+#   name: production
     
----
+# ---
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name: arvigo-backend
+#   annotations: 
+#     cloud.google.com/neg: '{"ingress": true}'
+#   namespace: production
+#   labels:
+#     app: arvigo-backend
+# spec:
+#   selector:
+#     app: arvigo-backend
+#   ports:
+#   - port: 80
+#     protocol: TCP
+#     name: http
+#     targetPort: 80
+#   type: NodePort
+
+# ---
+# apiVersion: apps/v1
+# kind: Deployment
+# metadata:
+#   name: arvigo-backend
+#   namespace: production
+# spec:
+#   selector:
+#     matchLabels:
+#       app: arvigo-backend
+#   strategy:
+#     type: RollingUpdate
+#   template: #Template for container
+#     metadata:
+#       labels:
+#         app: arvigo-backend
+#     spec:
+#       containers:
+#       - name: arvigo-backend
+#         image:  asia.gcr.io/$PROJECT_ID/production/arvigo-backend:$SHORT_SHA
+#         imagePullPolicy: Always
+#         ports:
+#         - containerPort: 80
+#           name: arvigo-backend
+#         resources:
+#           requests:
+#             cpu: 50m
+
+# ---
+# apiVersion: networking.k8s.io/v1
+# kind: Ingress
+# metadata:
+#   name: arvigo-backend
+#   namespace: production
+#   annotations:
+#     kubernetes.io/ingress.global-static-ip-name: arvigo-ip-ex-backend
+#     kubernetes.io/ingress.allow-http: "true"
+#     networking.gke.io/managed-certificates: arvigo-backend
+# spec:
+#   rules:
+#     - host: api.arvigo.site
+#       http:
+#         paths:
+#         - path: /*
+#           pathType: ImplementationSpecific
+#           backend:
+#             service:
+#               name: arvigo-backend
+#               port: 
+#                 number: 80
+
+# ---
+# apiVersion: networking.gke.io/v1
+# kind: ManagedCertificate
+# metadata:
+#   name: arvigo-backend
+#   namespace: production
+# spec:
+#   domains:
+#     - api.arvigo.site
+
 apiVersion: v1
 kind: Service
 metadata:
   name: arvigo-backend
-  annotations: 
-    cloud.google.com/neg: '{"ingress": true}'
-  namespace: production
-  labels:
-    app: arvigo-backend
 spec:
-  selector:
-    app: arvigo-backend
   ports:
   - port: 80
+    targetPort: 8081
     protocol: TCP
     name: http
-    targetPort: 80
-  type: NodePort
-
+  selector:
+    app: arvigo-backend
+  type: LoadBalancer
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: arvigo-backend
-  namespace: production
 spec:
+  replicas: 1
   selector:
     matchLabels:
       app: arvigo-backend
-  strategy:
-    type: RollingUpdate
-  template: #Template for container
+  template:
     metadata:
       labels:
         app: arvigo-backend
     spec:
       containers:
-      - name: arvigo-backend
-        image:  asia.gcr.io/$PROJECT_ID/production/arvigo-backend:$SHORT_SHA
-        imagePullPolicy: Always
+      # [START esp]
+      - name: arvigo-backend-endpoints
+        image: asia.gcr.io/$PROJECT_ID/production/arvigo-backend-endpoints:$SHORT_SHA
+        args: [
+          "--http_port", "8081",
+          "--backend", "127.0.0.1:8080",
+          "--service", "arvigo-backend-service",
+          "--rollout_strategy", "managed",
+        ]
+      # [END esp]
         ports:
-        - containerPort: 80
-          name: arvigo-backend
-        resources:
-          requests:
-            cpu: 50m
-
----
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  name: arvigo-backend
-  namespace: production
-  annotations:
-    kubernetes.io/ingress.global-static-ip-name: arvigo-ip-ex-backend
-    kubernetes.io/ingress.allow-http: "false"
-    networking.gke.io/managed-certificates: arvigo-backend
-spec:
-  rules:
-    - host: api.arvigo.site
-      http:
-        paths:
-        - path: /*
-          pathType: ImplementationSpecific
-          backend:
-            service:
-              name: arvigo-backend
-              port: 
-                number: 80
-
----
-apiVersion: networking.gke.io/v1
-kind: ManagedCertificate
-metadata:
-  name: arvigo-backend
-  namespace: production
-spec:
-  domains:
-    - api.arvigo.site
+          - containerPort: 8081
+      - name: arvigo-backend-container
+        image: asia.gcr.io/$PROJECT_ID/production/arvigo-backend-container:$SHORT_SHA
+        ports:
+          - containerPort: 8080
