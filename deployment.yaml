@@ -94,9 +94,11 @@ spec:
   ports:
   - port: 80
     targetPort: 8080
+    protocol: TCP
     name: http
   selector:
     app: arvigo-backend
+  type: NodePort
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -125,9 +127,9 @@ kind: Ingress
 metadata:
   name: arvigo-backend
   annotations:
-    kubernetes.io/ingress.global-static-ip-name: arvigo-ip-ex-backend
-    kubernetes.io/ingress.allow-http: "false"
-    networking.gke.io/managed-certificates: arvigo-backend
+    kubernetes.io/ingress.global-static-ip-name: "arvigo-ip-ex-backend"
+    kubernetes.io/ingress.allow-http: "true"
+    networking.gke.io/managed-certificates: "arvigo-backend"
     kubernetes.io/ingress.class: "gce"
 spec:
   rules:
