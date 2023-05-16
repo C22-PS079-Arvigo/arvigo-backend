@@ -59,7 +59,7 @@ metadata:
   namespace: production
   annotations:
     kubernetes.io/ingress.global-static-ip-name: arvigo-ip-ex-backend
-    kubernetes.io/ingress.allow-http: "true"
+    kubernetes.io/ingress.allow-http: "false"
     networking.gke.io/managed-certificates: arvigo-backend
 spec:
   rules:
