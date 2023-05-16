@@ -127,7 +127,6 @@ apiVersion: networking.gke.io/v1
 kind: ManagedCertificate
 metadata:
   name: arvigo-backend
-  namespace: production
 spec:
   domains:
     - api.arvigo.site
