@@ -90,17 +90,16 @@ metadata:
   name: arvigo-backend
   labels:
     app: arvigo-backend
-  annotations:
-    cloud.google.com/neg: '{"ingress": true}'
 spec:
+  selector:
+    app: arvigo-backend
   ports:
   - port: 80
     targetPort: 8080
     protocol: TCP
     name: http
-  selector:
-    app: arvigo-backend
-  type: NodePort
+  type: LoadBalancer
+  loadBalancerIP: 34.101.205.212
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -122,52 +121,49 @@ spec:
         image: asia.gcr.io/$PROJECT_ID/production/arvigo-backend:$SHORT_SHA
         ports:
         - containerPort: 8080
-        resources:
-          requests:
-            cpu: 200m
----
-apiVersion: autoscaling/v1
-kind: HorizontalPodAutoscaler
-metadata:
-  name: arvigo-backend
-spec:
-  maxReplicas: 10
-  minReplicas: 3
-  scaleTargetRef:
-    apiVersion: apps/v1
-    kind: Deployment
-    name: arvigo-backend
-  targetCPUUtilizationPercentage: 100
----
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  name: arvigo-backend
-  annotations:
-    kubernetes.io/ingress.global-static-ip-name: arvigo-ip-static-backend-global
-    kubernetes.io/ingress.allow-http: "false"
-    networking.gke.io/managed-certificates: arvigo-backend
-spec:
-  rules:
-    - host: api.arvigo.site
-      http:
-        paths:
-        - path: /*
-          pathType: ImplementationSpecific
-          backend:
-            service:
-              name: arvigo-backend
-              port: 
-                number: 80
----
-apiVersion: networking.gke.io/v1
-kind: ManagedCertificate
-metadata:
-  name: arvigo-backend
-spec:
-  domains:
-    - api.arvigo.site
-    - www.api.arvigo.site
+# ---
+# apiVersion: autoscaling/v1
+# kind: HorizontalPodAutoscaler
+# metadata:
+#   name: arvigo-backend
+# spec:
+#   maxReplicas: 10
+#   minReplicas: 3
+#   scaleTargetRef:
+#     apiVersion: apps/v1
+#     kind: Deployment
+#     name: arvigo-backend
+#   targetCPUUtilizationPercentage: 100
+# ---
+# apiVersion: networking.k8s.io/v1
+# kind: Ingress
+# metadata:
+#   name: arvigo-backend
+#   annotations:
+#     kubernetes.io/ingress.global-static-ip-name: arvigo-ip-static-backend-global
+#     kubernetes.io/ingress.allow-http: "false"
+#     networking.gke.io/managed-certificates: arvigo-backend
+# spec:
+#   rules:
+#     - host: api.arvigo.site
+#       http:
+#         paths:
+#         - path: /*
+#           pathType: ImplementationSpecific
+#           backend:
+#             service:
+#               name: arvigo-backend
+#               port: 
+#                 number: 80
+# ---
+# apiVersion: networking.gke.io/v1
+# kind: ManagedCertificate
+# metadata:
+#   name: arvigo-backend
+# spec:
+#   domains:
+#     - api.arvigo.site
+#     - www.api.arvigo.site
 # ---
 # apiVersion: networking.k8s.io/v1
 # kind: Ingress
