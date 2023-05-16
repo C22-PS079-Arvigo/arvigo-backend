@@ -102,6 +102,8 @@ kind: Service
 metadata:
   name: arvigo-backend
   namespace: default
+  annotations: 
+    cloud.google.com/neg: '{"ingress": true}'
 spec:
   ports:
   - port: 80
@@ -136,14 +138,13 @@ spec:
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: arvigo-backend
+  name: basic-ingress
 spec:
   defaultBackend:
     service:
       name: arvigo-backend
       port:
         number: 80
-
 # apiVersion: apps/v1
 # kind: Deployment
 #   name: web
