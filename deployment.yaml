@@ -102,8 +102,6 @@ kind: Service
 metadata:
   name: arvigo-backend
   namespace: default
-  annotations: 
-    cloud.google.com/neg: '{"ingress": true}'
 spec:
   ports:
   - port: 80
@@ -132,7 +130,7 @@ spec:
         imagePullPolicy: IfNotPresent
         name: arvigo-backend
         ports:
-        - containerPort: 80
+        - containerPort: 8080
           protocol: TCP
 ---
 apiVersion: networking.k8s.io/v1
@@ -145,27 +143,6 @@ spec:
       name: arvigo-backend
       port:
         number: 80
-# apiVersion: apps/v1
-# kind: Deployment
-#   name: web
-#   namespace: default
-# spec:
-#   replicas: 1
-#   selector:
-#     matchLabels:
-#       app: arvigo-backend
-#   template:
-#     metadata:
-#       labels:
-#         app: arvigo-backend
-#     spec:
-#       containers:
-#       - name: arvigo-backend
-#         image: asia.gcr.io/$PROJECT_ID/production/arvigo-backend:$SHORT_SHA
-#         imagePullPolicy: Always
-#         ports:
-#           - containerPort: 8080
-#             name: arvigo-backend
 # ---
 # apiVersion: networking.k8s.io/v1
 # kind: Ingress
