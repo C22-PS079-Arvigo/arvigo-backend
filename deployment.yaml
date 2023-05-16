@@ -83,18 +83,15 @@
 # spec:
 #   domains:
 #     - api.arvigo.site
-apiVersion: v1
-kind: Namespace
-metadata:
-  name: production
 ---
 apiVersion: v1
 kind: Service
 metadata:
   name: arvigo-backend
-  namespace: production
   labels:
     app: arvigo-backend
+  annotations:
+    cloud.google.com/neg: '{"ingress": true}'
 spec:
   ports:
   - port: 80
@@ -109,13 +106,12 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: arvigo-backend
-  namespace: production
+  labels:
+    app: arvigo-backend
 spec:
   selector:
     matchLabels:
       app: arvigo-backend
-  strategy:
-    type: RollingUpdate
   template:
     metadata:
       labels:
@@ -123,20 +119,17 @@ spec:
     spec:
       containers:
       - name: arvigo-backend
-        image:  asia.gcr.io/$PROJECT_ID/production/arvigo-backend:$SHORT_SHA
-        imagePullPolicy: Always
+        image: asia.gcr.io/$PROJECT_ID/production/arvigo-backend:$SHORT_SHA
         ports:
         - containerPort: 8080
-          name: arvigo-backend
         resources:
           requests:
-            cpu: 500m
+            cpu: 200m
 ---
 apiVersion: autoscaling/v1
 kind: HorizontalPodAutoscaler
 metadata:
   name: arvigo-backend
-  namespace: production
 spec:
   maxReplicas: 10
   minReplicas: 3
@@ -150,7 +143,6 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: arvigo-backend
-  namespace: production
   annotations:
     kubernetes.io/ingress.global-static-ip-name: arvigo-ip-static-backend-global
     kubernetes.io/ingress.allow-http: "false"
@@ -172,7 +164,6 @@ apiVersion: networking.gke.io/v1
 kind: ManagedCertificate
 metadata:
   name: arvigo-backend
-  namespace: production
 spec:
   domains:
     - api.arvigo.site
