@@ -103,7 +103,7 @@ metadata:
   name: arvigo-backend
   namespace: default
   annotations:
-    cloud.google.com/backend-config: '{"ports": {"8080":"my-backendconfig"}}'
+    cloud.google.com/backend-config: '{"ports": {"8080":"arvigo-backend-hc-config"}}'
     cloud.google.com/neg: '{"ingress": true}'
 spec:
   ports:
