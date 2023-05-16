@@ -47,7 +47,7 @@ metadata:
 spec:
   healthCheck:
     checkIntervalSec: 15
-    port: 8080
+    port: 80
     type: HTTPS
     requestPath: /healthz
 ---
