@@ -36,7 +36,7 @@ steps:
   - run
   - --filename=deployment.yaml
   - --cluster=arvigo-cluster
-  - --location=asia-southeast2
+  - --location=asia-southeast2-a
   timeout: 900s
 
 # Global Timeout

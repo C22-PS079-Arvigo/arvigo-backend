@@ -83,11 +83,16 @@
 # spec:
 #   domains:
 #     - api.arvigo.site
-
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: production
+---
 apiVersion: v1
 kind: Service
 metadata:
   name: arvigo-backend
+  namespace: production
   labels:
     app: arvigo-backend
 spec:
@@ -98,18 +103,19 @@ spec:
     name: http
   selector:
     app: arvigo-backend
-  type: LoadBalancer
-  loadBalancerIP: 34.101.176.135
+  type: NodePort
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: arvigo-backend
+  namespace: production
 spec:
-  replicas: 1
   selector:
     matchLabels:
       app: arvigo-backend
+  strategy:
+    type: RollingUpdate
   template:
     metadata:
       labels:
@@ -117,16 +123,56 @@ spec:
     spec:
       containers:
       - name: arvigo-backend
-        image: asia.gcr.io/$PROJECT_ID/production/arvigo-backend:$SHORT_SHA
+        image:  asia.gcr.io/$PROJECT_ID/production/arvigo-backend:$SHORT_SHA
         imagePullPolicy: Always
         ports:
-          - containerPort: 8080
-            name: arvigo-backend
+        - containerPort: 8080
+          name: arvigo-backend
+        resources:
+          requests:
+            cpu: 50m
+---
+apiVersion: autoscaling/v1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: arvigo-backend
+  namespace: production
+spec:
+  maxReplicas: 10
+  minReplicas: 3
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: arvigo-backend
+  targetCPUUtilizationPercentage: 100
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: arvigo-backend
+  namespace: production
+  annotations:
+    kubernetes.io/ingress.global-static-ip-name: arvigo-ip-ex-backend
+    kubernetes.io/ingress.allow-http: "false"
+    networking.gke.io/managed-certificates: arvigo-backend
+spec:
+  rules:
+    - host: api.arvigo.site
+      http:
+        paths:
+        - path: /*
+          pathType: ImplementationSpecific
+          backend:
+            service:
+              name: arvigo-backend
+              port: 
+                number: 80
 ---
 apiVersion: networking.gke.io/v1
 kind: ManagedCertificate
 metadata:
   name: arvigo-backend
+  namespace: production
 spec:
   domains:
     - api.arvigo.site
