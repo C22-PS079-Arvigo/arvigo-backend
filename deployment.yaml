@@ -130,7 +130,7 @@ spec:
           name: arvigo-backend
         resources:
           requests:
-            cpu: 50m
+            cpu: 500m
 ---
 apiVersion: autoscaling/v1
 kind: HorizontalPodAutoscaler
@@ -152,7 +152,7 @@ metadata:
   name: arvigo-backend
   namespace: production
   annotations:
-    kubernetes.io/ingress.global-static-ip-name: arvigo-ip-ex-backend
+    kubernetes.io/ingress.global-static-ip-name: arvigo-ip-static-backend-global
     kubernetes.io/ingress.allow-http: "false"
     networking.gke.io/managed-certificates: arvigo-backend
 spec:
