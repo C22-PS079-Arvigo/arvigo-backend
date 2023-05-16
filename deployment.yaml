@@ -84,85 +84,44 @@
 #   domains:
 #     - api.arvigo.site
 
-# apiVersion: v1
-# kind: Service
-# metadata:
-#   name: arvigo-backend
-#   labels:
-#     app: arvigo-backend
-# spec:
-#   ports:
-#   - port: 80
-#     targetPort: 8080
-#   selector:
-#     app: arvigo-backend
-#   type: NodePort
 apiVersion: v1
 kind: Service
 metadata:
   name: arvigo-backend
-  namespace: default
-  annotations:
-    cloud.google.com/backend-config: '{"ports": {"8080":"arvigo-backend-hc-config"}}'
-    cloud.google.com/neg: '{"ingress": true}'
+  labels:
+    app: arvigo-backend
 spec:
   ports:
   - port: 80
-    protocol: TCP
     targetPort: 8080
+    protocol: TCP
+    name: http
   selector:
-    run: arvigo-backend
-  type: NodePort
+    app: arvigo-backend
+  type: LoadBalancer
+  loadBalancerIP: 34.101.176.135
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: arvigo-backend
-  namespace: default
 spec:
+  replicas: 1
   selector:
     matchLabels:
-      run: arvigo-backend
+      app: arvigo-backend
   template:
     metadata:
       labels:
-        run: arvigo-backend
+        app: arvigo-backend
     spec:
       containers:
-      - image: asia.gcr.io/$PROJECT_ID/production/arvigo-backend:$SHORT_SHA
-        imagePullPolicy: IfNotPresent
-        name: arvigo-backend
+      - name: arvigo-backend
+        image: asia.gcr.io/$PROJECT_ID/production/arvigo-backend:$SHORT_SHA
+        imagePullPolicy: Always
         ports:
-        - containerPort: 8080
-          protocol: TCP
----
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  name: arvigo-backend-ingress
-spec:
-  defaultBackend:
-    service:
-      name: arvigo-backend
-      port:
-        number: 80
----
-apiVersion: cloud.google.com/v1
-kind: BackendConfig
-metadata:
-  name: arvigo-backend-hc-config
-spec:
-  timeoutSec: 45
-  connectionDraining:
-    drainingTimeoutSec: 0
-  healthCheck:
-    checkIntervalSec: 5
-    timeoutSec: 5
-    healthyThreshold: 1
-    unhealthyThreshold: 2
-    type: HTTP
-    requestPath: /healthz
-    port: 8080
+          - containerPort: 8080
+            name: arvigo-backend
 # ---
 # apiVersion: networking.k8s.io/v1
 # kind: Ingress
