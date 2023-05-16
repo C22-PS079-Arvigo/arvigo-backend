@@ -98,7 +98,8 @@ spec:
     name: http
   selector:
     app: arvigo-backend
-  type: NodePort
+  type: LoadBalancer
+  loadBalancerIP: 34.101.176.135
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -121,6 +122,9 @@ spec:
         ports:
           - containerPort: 8080
             name: arvigo-backend
+          resources:
+            requests:
+              cpu: 200m
 ---
 # apiVersion: networking.k8s.io/v1
 # kind: Ingress
@@ -142,17 +146,3 @@ spec:
 #             name: arvigo-backend
 #             port:
 #               number: 80
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  name: arvigo-backend
-  annotations:
-    kubernetes.io/ingress.global-static-ip-name: arvigo-ip-ex-backend
-  labels:
-    app: arvigo-backend
-spec:
-  defaultBackend:
-    service:
-      name: arvigo-backend
-      port:
-        number: 80
