@@ -98,7 +98,8 @@ spec:
     name: http
   selector:
     app: arvigo-backend
-  type: NodePort
+  type: LoadBalancer
+  loadBalancerIP: 34.117.252.169
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -122,32 +123,32 @@ spec:
           - containerPort: 8080
             name: arvigo-backend
 ---
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  name: arvigo-backend
-  annotations:
-    kubernetes.io/ingress.global-static-ip-name: "arvigo-ip-ex-backend"
-    kubernetes.io/ingress.allow-http: "true"
-    networking.gke.io/managed-certificates: "arvigo-backend"
-    kubernetes.io/ingress.class: "gce"
-spec:
-  rules:
-    - host: api.arvigo.site
-      http:
-        paths:
-        - path: /*
-          pathType: ImplementationSpecific
-          backend:
-            service:
-              name: arvigo-backend
-              port: 
-                number: 80
----
-apiVersion: networking.gke.io/v1
-kind: ManagedCertificate
-metadata:
-  name: arvigo-backend
-spec:
-  domains:
-    - api.arvigo.site
+# apiVersion: networking.k8s.io/v1
+# kind: Ingress
+# metadata:
+#   name: arvigo-backend
+#   annotations:
+#     kubernetes.io/ingress.global-static-ip-name: "arvigo-ip-ex-backend"
+#     kubernetes.io/ingress.allow-http: "true"
+#     networking.gke.io/managed-certificates: "arvigo-backend"
+#     kubernetes.io/ingress.class: "gce"
+# spec:
+#   rules:
+#     - host: api.arvigo.site
+#       http:
+#         paths:
+#         - path: /*
+#           pathType: ImplementationSpecific
+#           backend:
+#             service:
+#               name: arvigo-backend
+#               port: 
+#                 number: 80
+# ---
+# apiVersion: networking.gke.io/v1
+# kind: ManagedCertificate
+# metadata:
+#   name: arvigo-backend
+# spec:
+#   domains:
+#     - api.arvigo.site
