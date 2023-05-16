@@ -91,7 +91,7 @@ metadata:
 spec:
   ports:
   - port: 80
-    targetPort: 8081
+    targetPort: 8080
     protocol: TCP
     name: http
   selector:
@@ -113,19 +113,9 @@ spec:
         app: arvigo-backend
     spec:
       containers:
-      # [START esp]
-      - name: arvigo-backend-endpoints
-        image: asia.gcr.io/$PROJECT_ID/production/arvigo-backend-endpoints:$SHORT_SHA
-        args: [
-          "--http_port", "8081",
-          "--backend", "127.0.0.1:8080",
-          "--service", "arvigo-backend",
-          "--rollout_strategy", "managed",
-        ]
-      # [END esp]
-        ports:
-          - containerPort: 8081
-      - name: arvigo-backend-container
-        image: asia.gcr.io/$PROJECT_ID/production/arvigo-backend-container:$SHORT_SHA
+      - name: arvigo-backend
+        image: asia.gcr.io/$PROJECT_ID/production/arvigo-backend:$SHORT_SHA
+        imagePullPolicy: Always
         ports:
           - containerPort: 8080
+            name: arvigo-backend
