@@ -119,7 +119,7 @@ spec:
         args: [
           "--http_port", "8081",
           "--backend", "127.0.0.1:8080",
-          "--service", "arvigo-backend-service",
+          "--service", "arvigo-backend",
           "--rollout_strategy", "managed",
         ]
       # [END esp]
