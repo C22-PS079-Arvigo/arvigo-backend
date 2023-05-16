@@ -102,6 +102,9 @@ kind: Service
 metadata:
   name: arvigo-backend
   namespace: default
+  annotations:
+    cloud.google.com/backend-config: '{"ports": {"8080":"my-backendconfig"}}'
+    cloud.google.com/neg: '{"ingress": true}'
 spec:
   ports:
   - port: 80
@@ -149,11 +152,17 @@ kind: BackendConfig
 metadata:
   name: arvigo-backend-hc-config
 spec:
+  timeoutSec: 45
+  connectionDraining:
+    drainingTimeoutSec: 0
   healthCheck:
-    checkIntervalSec: 15
-    port: 8080
-    type: HTTPS
+    checkIntervalSec: 5
+    timeoutSec: 5
+    healthyThreshold: 1
+    unhealthyThreshold: 2
+    type: HTTP
     requestPath: /healthz
+    port: 8080
 # ---
 # apiVersion: networking.k8s.io/v1
 # kind: Ingress
