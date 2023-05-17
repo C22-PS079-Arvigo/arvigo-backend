@@ -12,6 +12,9 @@ import (
 func RegisterHealthCheckRoutes(e *echo.Echo) {
 	healthCheckGroup := e.Group("/health_check")
 	healthCheckGroup.GET("/ping", healthCheckHandler)
+	e.GET("/", func(c echo.Context) error {
+		return c.String(http.StatusOK, "Welcome to arvigo-backend")
+	})
 }
 
 func healthCheckHandler(c echo.Context) error {
