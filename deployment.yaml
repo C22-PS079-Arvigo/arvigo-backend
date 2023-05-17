@@ -68,71 +68,124 @@
 #     - api.arvigo.site
 #     - www.api.arvigo.site
 
-apiVersion: v1
-kind: Service
-metadata:
-  name: arvigo-backend
-  labels:
-    app: arvigo-backend
-spec:
-  type: ClusterIP
-  ports:
-    - port: 80
-      protocol: TCP
-      targetPort: 8080
-  selector:
-    app: arvigo-backend
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name: arvigo-backend
+#   labels:
+#     app: arvigo-backend
+# spec:
+#   type: ClusterIP
+#   ports:
+#     - port: 80
+#       protocol: TCP
+#       targetPort: 8080
+#   selector:
+#     app: arvigo-backend
 
----
+# ---
+
+# apiVersion: apps/v1
+# kind: Deployment
+# metadata:
+#   name: arvigo-backend
+#   labels:
+#    app: arvigo-backend
+# spec:
+#   replicas: 3
+#   selector:
+#     matchLabels:
+#       app: arvigo-backend
+#   template:
+#     metadata:
+#       labels:
+#         app: arvigo-backend
+#     spec:
+#       containers:
+#       - name: arvigo-backend
+#         image: asia.gcr.io/$PROJECT_ID/production/arvigo-backend:$SHORT_SHA
+#         imagePullPolicy: Always
+#         ports:
+#         - containerPort: 8080
+#           protocol: TCP
+
+# ---
+# 
+#  apiVersion: networking.k8s.io/v1
+#  kind: Ingress
+#  metadata:
+#    name: arvigo-backend
+#    annotations:
+#     kubernetes.io/ingress.global-static-ip-name: arvigo-ip-static-backend-global
+#     kubernetes.io/ingress.allow-http: "true"
+#     kubernetes.io/ingress.class: "gce"
+#  spec:
+#    defaultBackend:
+#     service:
+#       name: arvigo-backend
+#       port:
+#         number: 80
+#    rules:
+#    - host: api.arvigo.site
+#      http:
+#        paths:
+#         - path: /*
+#           pathType: ImplementationSpecific
+#           backend:
+#             service:
+#               name: arvigo-backend
+#               port: 
+#                 number: 80
 
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: arvigo-backend
   labels:
-   app: arvigo-backend
+    run: arvigo-backend # Label for the Deployment
+  name: arvigo-backend # Name of Deployment
 spec:
-  replicas: 3
   selector:
     matchLabels:
-      app: arvigo-backend
-  template:
+      run: arvigo-backend
+  template: # Pod template
     metadata:
       labels:
-        app: arvigo-backend
-    spec:
+        run: arvigo-backend # Labels Pods from this Deployment
+    spec: # Pod specification; each Pod created by this Deployment has this specification
       containers:
-      - name: arvigo-backend
-        image: asia.gcr.io/$PROJECT_ID/production/arvigo-backend:$SHORT_SHA
-        imagePullPolicy: Always
+      - image: asia.gcr.io/$PROJECT_ID/production/arvigo-backend:$SHORT_SHA # Application to run in Deployment's Pods
+        name: arvigo-backend # Container name
         ports:
         - containerPort: 8080
           protocol: TCP
 
 ---
 
- apiVersion: networking.k8s.io/v1
- kind: Ingress
- metadata:
-   name: arvigo-backend
-   annotations:
-    kubernetes.io/ingress.global-static-ip-name: arvigo-ip-static-backend-global
-    kubernetes.io/ingress.allow-http: "true"
-    kubernetes.io/ingress.class: "gce"
- spec:
-   defaultBackend:
+apiVersion: v1
+kind: Service
+metadata:
+  name: arvigo-backend # Name of Service
+  annotations:
+    cloud.google.com/neg: '{"ingress": true}' # Creates a NEG after an Ingress is created
+spec: # Service's specification
+  type: ClusterIP
+  selector:
+    run: arvigo-backend # Selects Pods labelled run: neg-demo-app
+  ports:
+  - name: http
+    port: 80 # Service's port
+    protocol: TCP
+    targetPort: 8080
+
+---
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: arvigo-backend
+spec:
+  defaultBackend:
     service:
-      name: arvigo-backend
+      name: arvigo-backend # Name of the Service targeted by the Ingress
       port:
-        number: 80
-   rules:
-   - host: api.arvigo.site
-     http:
-       paths:
-        - path: /*
-          pathType: ImplementationSpecific
-          backend:
-            service:
-              name: arvigo-backend
-              port: 
-                number: 80
+        number: 80 # Should match the port used by the Service
