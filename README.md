@@ -89,6 +89,11 @@ When naming branches, it is recommended to use the following prefixes:
 3. `bugfix/`: Use this prefix for resolving non-critical issues or bugs.
 4. `refactor/`: Use this prefix when making changes to the folder structure or code without altering functionality.
 
+Additionally, when preparing a branch for release, please include the following release tag:
+
+- `release-arvigo-backend-*`: Use this tag for releases related to the API version specified in the main.go file.
+Ensure that the version in the release tag corresponds to the API version mentioned in the main.go file.
+
 ## License
 
 This project is licensed under the MIT License.
