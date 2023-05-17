@@ -90,7 +90,8 @@ metadata:
   name: arvigo-backend-ingress
   annotations:
     kubernetes.io/ingress.global-static-ip-name: arvigo-ip-static-backend-global
-    kubernetes.io/ingress.allow-http: "true"
+    networking.gke.io/managed-certificates: arvigo-backend-cert
+    kubernetes.io/ingress.allow-http: "false"
     kubernetes.io/ingress.class: "gce"
 spec:
   rules:
@@ -104,3 +105,14 @@ spec:
             name: arvigo-backend-service
             port: 
               number: 80
+
+---
+
+apiVersion: networking.gke.io/v1
+kind: ManagedCertificate
+metadata:
+  name: arvigo-backend-cert
+spec:
+  domains:
+    - api.arvigo.site
+    - www.api.arvigo.site
