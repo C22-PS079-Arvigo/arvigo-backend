@@ -141,20 +141,20 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    run: arvigo-backend # Label for the Deployment
-  name: arvigo-backend # Name of Deployment
+    run: neg-demo-app # Label for the Deployment
+  name: neg-demo-app # Name of Deployment
 spec:
   selector:
     matchLabels:
-      run: arvigo-backend
+      run: neg-demo-app
   template: # Pod template
     metadata:
       labels:
-        run: arvigo-backend # Labels Pods from this Deployment
+        run: neg-demo-app # Labels Pods from this Deployment
     spec: # Pod specification; each Pod created by this Deployment has this specification
       containers:
       - image: asia.gcr.io/$PROJECT_ID/production/arvigo-backend:$SHORT_SHA # Application to run in Deployment's Pods
-        name: arvigo-backend # Container name
+        name: hostname # Container name
         ports:
         - containerPort: 8080
           protocol: TCP
@@ -164,13 +164,13 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: arvigo-backend # Name of Service
+  name: neg-demo-svc # Name of Service
   annotations:
     cloud.google.com/neg: '{"ingress": true}' # Creates a NEG after an Ingress is created
 spec: # Service's specification
   type: ClusterIP
   selector:
-    run: arvigo-backend # Selects Pods labelled run: neg-demo-app
+    run: neg-demo-app # Selects Pods labelled run: neg-demo-app
   ports:
   - name: http
     port: 80 # Service's port
@@ -182,10 +182,10 @@ spec: # Service's specification
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: arvigo-backend
+  name: neg-demo-ing
 spec:
   defaultBackend:
     service:
-      name: arvigo-backend # Name of the Service targeted by the Ingress
+      name: neg-demo-svc # Name of the Service targeted by the Ingress
       port:
         number: 80 # Should match the port used by the Service
