@@ -5,18 +5,14 @@ metadata:
   labels:
     app: arvigo-backend
 spec:
-  ports:
-  - name: http
-    port: 80
-    protocol: TCP
-    targetPort: 8080
   selector:
     app: arvigo-backend
-  type: LoadBalancer
-  loadBalancerIP: 34.101.205.212
-
+  type: ClusterIP
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 8080
 ---
-
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -40,3 +36,34 @@ spec:
         ports:
         - containerPort: 8080
           protocol: TCP
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: arvigo-backend-ingress
+  annotations:
+    kubernetes.io/ingress.global-static-ip-name: arvigo-ip-static-backend-global
+    networking.gke.io/managed-certificates: arvigo-backend-cert
+    kubernetes.io/ingress.allow-http: "false"
+    kubernetes.io/ingress.class: "gce"
+spec:
+  rules:
+  - host: api.arvigo.site
+    http:
+      paths:
+      - path: /*
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: arvigo-backend-service
+            port: 
+              number: 80
+---
+apiVersion: networking.gke.io/v1
+kind: ManagedCertificate
+metadata:
+  name: arvigo-backend-cert
+spec:
+  domains:
+    - api.arvigo.site
+    - www.api.arvigo.site

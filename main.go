@@ -2,6 +2,7 @@ package main
 
 import (
 	"log"
+	"net/http"
 	"os"
 
 	"github.com/joho/godotenv"
@@ -40,6 +41,10 @@ func main() {
 
 	// Create a new Echo instance
 	e := echo.New()
+
+	e.GET("/", func(c echo.Context) error {
+    	return c.String(http.StatusOK, "Welcome to arvigo-backend")
+	})
 
 	// Add middleware
 	e.Use(middleware.Logger())
