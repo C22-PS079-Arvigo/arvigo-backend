@@ -117,7 +117,7 @@ spec:
    name: arvigo-backend-ingress
    annotations:
     kubernetes.io/ingress.global-static-ip-name: arvigo-ip-static-backend-global
-    kubernetes.io/ingress.allow-http: "false"
+    kubernetes.io/ingress.allow-http: "true"
     kubernetes.io/ingress.class: "gce"
  spec:
    rules:
