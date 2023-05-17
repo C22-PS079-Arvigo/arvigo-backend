@@ -2,6 +2,7 @@ package main
 
 import (
 	"log"
+	"net/http"
 	"os"
 
 	"github.com/joho/godotenv"
@@ -41,6 +42,10 @@ func main() {
 	// Create a new Echo instance
 	e := echo.New()
 
+	e.GET("/", func(c echo.Context) error {
+    	return c.String(http.StatusOK, "Hello, World!")
+	})
+
 	// Add middleware
 	e.Use(middleware.Logger())
 	e.Use(middleware.Recover())
@@ -64,5 +69,4 @@ func main() {
 		log.Fatal(err)
 	}
 }
-
 
