@@ -14,7 +14,7 @@ import (
 )
 
 const (
-	version = "1.0.0"
+	version = "1.0.0" // release-arvigo-backend-1.0.0
 	appName = "arvigo-backend"
 )
 
@@ -69,4 +69,7 @@ func main() {
 		log.Fatal(err)
 	}
 }
+<<<<<<< HEAD
 
+=======
+>>>>>>> refs/remotes/origin/main

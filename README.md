@@ -78,6 +78,10 @@ Make sure to set these variables in the `.env` file before running the applicati
 ```
 
 ## Branch Naming Convention
+This project aims to demonstrate the application of Trunk-Based Development (TBD) methodology in software development. TBD promotes a streamlined and collaborative approach to version control and continuous integration, enabling teams to deliver high-quality software with shorter lead times.
+
+For more information about Trunk-Based Development, please visit [https://trunkbaseddevelopment.com/](https://trunkbaseddevelopment.com/).
+
 When naming branches, it is recommended to use the following prefixes:
 
 1. `feature/`: Use this prefix for adding new features.
@@ -85,9 +89,13 @@ When naming branches, it is recommended to use the following prefixes:
 3. `bugfix/`: Use this prefix for resolving non-critical issues or bugs.
 4. `refactor/`: Use this prefix when making changes to the folder structure or code without altering functionality.
 
+Additionally, when preparing a branch for release, please include the following release tag:
+
+- `release-arvigo-backend-*`: Use this tag for releases related to the API version specified in the main.go file.
+Ensure that the version in the release tag corresponds to the API version mentioned in the main.go file.
+
 ## License
 
 This project is licensed under the MIT License.
 
 
-    
