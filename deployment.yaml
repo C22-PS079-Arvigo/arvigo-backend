@@ -125,7 +125,10 @@ spec:
    - host: api.arvigo.site
      http:
        paths:
-       - path: /
-         backend:
-           serviceName: arvigo-backend-service
-           servicePort: 80
+        - path: /*
+          pathType: ImplementationSpecific
+          backend:
+            service:
+              name: arvigo-backend-service
+              port: 
+                number: 80
