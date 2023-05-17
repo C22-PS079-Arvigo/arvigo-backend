@@ -4,16 +4,18 @@ import "time"
 
 type (
 	Product struct {
-		ID           uint64    `gorm:"column:id;primaryKey;autoIncrement" json:"id"`
-		Name         string    `gorm:"column:name" json:"name"`
-		Descripion   string    `gorm:"column:description" json:"description"`
-		Images       string    `gorm:"column:images" json:"images"`
-		LinkExternal string    `gorm:"column:link_external" json:"link_external"`
-		CategoryID   uint64    `gorm:"column:category_id" json:"category_id"`
-		BrandID      uint64    `gorm:"column:brand_id" json:"brand_id"`
-		MerchantID   uint64    `gorm:"column:merchant_id" json:"merchant_id"`
-		CreatedAt    time.Time `gorm:"column:created_at" json:"created_at"`
-		UpdatedAt    time.Time `gorm:"column:updated_at" json:"updated_at"`
+		ID                   uint64    `gorm:"column:id;primaryKey;autoIncrement" json:"id"`
+		Name                 string    `gorm:"column:name" json:"name"`
+		Description          string    `gorm:"column:description" json:"description"`
+		Images               string    `gorm:"column:images" json:"images"`
+		LinkExternal         string    `gorm:"column:link_external" json:"link_external"`
+		CategoryID           uint64    `gorm:"column:category_id" json:"category_id"`
+		BrandID              uint64    `gorm:"column:brand_id" json:"brand_id"`
+		MerchantID           uint64    `gorm:"column:merchant_id" json:"merchant_id"`
+		IsVerified           bool      `gorm:"column:is_verified" json:"is_verified"`
+		IsSubscriptionActive bool      `gorm:"column:is_subscription_active" json:"is_subscription_active"`
+		CreatedAt            time.Time `gorm:"column:created_at" json:"created_at"`
+		UpdatedAt            time.Time `gorm:"column:updated_at" json:"updated_at"`
 	}
 
 	// DetailProductCategory struct {
@@ -47,16 +49,16 @@ type (
 		ID               uint64    `gorm:"column:id;primaryKey;autoIncrement" json:"id"`
 		Name             string    `gorm:"column:name" json:"name"`
 		LinkAR           string    `gorm:"column:link_ar" json:"link_ar"`
-		IsPrimaryVariant int       `gorm:"column:is_primary_variant" json:"is_primary_variant"`
-		ProductID        int       `gorm:"column:product_id" json:"product_id"`
+		IsPrimaryVariant bool      `gorm:"column:is_primary_variant" json:"is_primary_variant"`
+		ProductID        uint64    `gorm:"column:product_id" json:"product_id"`
 		CreatedAt        time.Time `gorm:"column:created_at" json:"created_at"`
 		UpdatedAt        time.Time `gorm:"column:updated_at" json:"updated_at"`
 	}
 
 	DetailProductTag struct {
 		ID        uint64    `gorm:"column:id;primaryKey;autoIncrement" json:"id"`
-		TagID     string    `gorm:"column:tag_id" json:"tag_id"`
-		ProductID int       `gorm:"column:product_id" json:"product_id"`
+		TagID     uint64    `gorm:"column:tag_id" json:"tag_id"`
+		ProductID uint64    `gorm:"column:product_id" json:"product_id"`
 		CreatedAt time.Time `gorm:"column:created_at" json:"created_at"`
 		UpdatedAt time.Time `gorm:"column:updated_at" json:"updated_at"`
 	}
@@ -65,10 +67,20 @@ type (
 		ID            uint64    `gorm:"column:id;primaryKey;autoIncrement" json:"id"`
 		MarketplaceID uint64    `gorm:"column:marketplace_id" json:"marketplace_id"`
 		ProductID     uint64    `gorm:"column:product_id" json:"product_id"`
+		AddressID     uint64    `gorm:"column:addresses_id" json:"addresses_id"`
 		Link          string    `gorm:"column:link" json:"link"`
 		Clicked       uint64    `gorm:"column:clicked" json:"clicked"`
 		CreatedAt     time.Time `gorm:"column:created_at" json:"created_at"`
 		UpdatedAt     time.Time `gorm:"column:updated_at" json:"updated_at"`
+	}
+
+	DetailLinkedProduct struct {
+		ID                uint64    `gorm:"column:id;primaryKey;autoIncrement" json:"id"`
+		InitialProductID  uint64    `gorm:"column:initial_product_id" json:"initial_product_id"`
+		MerchantProductID uint64    `gorm:"column:merchant_product_id" json:"merchant_product_id"`
+		MerchantID        uint64    `gorm:"column:merchant_id" json:"merchant_id"`
+		CreatedAt         time.Time `gorm:"column:created_at" json:"created_at"`
+		UpdatedAt         time.Time `gorm:"column:updated_at" json:"updated_at"`
 	}
 )
 
@@ -98,4 +110,8 @@ func (DetailProductTag) TableName() string {
 
 func (DetailProductMarketplace) TableName() string {
 	return "detail_product_marketplaces"
+}
+
+func (DetailLinkedProduct) TableName() string {
+	return "detail_linked_products"
 }

@@ -45,4 +45,27 @@ type (
 		SubDistrict string `json:"sub_district"`
 		PostalCode  uint64 `json:"postal_code"`
 	}
+
+	InitialProductResponse struct {
+		InitialProduct
+		Images   []string                `json:"images"`
+		Variants []InitialProductVariant `json:"variants"`
+	}
+
+	InitialProduct struct {
+		ID           uint64 `gorm:"column:id;primaryKey;autoIncrement" json:"id"`
+		Name         string `gorm:"column:name" json:"name"`
+		Description  string `gorm:"column:description" json:"description"`
+		LinkExternal string `gorm:"column:link_external" json:"link_external"`
+		CategoryName string `gorm:"column:category_name" json:"category_name"`
+		BrandName    string `gorm:"column:brand_name" json:"brand_name"`
+		Images       string `gorm:"column:images" json:"-"`
+	}
+
+	InitialProductVariant struct {
+		Name             string `gorm:"column:name" json:"name"`
+		LinkAR           string `gorm:"column:link_ar" json:"link_ar"`
+		IsPrimaryVariant bool   `gorm:"column:is_primary_variant" json:"is_primary_variant"`
+		ProductID        uint64 `gorm:"column:product_id" json:"-"`
+	}
 )

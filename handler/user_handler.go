@@ -22,7 +22,7 @@ func RegisterUserRoutes(e *echo.Echo) {
 func getUserbyIDHandler(c echo.Context) error {
 	userID := utils.StrToUint64(c.Param("id"), 0)
 	if userID == 0 {
-		return echo.NewHTTPError(http.StatusBadRequest, "Invalid user ID")
+		return utils.ResponseJSON(c, "Invalid user ID", nil, http.StatusBadRequest)
 	}
 
 	user, statusCode, err := repository.GetUserByID(userID)

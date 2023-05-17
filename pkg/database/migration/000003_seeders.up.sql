@@ -146,3 +146,10 @@ VALUES
     ('OPN', 'I use difficult words', DEFAULT, DEFAULT),
     ('OPN', 'I spend time reflecting on things', DEFAULT, DEFAULT),
     ('OPN', 'I am full of ideas', DEFAULT, DEFAULT);
+
+INSERT INTO marketplaces (name, image, created_at, updated_at)
+VALUES
+    ('Website', "", DEFAULT, DEFAULT),
+    ('Tokopedia', "", DEFAULT, DEFAULT),
+    ('Shopee', "", DEFAULT, DEFAULT),
+    ('Bukalapak', "", DEFAULT, DEFAULT);

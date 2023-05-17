@@ -1,5 +1,7 @@
 package datastruct
 
+import "mime/multipart"
+
 type (
 	LoginUserInput struct {
 		Email    string `json:"email" validate:"required,email"`
@@ -27,19 +29,24 @@ type (
 		PostalCodeID         uint64 `json:"postal_code_id" validate:"required,numeric"`
 	}
 
-	SearchCity struct {
-		ProvinceID string `query:"province_id" validate:"required,numeric"`
+	CreateInitialProductInput struct {
+		Name                  string                  `form:"name" validate:"required"`
+		Description           string                  `form:"description"`
+		Images                []*multipart.FileHeader `form:"images"`
+		LinkExternal          string                  `form:"link_external"`
+		CategoryID            uint64                  `form:"category_id" validate:"required"`
+		BrandID               uint64                  `form:"brand_id" validate:"required"`
+		MerchantID            uint64                  `form:"merchant_id"`
+		DetailProductTags     string                  `form:"detail_product_tags" validate:"required"`
+		DetailProductVariants string                  `form:"detail_product_variants" validate:"required"`
 	}
 
-	SearchDistrict struct {
-		CityID string `query:"city_id" validate:"required,numeric"`
-	}
-
-	SearchSubDistrict struct {
-		DistrictID string `query:"district_id" validate:"required,numeric"`
-	}
-
-	SearchPostalCode struct {
-		SubDistrictID string `query:"subdistrict_id" validate:"required,numeric"`
+	CreateMerchantProductInput struct {
+		ProductID                uint64                  `form:"product_id" validate:"required"`
+		Name                     string                  `form:"name" validate:"required"`
+		Description              string                  `form:"description"`
+		Images                   []*multipart.FileHeader `form:"images"`
+		MerchantID               uint64                  `form:"merchant_id"`
+		DetailProductMarketplace string                  `form:"detail_product_marketplaces" validate:"required"`
 	}
 )

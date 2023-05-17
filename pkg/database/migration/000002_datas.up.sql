@@ -113,11 +113,26 @@ CREATE TABLE products
     category_id int not null,
     brand_id int not null,
     merchant_id int default 0 not null, -- set 0 for product admin
+    is_verified tinyint(1) default 0 not null,
+    is_subscription_active tinyint(1) default 0 not null,
     created_at timestamp default CURRENT_TIMESTAMP null,
     updated_at timestamp default CURRENT_TIMESTAMP null on update CURRENT_TIMESTAMP
 );
 CREATE INDEX idx_products_1 ON products (merchant_id);
+CREATE INDEX idx_products_2 ON products (merchant_id, brand_id, category_id);
 
+-- auto-generated definition
+DROP TABLE IF EXISTS detail_linked_products;
+CREATE TABLE detail_linked_products
+(
+    id int unsigned auto_increment primary key,
+    initial_product_id int not null,
+    merchant_product_id int not null,
+    merchant_id int default 0 not null,
+    created_at timestamp default CURRENT_TIMESTAMP null,
+    updated_at timestamp default CURRENT_TIMESTAMP null on update CURRENT_TIMESTAMP
+);
+CREATE INDEX idx_detail_linked_products_1 ON detail_linked_products (initial_product_id, merchant_product_id, merchant_id);
 
 -- -- auto-generated definition
 -- DROP TABLE IF EXISTS detail_product_categories;
@@ -190,7 +205,7 @@ CREATE INDEX idx_tags_1 ON tags (category_id);
 
 
 -- auto-generated definition
-DROP TABLE IF EXISTS face_shapes;
+DROP TABLE IF EXISTS face_shapes; --TODO: add models
 CREATE TABLE face_shapes
 (
     id int unsigned auto_increment primary key,
@@ -200,7 +215,7 @@ CREATE TABLE face_shapes
 );
 
 -- auto-generated definition
-DROP TABLE IF EXISTS detail_face_shape_tags;
+DROP TABLE IF EXISTS detail_face_shape_tags; --TODO: add models
 CREATE TABLE detail_face_shape_tags
 (
     id int unsigned auto_increment primary key,
@@ -215,7 +230,7 @@ DROP TABLE IF EXISTS detail_product_tags;
 CREATE TABLE detail_product_tags
 (
     id int unsigned auto_increment primary key,
-    tag_id varchar(200) not null,
+    tag_id int not null,
     product_id int not null,
     created_at timestamp default CURRENT_TIMESTAMP null,
     updated_at timestamp default CURRENT_TIMESTAMP null on update CURRENT_TIMESTAMP
@@ -228,15 +243,16 @@ DROP TABLE IF EXISTS detail_product_marketplaces;
 CREATE TABLE detail_product_marketplaces
 (
     id int unsigned auto_increment primary key,
-    marketplace_id int not null,
+    marketplace_id  int default 0 not null,
     product_id int not null,
-    link varchar(100) not null,
+    addresses_id int null,
+    link varchar(100) null,
     clicked int default 0 not null,
     created_at timestamp default CURRENT_TIMESTAMP null,
     updated_at timestamp default CURRENT_TIMESTAMP null on update CURRENT_TIMESTAMP
 );
-CREATE INDEX idx_detail_product_marketplaces_1 ON detail_product_marketplaces (product_id);
-CREATE INDEX idx_detail_product_marketplaces_2 ON detail_product_marketplaces (marketplace_id);
+CREATE INDEX idx_detail_product_marketplaces_1 ON detail_product_marketplaces (product_id, marketplace_id);
+CREATE INDEX idx_detail_product_marketplaces_2 ON detail_product_marketplaces (product_id, addresses_id);
 
 
 -- auto-generated definition

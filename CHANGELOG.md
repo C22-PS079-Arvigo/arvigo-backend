@@ -30,3 +30,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 #### Added
 - Graceful shutdown
 - Add health check
+- Prevent sql injection
+- Create product initial
+- Create product merchant
+- Get product initial
+- Upload img to gcs helper (reusable)
