@@ -19,9 +19,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add gcs bucket integration
 - Add utils: random, base64, converter, response, validator, string, array
 
-## [Unreleased]
 ### [1.0.1] - yusufw2429@gmail.com
 #### Added
 - Update login response
 - Update engine sql
 - Add more validation
+
+## [Unreleased]
+### [1.0.2] - yusufw2429@gmail.com
+#### Added
+- Graceful shutdown

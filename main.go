@@ -1,9 +1,13 @@
 package main
 
 import (
+	"context"
 	"log"
 	"net/http"
 	"os"
+	"os/signal"
+	"syscall"
+	"time"
 
 	"github.com/joho/godotenv"
 	"github.com/labstack/echo/v4"
@@ -37,13 +41,12 @@ func main() {
 		}
 		sqlDB.Close()
 	}()
-	// database.Migrate(db)
 
 	// Create a new Echo instance
 	e := echo.New()
 
 	e.GET("/", func(c echo.Context) error {
-    	return c.String(http.StatusOK, "Welcome to arvigo-backend")
+		return c.String(http.StatusOK, "Welcome to arvigo-backend")
 	})
 
 	// Add middleware
@@ -57,15 +60,36 @@ func main() {
 	handler.RegisterLocationRoutes(e)
 	handler.RegisterFaceShapeRoutes(e)
 
-	// Start the server
-	port := os.Getenv("PORT")
-	if port == "" {
-		port = "8080"
-	}
+	// Start the server in a separate goroutine
+	go func() {
+		port := os.Getenv("PORT")
+		if port == "" {
+			port = "8080"
+		}
 
-	log.Printf("Server listening on port %s. \nThis %s service's is using version %s", port, appName, version)
-	err = e.Start(":" + port)
+		log.Printf("Server listening on port %s. \nThis %s service's is using version %s", port, appName, version)
+		err = e.Start(":" + port)
+		if err != nil {
+			log.Fatal(err)
+		}
+	}()
+
+	// Wait for interrupt signal to gracefully shutdown the server
+	quit := make(chan os.Signal, 1)
+	signal.Notify(quit, os.Interrupt, syscall.SIGTERM)
+	<-quit
+
+	log.Println("Shutting down server...")
+
+	// Set a timeout for the shutdown process
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+
+	// Gracefully shutdown the server
+	err = e.Shutdown(ctx)
 	if err != nil {
 		log.Fatal(err)
 	}
+
+	log.Println("Server gracefully stopped")
 }
