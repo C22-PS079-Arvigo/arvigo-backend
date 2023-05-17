@@ -69,7 +69,3 @@ func main() {
 		log.Fatal(err)
 	}
 }
-<<<<<<< HEAD
-
-=======
->>>>>>> refs/remotes/origin/main

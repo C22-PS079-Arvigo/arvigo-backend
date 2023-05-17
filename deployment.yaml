@@ -84,23 +84,23 @@ spec:
 
 ---
 
- apiVersion: networking.k8s.io/v1
- kind: Ingress
- metadata:
-   name: arvigo-backend-ingress
-   annotations:
-    kubernetes.io/ingress.global-static-ip-name: arvigo-ip-static-backend-global
-    kubernetes.io/ingress.allow-http: "true"
-    kubernetes.io/ingress.class: "gce"
- spec:
-   rules:
-   - host: api.arvigo.site
-     http:
-       paths:
-        - path: /*
-          pathType: ImplementationSpecific
-          backend:
-            service:
-              name: arvigo-backend-service
-              port: 
-                number: 80
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: arvigo-backend-ingress
+  annotations:
+  kubernetes.io/ingress.global-static-ip-name: arvigo-ip-static-backend-global
+  kubernetes.io/ingress.allow-http: "true"
+  kubernetes.io/ingress.class: "gce"
+spec:
+  rules:
+  - host: api.arvigo.site
+    http:
+      paths:
+      - path: /*
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: arvigo-backend-service
+            port: 
+              number: 80
