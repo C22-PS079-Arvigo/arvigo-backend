@@ -6,7 +6,6 @@ import (
 	"strings"
 )
 
-// TODO : change to Generic
 func StrToInt(text string, defaultReturn int) int {
 	number := defaultReturn
 	if text != "" {

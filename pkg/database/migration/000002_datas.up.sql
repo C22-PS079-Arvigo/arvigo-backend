@@ -205,7 +205,7 @@ CREATE INDEX idx_tags_1 ON tags (category_id);
 
 
 -- auto-generated definition
-DROP TABLE IF EXISTS face_shapes; --TODO: add models
+DROP TABLE IF EXISTS face_shapes;
 CREATE TABLE face_shapes
 (
     id int unsigned auto_increment primary key,
@@ -215,7 +215,7 @@ CREATE TABLE face_shapes
 );
 
 -- auto-generated definition
-DROP TABLE IF EXISTS detail_face_shape_tags; --TODO: add models
+DROP TABLE IF EXISTS detail_face_shape_tags;
 CREATE TABLE detail_face_shape_tags
 (
     id int unsigned auto_increment primary key,
