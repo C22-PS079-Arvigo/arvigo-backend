@@ -12,9 +12,7 @@ spec:
   - protocol: TCP
     port: 80
     targetPort: 8080
-
 ---
-
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -38,9 +36,7 @@ spec:
         ports:
         - containerPort: 8080
           protocol: TCP
-
 ---
-
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
@@ -62,9 +58,7 @@ spec:
             name: arvigo-backend-service
             port: 
               number: 80
-
 ---
-
 apiVersion: networking.gke.io/v1
 kind: ManagedCertificate
 metadata:
