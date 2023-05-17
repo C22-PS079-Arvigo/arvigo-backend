@@ -138,13 +138,8 @@ kind: Ingress
 metadata:
   name: arvigo-backend-ingress
 spec:
-  rules:
-  - http:
-      paths:
-      - path: /
-        pathType: Prefix
-        backend:
-          service:
-            name: arvigo-backend-service
-            port:
-              number: 80
+  defaultBackend:
+    service:
+      name: arvigo-backend-service
+      port:
+        number: 80
