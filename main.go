@@ -55,7 +55,7 @@ func main() {
 	// Start the server
 	port := os.Getenv("PORT")
 	if port == "" {
-		port = "8000"
+		port = "8080"
 	}
 
 	log.Printf("Server listening on port %s. \nThis %s service's is using version %s", port, appName, version)
