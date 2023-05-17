@@ -1,28 +1,98 @@
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name: arvigo-backend-service
+#   labels:
+#     app: arvigo-backend
+#   annotations:
+#     cloud.google.com/neg: '{"ingress": true}'
+# spec:
+#   selector:
+#     app: arvigo-backend
+#   ports:
+#   - port: 80
+#     targetPort: 8080
+#     protocol: TCP
+#     name: http
+#   type: NodePort
+# ---
+# apiVersion: apps/v1
+# kind: Deployment
+# metadata:
+#   name: arvigo-backend
+#   labels:
+#     app: arvigo-backend
+# spec:
+#   selector:
+#     matchLabels:
+#       app: arvigo-backend
+#   template:
+#     metadata:
+#       labels:
+#         app: arvigo-backend
+#     spec:
+#       containers:
+#       - name: arvigo-backend-container
+#         image: asia.gcr.io/$PROJECT_ID/production/arvigo-backend:$SHORT_SHA
+#         ports:
+#         - containerPort: 8080
+# ---
+# apiVersion: networking.k8s.io/v1
+# kind: Ingress
+# metadata:
+#   name: arvigo-backend-ingress
+#   annotations:
+#     kubernetes.io/ingress.global-static-ip-name: arvigo-ip-static-backend-global
+#     kubernetes.io/ingress.allow-http: "false"
+#     networking.gke.io/managed-certificates: arvigo-backend-cert
+#     kubernetes.io/ingress.class: "gce"
+# spec:
+#   rules:
+#     - host: api.arvigo.site
+#       http:
+#         paths:
+#         - path: /*
+#           pathType: ImplementationSpecific
+#           backend:
+#             service:
+#               name: arvigo-backend-service
+#               port: 
+#                 number: 80
+# ---
+# apiVersion: networking.gke.io/v1
+# kind: ManagedCertificate
+# metadata:
+#   name: arvigo-backend-cert
+# spec:
+#   domains:
+#     - api.arvigo.site
+#     - www.api.arvigo.site
+
 apiVersion: v1
 kind: Service
 metadata:
   name: arvigo-backend-service
   labels:
     app: arvigo-backend
-  annotations:
-    cloud.google.com/neg: '{"ingress": true}'
 spec:
+  type: ClusterIP
+  ports:
+    - port: 80
+      protocol: TCP
+      targetPort: 8080
   selector:
     app: arvigo-backend
-  ports:
-  - port: 80
-    targetPort: 8080
-    protocol: TCP
-    name: http
-  type: NodePort
+
 ---
+
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: arvigo-backend
+  name: arvigo-backend-deployment
   labels:
-    app: arvigo-backend
+   app: arvigo-backend
 spec:
+  replicas: 3
   selector:
     matchLabels:
       app: arvigo-backend
@@ -34,36 +104,28 @@ spec:
       containers:
       - name: arvigo-backend-container
         image: asia.gcr.io/$PROJECT_ID/production/arvigo-backend:$SHORT_SHA
+        imagePullPolicy: Always
         ports:
         - containerPort: 8080
+          protocol: TCP
+
 ---
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  name: arvigo-backend-ingress
-  annotations:
+
+ apiVersion: networking.k8s.io/v1beta1 
+ kind: Ingress
+ metadata:
+   name: arvigo-backend-ingress
+   annotations:
     kubernetes.io/ingress.global-static-ip-name: arvigo-ip-static-backend-global
     kubernetes.io/ingress.allow-http: "false"
     networking.gke.io/managed-certificates: arvigo-backend-cert
     kubernetes.io/ingress.class: "gce"
-spec:
-  rules:
-    - host: api.arvigo.site
-      http:
-        paths:
-        - path: /*
-          pathType: ImplementationSpecific
-          backend:
-            service:
-              name: arvigo-backend-service
-              port: 
-                number: 80
----
-apiVersion: networking.gke.io/v1
-kind: ManagedCertificate
-metadata:
-  name: arvigo-backend-cert
-spec:
-  domains:
-    - api.arvigo.site
-    - www.api.arvigo.site
+ spec:
+   rules:
+   - host: api.arvigo.site
+     http:
+       paths:
+       - path: /
+         backend:
+           serviceName: arvigo-backend-service
+           servicePort: 80
