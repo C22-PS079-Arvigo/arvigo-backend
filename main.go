@@ -59,6 +59,7 @@ func main() {
 	handler.RegisterUserRoutes(e)
 	handler.RegisterLocationRoutes(e)
 	handler.RegisterFaceShapeRoutes(e)
+	handler.RegisterHealthCheckRoutes(e)
 
 	// Start the server in a separate goroutine
 	go func() {
