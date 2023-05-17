@@ -30,7 +30,7 @@ func loginHandler(c echo.Context) error {
 
 	token, statusCode, err := repository.Login(loginData)
 	if err != nil {
-		return utils.ResponseJSON(c, err.Error(), token, statusCode)
+		return utils.ResponseJSON(c, err.Error(), nil, statusCode)
 	}
 
 	return utils.ResponseJSON(c, "Login success", token, http.StatusOK)
