@@ -71,7 +71,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: arvigo-backend-service
+  name: arvigo-backend
   labels:
     app: arvigo-backend
 spec:
@@ -88,7 +88,7 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: arvigo-backend-deployment
+  name: arvigo-backend
   labels:
    app: arvigo-backend
 spec:
@@ -102,7 +102,7 @@ spec:
         app: arvigo-backend
     spec:
       containers:
-      - name: arvigo-backend-container
+      - name: arvigo-backend
         image: asia.gcr.io/$PROJECT_ID/production/arvigo-backend:$SHORT_SHA
         imagePullPolicy: Always
         ports:
@@ -136,10 +136,20 @@ spec:
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: arvigo-backend-ingress
+  name: arvigo-backend
 spec:
   defaultBackend:
     service:
-      name: arvigo-backend-service
+      name: arvigo-backend
       port:
         number: 80
+  rules:
+  - http:
+      paths:
+      - path: /*
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: arvigo-backend
+            port:
+              number: 80
