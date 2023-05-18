@@ -10,7 +10,7 @@ spec:
   type: ClusterIP
   ports:
   - protocol: TCP
-    port: 443
+    port: 80
     targetPort: 8080
 ---
 apiVersion: apps/v1
@@ -48,7 +48,7 @@ metadata:
     kubernetes.io/ingress.class: "gce"
 spec:
   rules:
-  - host: api.arvigo.site
+  - host: https://api.arvigo.site
     http:
       paths:
       - path: /*
@@ -57,7 +57,7 @@ spec:
           service:
             name: arvigo-backend-service
             port: 
-              number: 443
+              number: 80
 ---
 apiVersion: networking.gke.io/v1
 kind: ManagedCertificate
