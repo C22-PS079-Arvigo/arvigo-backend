@@ -64,9 +64,9 @@ func GetUsers() (res []datastruct.UserDetail, statusCode int, err error) {
 		}).
 		Where("users.role_id = ?", constant.MobileApp).
 		Joins("JOIN roles ON roles.id = users.role_id").
-		First(&res).
+		Find(&res).
 		Error; err != nil {
-		return res, http.StatusNotFound, errors.New("user not found")
+		return res, http.StatusNotFound, err
 	}
 
 	return
@@ -83,9 +83,9 @@ func GetPartners() (res []datastruct.User, statusCode int, err error) {
 		}).
 		Where("users.role_id = ?", constant.PartnerApp).
 		Joins("JOIN roles ON roles.id = users.role_id").
-		First(&res).
+		Find(&res).
 		Error; err != nil {
-		return res, http.StatusNotFound, errors.New("user not found")
+		return res, http.StatusNotFound, err
 	}
 	return
 }

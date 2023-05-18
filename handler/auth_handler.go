@@ -43,6 +43,11 @@ func registerUserHandler(c echo.Context) error {
 		return err
 	}
 
+	validationErrors := utils.ValidateStruct(userData)
+	if len(validationErrors) > 0 {
+		return utils.ResponseJSON(c, "The data is not valid", validationErrors, http.StatusBadRequest)
+	}
+
 	user, statusCode, err := repository.RegisterUser(userData)
 	if err != nil {
 		return utils.ResponseJSON(c, err.Error(), nil, statusCode)
@@ -56,6 +61,11 @@ func registerPartnerHandler(c echo.Context) error {
 	err := c.Bind(&userData)
 	if err != nil {
 		return err
+	}
+
+	validationErrors := utils.ValidateStruct(userData)
+	if len(validationErrors) > 0 {
+		return utils.ResponseJSON(c, "The data is not valid", validationErrors, http.StatusBadRequest)
 	}
 
 	user, statusCode, err := repository.RegisterPartner(userData)

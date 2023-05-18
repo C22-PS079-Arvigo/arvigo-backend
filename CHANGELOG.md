@@ -40,7 +40,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add verify product from admin
 - Update cred.json
 
+### [1.0.3] - yusufw2429@gmail.com
+#### Fixed
+- Fix get partners and users
+- Add validation for register user and partner
+
 
 ## [Unreleased]
-### [1.0.3] - yusufw2429@gmail.com
-#### Added
+### [1.0.4] - yusufw2429@gmail.com
