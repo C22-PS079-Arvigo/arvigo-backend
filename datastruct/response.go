@@ -68,4 +68,13 @@ type (
 		IsPrimaryVariant bool   `gorm:"column:is_primary_variant" json:"is_primary_variant"`
 		ProductID        uint64 `gorm:"column:product_id" json:"-"`
 	}
+
+	BrandResponse struct {
+		Name  string `gorm:"column:name" json:"name"`
+		Image string `gorm:"column:image" json:"image"`
+	}
+
+	CategoryResponse struct {
+		Name string `gorm:"column:name" json:"name"`
+	}
 )

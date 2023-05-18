@@ -72,6 +72,7 @@ CREATE TABLE brands
     id int unsigned auto_increment primary key,
     name varchar(50) not null,
     category_id int not null,
+    image varchar(200) null,
     created_at timestamp default CURRENT_TIMESTAMP null,
     updated_at timestamp default CURRENT_TIMESTAMP null on update CURRENT_TIMESTAMP
 );
@@ -113,8 +114,9 @@ CREATE TABLE products
     category_id int not null,
     brand_id int not null,
     merchant_id int default 0 not null, -- set 0 for product admin
-    is_verified tinyint(1) default 0 not null,
+    status varchar(20) default "WAITING" not null,
     is_subscription_active tinyint(1) default 0 not null,
+    rejected_note varchar(200) null,
     created_at timestamp default CURRENT_TIMESTAMP null,
     updated_at timestamp default CURRENT_TIMESTAMP null on update CURRENT_TIMESTAMP
 );

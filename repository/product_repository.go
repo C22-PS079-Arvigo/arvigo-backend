@@ -327,3 +327,20 @@ func GetInitialProductByCategoryID(categoryID uint64) (res []datastruct.InitialP
 
 	return
 }
+
+func VerifyMerchantProduct(data datastruct.VerifyProductInput) (statusCode int, err error) {
+	db := Database()
+	statusCode = http.StatusOK
+
+	if err = db.Model(&datastruct.Product{}).
+		Where("id = ?", data.ProductID).
+		Updates(map[string]interface{}{
+			"status":        data.Status,
+			"rejected_note": data.RejectedNote,
+			"updated_at":    time.Now(),
+		}).Error; err != nil {
+		return http.StatusInternalServerError, err
+	}
+
+	return
+}

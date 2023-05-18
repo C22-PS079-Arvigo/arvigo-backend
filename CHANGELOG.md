@@ -35,3 +35,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Create product merchant
 - Get product initial
 - Upload img to gcs helper (reusable)
+- Add categories module
+- Add brands module
+- Add questionnaires module
+- Add verify product from admin
+- Update cred.json

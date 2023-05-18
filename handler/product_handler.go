@@ -21,6 +21,7 @@ func RegisterProductRoutes(e *echo.Echo) {
 
 	merchantProductGroup := productGroup.Group("/merchants")
 	merchantProductGroup.POST("", createMerchantProductHandler)
+	merchantProductGroup.PUT("/verify", verifyMerchantProduct)
 }
 
 func createInitialProductHandler(c echo.Context) error {
@@ -96,4 +97,23 @@ func getInitalProductByCategoryID(c echo.Context) error {
 	}
 
 	return utils.ResponseJSON(c, "Success", data, statusCode)
+}
+
+func verifyMerchantProduct(c echo.Context) error {
+	var data datastruct.VerifyProductInput
+	if err := c.Bind(&data); err != nil {
+		return utils.ResponseJSON(c, err.Error(), nil, http.StatusBadRequest)
+	}
+
+	validationErrors := utils.ValidateStruct(data)
+	if len(validationErrors) > 0 {
+		return utils.ResponseJSON(c, "The data is not valid", validationErrors, http.StatusBadRequest)
+	}
+
+	statusCode, err := repository.VerifyMerchantProduct(data)
+	if err != nil {
+		return utils.ResponseJSON(c, "Failed update product", err.Error(), statusCode)
+	}
+
+	return utils.ResponseJSON(c, "Product updated", nil, statusCode)
 }

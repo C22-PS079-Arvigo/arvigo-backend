@@ -12,8 +12,9 @@ type (
 		CategoryID           uint64    `gorm:"column:category_id" json:"category_id"`
 		BrandID              uint64    `gorm:"column:brand_id" json:"brand_id"`
 		MerchantID           uint64    `gorm:"column:merchant_id" json:"merchant_id"`
-		IsVerified           bool      `gorm:"column:is_verified" json:"is_verified"`
+		Status               string    `gorm:"column:status" json:"status"`
 		IsSubscriptionActive bool      `gorm:"column:is_subscription_active" json:"is_subscription_active"`
+		RejectedNote         string    `gorm:"column:rejected_note" json:"rejected_note"`
 		CreatedAt            time.Time `gorm:"column:created_at" json:"created_at"`
 		UpdatedAt            time.Time `gorm:"column:updated_at" json:"updated_at"`
 	}

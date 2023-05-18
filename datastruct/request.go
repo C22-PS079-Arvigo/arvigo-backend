@@ -49,4 +49,16 @@ type (
 		MerchantID               uint64                  `form:"merchant_id"`
 		DetailProductMarketplace string                  `form:"detail_product_marketplaces" validate:"required"`
 	}
+
+	VerifyProductInput struct {
+		ProductID    uint64 `json:"product_id" validate:"required"`
+		Status       string `json:"status" validate:"required"`
+		RejectedNote string `json:"rejected_note"`
+	}
+
+	BrandInput struct {
+		Name       string                `form:"column:name" json:"name"`
+		Image      *multipart.FileHeader `form:"column:image" json:"image"`
+		CategoryID uint64                `form:"column:category_id" json:"category_id"`
+	}
 )
