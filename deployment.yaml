@@ -10,7 +10,7 @@ spec:
   type: ClusterIP
   ports:
   - protocol: TCP
-    port: 80
+    port: 443
     targetPort: 8080
 ---
 apiVersion: apps/v1
@@ -57,7 +57,7 @@ spec:
           service:
             name: arvigo-backend-service
             port: 
-              number: 80
+              number: 443
 ---
 apiVersion: networking.gke.io/v1
 kind: ManagedCertificate
