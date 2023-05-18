@@ -264,6 +264,7 @@ CREATE TABLE wishlists
     id int unsigned auto_increment primary key,
     user_id int not null,
     product_id int not null,
+    is_merchant tinyint(1) not null,
     created_at timestamp default CURRENT_TIMESTAMP null,
     updated_at timestamp default CURRENT_TIMESTAMP null on update CURRENT_TIMESTAMP
 );
