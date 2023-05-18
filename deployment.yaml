@@ -48,7 +48,7 @@ metadata:
     kubernetes.io/ingress.class: "gce"
 spec:
   rules:
-  - host: https://api.arvigo.site
+  - host: api.arvigo.site
     http:
       paths:
       - path: /*
