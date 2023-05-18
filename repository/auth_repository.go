@@ -26,7 +26,7 @@ func Login(loginData datastruct.LoginUserInput) (tokenResponse datastruct.LoginR
 	var user datastruct.User
 	if err = db.Where("email = ?", loginData.Email).
 		Where("role_id = ?", constant.ConvertRoleID[loginData.Role]).
-		First(&user).Debug().Error; err != nil {
+		First(&user).Error; err != nil {
 		return tokenResponse, http.StatusNotFound, errors.New("user not found")
 	}
 
