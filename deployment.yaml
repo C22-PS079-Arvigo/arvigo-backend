@@ -38,8 +38,21 @@ spec:
           protocol: TCP
         resources:
           requests:
-            cpu: "50m"
+            cpu: "250m"
             memory: "500Mi"
+---
+apiVersion: autoscaling/v1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: arvigo-backend-autoscaler
+spec:
+  maxReplicas: 25
+  minReplicas: 1
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: arvigo-backend-workload
+  targetCPUUtilizationPercentage: 100
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
