@@ -48,6 +48,7 @@ type (
 		Images                   []*multipart.FileHeader `form:"images"`
 		MerchantID               uint64                  `form:"merchant_id"`
 		DetailProductMarketplace string                  `form:"detail_product_marketplaces" validate:"required"`
+		Price                    float64                 `form:"price" validate:"required"`
 	}
 
 	VerifyProductInput struct {
@@ -60,5 +61,10 @@ type (
 		Name       string                `form:"column:name" json:"name"`
 		Image      *multipart.FileHeader `form:"column:image" json:"image"`
 		CategoryID uint64                `form:"column:category_id" json:"category_id"`
+	}
+
+	AddWhislistProductInput struct {
+		ProductID                  *uint64 `json:"product_id"`
+		DetailProductMarketplaceID *uint64 `json:"detail_product_marketplace_id"`
 	}
 )

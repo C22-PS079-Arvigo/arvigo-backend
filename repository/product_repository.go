@@ -161,6 +161,7 @@ func CreateMerchantProduct(data datastruct.CreateMerchantProductInput) (statusCo
 		CategoryID:   initialProduct.CategoryID,
 		BrandID:      initialProduct.BrandID,
 		MerchantID:   data.MerchantID,
+		Price:        data.Price,
 		CreatedAt:    currentTime,
 		UpdatedAt:    currentTime,
 	}

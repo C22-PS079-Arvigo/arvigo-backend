@@ -44,3 +44,9 @@ type UserSubscription struct {
 func (UserSubscription) TableName() string {
 	return "detail_user_subscriptions"
 }
+
+type UserAuth struct {
+	ID       uint64 `json:"id"`
+	FullName string `json:"full_name"`
+	RoleID   uint64 `json:"role_id"`
+}

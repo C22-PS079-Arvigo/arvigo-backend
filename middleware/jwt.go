@@ -1,12 +1,15 @@
 package middleware
 
 import (
+	"fmt"
 	"net/http"
 	"strings"
 
 	"github.com/dgrijalva/jwt-go"
 	"github.com/labstack/echo/v4"
 	"github.com/spf13/viper"
+	"github.com/yusufwib/arvigo-backend/datastruct"
+	"github.com/yusufwib/arvigo-backend/utils"
 )
 
 func AuthMiddleware(next echo.HandlerFunc) echo.HandlerFunc {
@@ -37,7 +40,20 @@ func AuthMiddleware(next echo.HandlerFunc) echo.HandlerFunc {
 
 		// Check if token is valid
 		if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
-			c.Set("userID", claims["userID"])
+			userID := fmt.Sprintf("%v", claims["id"])
+			roleID := fmt.Sprintf("%v", claims["role_id"])
+			fullName := fmt.Sprintf("%v", claims["full_name"])
+
+			// Set data to struct
+			UserAuthData := datastruct.UserAuth{
+				ID:       utils.StrToUint64(userID, 0),
+				FullName: fullName,
+				RoleID:   utils.StrToUint64(roleID, 0),
+			}
+
+			// Set to Context
+			c.Set("userAuth", &UserAuthData)
+
 			return next(c)
 		} else {
 			return echo.NewHTTPError(http.StatusUnauthorized, "Invalid token")

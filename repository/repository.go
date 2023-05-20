@@ -32,7 +32,7 @@ func GenerateToken(user datastruct.User) (tokenString string, err error) {
 	claims := &Claims{
 		ID:       user.ID,
 		FullName: user.FullName,
-		// Role:      user.Role,
+		RoleID:   user.RoleID,
 		StandardClaims: jwt.StandardClaims{
 			ExpiresAt: expirationTime.Unix(),
 		},

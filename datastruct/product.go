@@ -15,6 +15,7 @@ type (
 		Status               string    `gorm:"column:status" json:"status"`
 		IsSubscriptionActive bool      `gorm:"column:is_subscription_active" json:"is_subscription_active"`
 		RejectedNote         string    `gorm:"column:rejected_note" json:"rejected_note"`
+		Price                float64   `gorm:"column:price" json:"price"`
 		CreatedAt            time.Time `gorm:"column:created_at" json:"created_at"`
 		UpdatedAt            time.Time `gorm:"column:updated_at" json:"updated_at"`
 	}

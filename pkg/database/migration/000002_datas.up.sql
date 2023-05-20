@@ -116,6 +116,7 @@ CREATE TABLE products
     merchant_id int default 0 not null, -- set 0 for product admin
     status varchar(20) default "WAITING" not null,
     is_subscription_active tinyint(1) default 0 not null,
+    price double default null null,
     rejected_note varchar(200) null,
     created_at timestamp default CURRENT_TIMESTAMP null,
     updated_at timestamp default CURRENT_TIMESTAMP null on update CURRENT_TIMESTAMP
@@ -263,8 +264,8 @@ CREATE TABLE wishlists
 (
     id int unsigned auto_increment primary key,
     user_id int not null,
-    product_id int not null,
-    is_merchant tinyint(1) not null,
+    product_id int default null null,
+    detail_product_marketplace_id int default null null,
     created_at timestamp default CURRENT_TIMESTAMP null,
     updated_at timestamp default CURRENT_TIMESTAMP null on update CURRENT_TIMESTAMP
 );

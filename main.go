@@ -12,12 +12,12 @@ import (
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 
-	"github.com/yusufwib/arvigo-backend/handler"
 	"github.com/yusufwib/arvigo-backend/pkg/database"
+	"github.com/yusufwib/arvigo-backend/route"
 )
 
 const (
-	version = "1.0.3" // release-arvigo-backend-1.0.3
+	version = "1.0.4" // release-arvigo-backend-1.0.4
 	appName = "arvigo-backend"
 )
 
@@ -50,15 +50,7 @@ func main() {
 	e.Use(middleware.CORS())
 
 	// Register routes
-	handler.RegisterAuthRoutes(e)
-	handler.RegisterUserRoutes(e)
-	handler.RegisterLocationRoutes(e)
-	handler.RegisterFaceShapeRoutes(e)
-	handler.RegisterHealthCheckRoutes(e)
-	handler.RegisterProductRoutes(e)
-	handler.RegisterCategoryRoutes(e)
-	handler.RegisterBrandRoutes(e)
-	handler.RegisterQuestionnaireRoutes(e)
+	route.RegisterAllRoutes(e)
 
 	// Start the server in a separate goroutine
 	go func() {
