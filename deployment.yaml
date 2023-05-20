@@ -36,6 +36,43 @@ spec:
         ports:
         - containerPort: 8080
           protocol: TCP
+        resources:
+          requests:
+            cpu: "250m"
+            memory: "500Mi"
+        livenessProbe:
+          failureThreshold: 10
+          httpGet:
+            path: /health_check/ping
+            port: 8080
+            scheme: HTTP
+          initialDelaySeconds: 150
+          periodSeconds: 30
+          successThreshold: 1
+          timeoutSeconds: 30
+        readinessProbe:
+          failureThreshold: 10
+          httpGet:
+            path: /health_check/ping
+            port: 8080
+            scheme: HTTP
+          initialDelaySeconds: 150
+          periodSeconds: 30
+          successThreshold: 1
+          timeoutSeconds: 30
+---
+apiVersion: autoscaling/v1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: arvigo-backend-autoscaler
+spec:
+  maxReplicas: 25
+  minReplicas: 1
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: arvigo-backend-workload
+  targetCPUUtilizationPercentage: 100
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
