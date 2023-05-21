@@ -345,3 +345,20 @@ func VerifyMerchantProduct(data datastruct.VerifyProductInput) (statusCode int, 
 
 	return
 }
+
+func UpdateMerchantProduct(data datastruct.UpdateProductInput) (statusCode int, err error) {
+	db := Database()
+	statusCode = http.StatusOK
+
+	if err = db.Model(&datastruct.Product{}).
+		Where("id = ?", data.ProductID).
+		Updates(map[string]interface{}{
+			"price":       data.Price,
+			"description": data.Description,
+			"updated_at":  time.Now(),
+		}).Error; err != nil {
+		return http.StatusInternalServerError, err
+	}
+
+	return
+}

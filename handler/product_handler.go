@@ -21,7 +21,8 @@ func RegisterProductRoutes(e *echo.Echo) {
 
 	merchantProductGroup := productGroup.Group("/merchants")
 	merchantProductGroup.POST("", createMerchantProductHandler)
-	merchantProductGroup.PUT("/verify", verifyMerchantProduct)
+	merchantProductGroup.PUT("", verifyMerchantProduct)
+	merchantProductGroup.PUT("/verify", updateMerchantProduct)
 }
 
 func createInitialProductHandler(c echo.Context) error {
@@ -111,6 +112,25 @@ func verifyMerchantProduct(c echo.Context) error {
 	}
 
 	statusCode, err := repository.VerifyMerchantProduct(data)
+	if err != nil {
+		return utils.ResponseJSON(c, "Failed update product", err.Error(), statusCode)
+	}
+
+	return utils.ResponseJSON(c, "Product updated", nil, statusCode)
+}
+
+func updateMerchantProduct(c echo.Context) error {
+	var data datastruct.UpdateProductInput
+	if err := c.Bind(&data); err != nil {
+		return utils.ResponseJSON(c, err.Error(), nil, http.StatusBadRequest)
+	}
+
+	validationErrors := utils.ValidateStruct(data)
+	if len(validationErrors) > 0 {
+		return utils.ResponseJSON(c, "The data is not valid", validationErrors, http.StatusBadRequest)
+	}
+
+	statusCode, err := repository.UpdateMerchantProduct(data)
 	if err != nil {
 		return utils.ResponseJSON(c, "Failed update product", err.Error(), statusCode)
 	}

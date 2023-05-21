@@ -57,6 +57,12 @@ type (
 		RejectedNote string `json:"rejected_note"`
 	}
 
+	UpdateProductInput struct {
+		ProductID   uint64  `json:"product_id" validate:"required"`
+		Price       float64 `json:"price" validate:"required"`
+		Description string  `json:"description" validate:"required"`
+	}
+
 	BrandInput struct {
 		Name       string                `form:"column:name" json:"name"`
 		Image      *multipart.FileHeader `form:"column:image" json:"image"`
