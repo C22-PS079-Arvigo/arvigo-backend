@@ -247,6 +247,7 @@ CREATE TABLE detail_product_marketplaces
 (
     id int unsigned auto_increment primary key,
     marketplace_id  int default 0 not null,
+    parent_product_id int not null,
     product_id int not null,
     addresses_id int null,
     link varchar(100) null,

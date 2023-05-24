@@ -228,13 +228,14 @@ func CreateMerchantProduct(data datastruct.CreateMerchantProductInput) (statusCo
 
 	for i, marketplace := range detailMarketplaces {
 		detailMarketplaces[i] = datastruct.DetailProductMarketplace{
-			MarketplaceID: marketplace.ID,
-			ProductID:     initialProduct.ID,
-			AddressID:     marketplace.AddressID,
-			Link:          marketplace.Link,
-			Clicked:       0,
-			CreatedAt:     currentTime,
-			UpdatedAt:     currentTime,
+			MarketplaceID:   marketplace.ID,
+			ParentProductID: data.ProductID,
+			ProductID:       initialProduct.ID,
+			AddressID:       marketplace.AddressID,
+			Link:            marketplace.Link,
+			Clicked:         0,
+			CreatedAt:       currentTime,
+			UpdatedAt:       currentTime,
 		}
 	}
 

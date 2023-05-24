@@ -66,14 +66,15 @@ type (
 	}
 
 	DetailProductMarketplace struct {
-		ID            uint64    `gorm:"column:id;primaryKey;autoIncrement" json:"id"`
-		MarketplaceID uint64    `gorm:"column:marketplace_id" json:"marketplace_id"`
-		ProductID     uint64    `gorm:"column:product_id" json:"product_id"`
-		AddressID     uint64    `gorm:"column:addresses_id" json:"addresses_id"`
-		Link          string    `gorm:"column:link" json:"link"`
-		Clicked       uint64    `gorm:"column:clicked" json:"clicked"`
-		CreatedAt     time.Time `gorm:"column:created_at" json:"created_at"`
-		UpdatedAt     time.Time `gorm:"column:updated_at" json:"updated_at"`
+		ID              uint64    `gorm:"column:id;primaryKey;autoIncrement" json:"id"`
+		MarketplaceID   uint64    `gorm:"column:marketplace_id" json:"marketplace_id"`
+		ParentProductID uint64    `gorm:"column:parent_product_id" json:"parent_product_id"`
+		ProductID       uint64    `gorm:"column:product_id" json:"product_id"`
+		AddressID       uint64    `gorm:"column:addresses_id" json:"addresses_id"`
+		Link            string    `gorm:"column:link" json:"link"`
+		Clicked         uint64    `gorm:"column:clicked" json:"clicked"`
+		CreatedAt       time.Time `gorm:"column:created_at" json:"created_at"`
+		UpdatedAt       time.Time `gorm:"column:updated_at" json:"updated_at"`
 	}
 
 	DetailLinkedProduct struct {

@@ -43,15 +43,12 @@ VALUES
 INSERT INTO tags (name, category_id, created_at, updated_at)
 VALUES
     ('Aviator', 1, DEFAULT, DEFAULT),
-    ('Wayfarer', 1, DEFAULT, DEFAULT),
-    ('Round', 1, DEFAULT, DEFAULT),
     ('Cat Eye', 1, DEFAULT, DEFAULT),
-    ('Rectangle', 1, DEFAULT, DEFAULT),
     ('Square', 1, DEFAULT, DEFAULT),
-    ('Oval', 1, DEFAULT, DEFAULT),
-    ('Butterfly', 1, DEFAULT, DEFAULT),
-    ('Clubmaster', 1, DEFAULT, DEFAULT),
+    ('Oversized', 1, DEFAULT, DEFAULT),
     ('Rimless', 1, DEFAULT, DEFAULT),
+    ('Round', 1, DEFAULT, DEFAULT),
+    
     ('Foundation', 2, DEFAULT, DEFAULT),
     ('Concealer', 2, DEFAULT, DEFAULT),
     ('Powder', 2, DEFAULT, DEFAULT),
