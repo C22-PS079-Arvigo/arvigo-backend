@@ -54,8 +54,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add update product on partner app
 - Add dummy data for machine learning
 
-## [Unreleased]
 ### [1.0.5] - yusufw2429@gmail.com
 #### Added
 - Update face detection
 - Add get wishlist
+
+## [Unreleased]
+### [1.0.6] - yusufw2429@gmail.com
+#### Added

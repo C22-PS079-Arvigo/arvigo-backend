@@ -148,5 +148,4 @@ INSERT INTO marketplaces (name, image, created_at, updated_at)
 VALUES
     ('Website', "", DEFAULT, DEFAULT),
     ('Tokopedia', "", DEFAULT, DEFAULT),
-    ('Shopee', "", DEFAULT, DEFAULT),
-    ('Bukalapak', "", DEFAULT, DEFAULT);
+    ('Shopee', "", DEFAULT, DEFAULT);
