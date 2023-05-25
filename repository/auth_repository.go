@@ -108,13 +108,24 @@ func RegisterPartner(partnerData datastruct.PartnerRegisterInput) (tokenResponse
 		UpdatedAt:        time.Now(),
 	}
 
-	if err = db.Create(&merchantPayload).Error; err != nil {
+	// Begin a transaction
+	tx := db.Begin()
+
+	// Defer the rollback function in case of error
+	defer func() {
+		if r := recover(); r != nil {
+			tx.Rollback()
+		}
+	}()
+
+	if err = tx.Create(&merchantPayload).Error; err != nil {
 		return tokenResponse, http.StatusInternalServerError, err
 	}
 
 	addressPayload := datastruct.Address{
 		Street:        partnerData.Street,
 		ProvinceID:    partnerData.ProvinceID,
+		CityID:        partnerData.CityID,
 		DistrictID:    partnerData.DistrictID,
 		SubdistrictID: partnerData.SubdistrictID,
 		PostalCodeID:  partnerData.PostalCodeID,
@@ -122,7 +133,7 @@ func RegisterPartner(partnerData datastruct.PartnerRegisterInput) (tokenResponse
 		UpdatedAt:     time.Now(),
 	}
 
-	if err = db.Create(&addressPayload).Error; err != nil {
+	if err = tx.Create(&addressPayload).Error; err != nil {
 		return tokenResponse, http.StatusInternalServerError, err
 	}
 
@@ -137,9 +148,11 @@ func RegisterPartner(partnerData datastruct.PartnerRegisterInput) (tokenResponse
 		UpdatedAt:  time.Now(),
 	}
 
-	if err = db.Create(&userPayload).Error; err != nil {
+	if err = tx.Create(&userPayload).Error; err != nil {
 		return tokenResponse, http.StatusInternalServerError, err
 	}
+
+	tx.Commit()
 
 	tokenString, err := GenerateToken(userPayload)
 	if err != nil {

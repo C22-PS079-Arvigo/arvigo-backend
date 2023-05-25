@@ -22,11 +22,11 @@ type (
 		Password             string `json:"password" validate:"required"`
 		PasswordConfirmation string `json:"password_confirmation" validate:"required"`
 		Street               string `json:"street" validate:"required"`
-		ProvinceID           uint64 `json:"province_id" validate:"required,numeric"`
-		CityID               uint64 `json:"city_id" validate:"required,numeric"`
-		DistrictID           uint64 `json:"district_id" validate:"required,numeric"`
-		SubdistrictID        uint64 `json:"subdistrict_id" validate:"required,numeric"`
-		PostalCodeID         uint64 `json:"postal_code_id" validate:"required,numeric"`
+		ProvinceID           uint64 `json:"province_id" validate:"required"`
+		CityID               uint64 `json:"city_id" validate:"required"`
+		DistrictID           uint64 `json:"district_id" validate:"required"`
+		SubdistrictID        uint64 `json:"subdistrict_id" validate:"required"`
+		PostalCodeID         uint64 `json:"postal_code_id" validate:"required"`
 	}
 
 	CreateInitialProductInput struct {

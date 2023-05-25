@@ -45,8 +45,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fix get partners and users
 - Add validation for register user and partner
 
-
-## [Unreleased]
 ### [1.0.4] - yusufw2429@gmail.com
 #### Added
 - Add wishlist
@@ -55,3 +53,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Tidy up routes
 - Add update product on partner app
 - Add dummy data for machine learning
+
+## [Unreleased]
+### [1.0.5] - yusufw2429@gmail.com
+#### Added
+- Update face detection
+- Add get wishlist

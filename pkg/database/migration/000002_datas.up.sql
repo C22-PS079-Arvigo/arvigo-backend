@@ -268,10 +268,12 @@ CREATE TABLE wishlists
     product_id int default null null,
     detail_product_marketplace_id int default null null,
     created_at timestamp default CURRENT_TIMESTAMP null,
-    updated_at timestamp default CURRENT_TIMESTAMP null on update CURRENT_TIMESTAMP
+    updated_at timestamp default CURRENT_TIMESTAMP null on update CURRENT_TIMESTAMP,
+    constraint idx_unique_wishlist1 unique (user_id, product_id),
+    constraint idx_unique_wishlist2 unique (user_id, detail_product_marketplace_id)
 );
 
-CREATE INDEX idx_wishlists_1 ON wishlists (user_id, product_id);
+CREATE INDEX idx_wishlists_1 ON wishlists (user_id, product_id, detail_product_marketplace_id);
 
 -- auto-generated definition
 DROP TABLE IF EXISTS detail_user_subscriptions;

@@ -41,10 +41,10 @@ func addToWishlist(c echo.Context) error {
 func getUserWishlist(c echo.Context) error {
 	userAuth := c.Get("userAuth").(*datastruct.UserAuth)
 
-	user, statusCode, err := repository.GetUserByID(userAuth.ID)
+	data, statusCode, err := repository.GetUserWishlist(userAuth.ID)
 	if err != nil {
 		return utils.ResponseJSON(c, err.Error(), nil, statusCode)
 	}
 
-	return utils.ResponseJSON(c, "Success", user, statusCode)
+	return utils.ResponseJSON(c, "Success", data, statusCode)
 }

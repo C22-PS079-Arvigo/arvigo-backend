@@ -90,4 +90,31 @@ type (
 		MerchantIDs string `gorm:"column:merchant_id" json:"-"`
 		ProductIDs  string `gorm:"column:linked_product" json:"-"`
 	}
+
+	UserWishlistResponse struct {
+		Product []ProductWishlist            `json:"products"`
+		Store   []ProductMarketplaceWishlist `json:"stores"`
+	}
+
+	ProductWishlist struct {
+		ID    uint64 `gorm:"column:id" json:"id"`
+		Name  string `gorm:"column:name" json:"name"`
+		Image string `gorm:"column:images" json:"image"`
+		Brand string `gorm:"column:brand" json:"brand"`
+	}
+
+	ProductMarketplaceWishlist struct {
+		ID              uint64  `gorm:"column:id" json:"id"`
+		Name            string  `gorm:"column:name" json:"name"`
+		Brand           string  `gorm:"column:brand" json:"brand"`
+		Image           string  `gorm:"column:images" json:"image"`
+		Price           float64 `gorm:"column:price" json:"price"`
+		Merchant        string  `gorm:"column:merchant" json:"merchant"`
+		Type            string  `json:"store_type"`
+		Address         *string `json:"address"`
+		Marketplace     *string `json:"marketplace_name"`
+		MarketplaceLink *string `gorm:"column:marketplace_link" json:"marketplace_link"`
+		MarketplaceID   uint64  `gorm:"column:marketplace_id" json:"-"`
+		AddressID       uint64  `gorm:"column:addresses_id" json:"-"`
+	}
 )
