@@ -77,4 +77,17 @@ type (
 	CategoryResponse struct {
 		Name string `gorm:"column:name" json:"name"`
 	}
+
+	ProductRecommendationResponse struct {
+		ID          uint64 `gorm:"column:id" json:"id"`
+		Name        string `gorm:"column:name" json:"name"`
+		Description string `gorm:"column:description" json:"description"`
+		Category    string `gorm:"column:category" json:"category"`
+		Brand       string `gorm:"column:brand" json:"brand"`
+		Tags        string `gorm:"column:tags" json:"tags"`
+		Merchants   string `gorm:"column:merchants" json:"merchants"`
+		Clicked     uint64 `gorm:"column:clicked" json:"clicked"`
+		MerchantIDs string `gorm:"column:merchant_id" json:"-"`
+		ProductIDs  string `gorm:"column:linked_product" json:"-"`
+	}
 )

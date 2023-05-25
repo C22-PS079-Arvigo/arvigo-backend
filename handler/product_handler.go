@@ -13,6 +13,8 @@ import (
 
 func RegisterProductRoutes(e *echo.Echo) {
 	v1Group := e.Group("/v1")
+	v1Group.GET("/product-recommendation", getRecommendationProduct)
+
 	productGroup := v1Group.Group("/products", middleware.AuthMiddleware)
 	initialProductGroup := productGroup.Group("/initials")
 
@@ -84,6 +86,15 @@ func createMerchantProductHandler(c echo.Context) error {
 	}
 
 	return utils.ResponseJSON(c, "Product created", nil, statusCode)
+}
+
+func getRecommendationProduct(c echo.Context) error {
+	data, statusCode, err := repository.GetProductRecommendationMachineLearningDummy()
+	if err != nil {
+		return utils.ResponseJSON(c, err.Error(), nil, statusCode)
+	}
+
+	return utils.ResponseJSON(c, "Success", data, statusCode)
 }
 
 func getInitalProductByCategoryID(c echo.Context) error {

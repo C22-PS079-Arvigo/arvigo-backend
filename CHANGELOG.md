@@ -54,3 +54,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add price on product
 - Tidy up routes
 - Add update product on partner app
+- Add dummy data for machine learning

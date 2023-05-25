@@ -3,7 +3,9 @@ package repository
 import (
 	"encoding/json"
 	"errors"
+	"fmt"
 	"log"
+	"math/rand"
 	"net/http"
 	"strings"
 	"time"
@@ -330,6 +332,94 @@ func GetInitialProductByCategoryID(categoryID uint64) (res []datastruct.InitialP
 	return
 }
 
+func GetProductRecommendationMachineLearning() (res []datastruct.ProductRecommendationResponse, statusCode int, err error) {
+	statusCode = http.StatusOK
+
+	var (
+		db               = Database()
+		linkedProductIDs = []uint64{}
+		merchantIDs      = []uint64{}
+	)
+
+	columns := []string{
+		"p.id",
+		"p.name",
+		"p.description",
+		"c.name AS category",
+		"b.name AS brand",
+		"GROUP_CONCAT(DISTINCT t.name) AS tags",
+		"GROUP_CONCAT(DISTINCT dlp.merchant_id) AS merchant_id",
+		"GROUP_CONCAT(DISTINCT dlp.merchant_product_id) AS linked_product",
+	}
+
+	if err = db.Table("products p").Select(columns).
+		Joins("LEFT JOIN categories c ON p.category_id = c.id").
+		Joins("LEFT JOIN brands b ON p.brand_id = b.id").
+		Joins("LEFT JOIN detail_product_tags dpt ON p.id = dpt.product_id").
+		Joins("LEFT JOIN tags t ON dpt.tag_id = t.id").
+		Joins("LEFT JOIN detail_linked_products dlp ON p.id = dlp.initial_product_id").
+		Where("p.merchant_id = ?", 0).
+		Group("p.id").
+		Find(&res).Error; err != nil {
+		return res, http.StatusInternalServerError, err
+	}
+
+	for _, v := range res {
+		merchantIDSplitted := strings.Split(v.MerchantIDs, ",")
+		linkedIDSplitted := strings.Split(v.ProductIDs, ",")
+
+		for _, id := range merchantIDSplitted {
+			merchantID := utils.StrToUint64(id, 0)
+			merchantIDs = append(merchantIDs, merchantID)
+		}
+
+		for _, id := range linkedIDSplitted {
+			productID := utils.StrToUint64(id, 0)
+			linkedProductIDs = append(linkedProductIDs, productID)
+		}
+	}
+
+	return
+}
+
+func GetProductRecommendationMachineLearningDummy() (res []datastruct.ProductRecommendationResponse, statusCode int, err error) {
+	tags := []string{"circle", "heart", "oblong", "oval", "square", "triangle"}
+	brands := []string{"RayBan", "Oakley", "Baleno", "CHANEL", "Police", "Emporio"}
+	merchants := []string{"Optik Susi", "Optik Sukarno", "Optik Merah Putih", "Optik tik"}
+
+	// Generate 10 dummy data entries
+	for i := 1; i <= 20; i++ {
+		product := datastruct.ProductRecommendationResponse{
+			ID:          uint64(i),
+			Name:        fmt.Sprintf("Kacamata %d", i),
+			Description: fmt.Sprintf("This is the description of Product %d", i),
+			Category:    "Glasses",
+			Brand:       strings.Join(getRandomTags(brands, 1), ", "),
+			Tags:        strings.Join(getRandomTags(tags, 3), ", "),
+			Merchants:   strings.Join(getRandomTags(merchants, 4), ", "),
+			Clicked:     uint64(generateRandomTags()),
+		}
+		res = append(res, product)
+	}
+
+	return
+}
+
+func getRandomTags(tags []string, count int) []string {
+	rand.Seed(time.Now().UnixNano())
+	rand.Shuffle(len(tags), func(i, j int) {
+		tags[i], tags[j] = tags[j], tags[i]
+	})
+	return tags[:count]
+}
+
+func generateRandomTags() int {
+	rand.Seed(time.Now().UnixNano())
+	min := 1
+	max := 100
+	return rand.Intn(max-min+1) + min
+}
+
 func VerifyMerchantProduct(data datastruct.VerifyProductInput) (statusCode int, err error) {
 	db := Database()
 	statusCode = http.StatusOK
@@ -363,3 +453,5 @@ func UpdateMerchantProduct(data datastruct.UpdateProductInput) (statusCode int, 
 
 	return
 }
+
+// id_product, nama, deskripsi, kategori, warna, nama_toko, clicked
