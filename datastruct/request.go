@@ -58,9 +58,9 @@ type (
 	}
 
 	UpdateProductInput struct {
-		ProductID   uint64  `json:"product_id" validate:"required"`
-		Price       float64 `json:"price" validate:"required"`
-		Description string  `json:"description" validate:"required"`
+		ProductID   uint64  `json:"product_id"`
+		Price       float64 `json:"price"`
+		Description string  `json:"description"`
 	}
 
 	BrandInput struct {

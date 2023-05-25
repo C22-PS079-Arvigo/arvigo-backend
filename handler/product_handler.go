@@ -24,7 +24,7 @@ func RegisterProductRoutes(e *echo.Echo) {
 	merchantProductGroup := productGroup.Group("/merchants")
 	merchantProductGroup.POST("", createMerchantProductHandler)
 	merchantProductGroup.PUT("", updateMerchantProduct)
-	merchantProductGroup.PUT("/verify", updateMerchantProduct)
+	merchantProductGroup.PUT("/verify", verifyMerchantProduct)
 }
 
 func createInitialProductHandler(c echo.Context) error {
