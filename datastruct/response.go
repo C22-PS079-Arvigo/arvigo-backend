@@ -29,8 +29,10 @@ type (
 		PlaceOfBirth              string     `json:"place_of_birth"`
 		IsCompletePersonalityTest bool       `json:"is_complete_personality_test"`
 		IsCompleteFaceTest        bool       `json:"is_complete_face_test"`
-		PersonalityID             bool       `json:"personality_id"`
-		FaceShapeTagID            bool       `json:"face_shape_tag_id"`
+		PersonalityID             uint64     `gorm:"column:personality_id" json:"-"`
+		FaceShapeTagID            uint64     `gorm:"column:face_shape_id" json:"-"`
+		Personality               *string    `json:"personality"`
+		FaceShape                 *string    `json:"face_shape"`
 		IsVerified                bool       `json:"is_verified"`
 		Avatar                    string     `json:"avatar"`
 		AddressID                 uint64     `json:"addresses_id"`

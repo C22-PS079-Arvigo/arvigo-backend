@@ -25,6 +25,21 @@ func GetUserByID(id uint64) (res datastruct.UserDetailResponse, statusCode int, 
 		return res, http.StatusNotFound, errors.New("user not found")
 	}
 
+	var faceShape datastruct.FaceShape
+	if userDetail.FaceShapeTagID != 0 {
+		if err := db.Table("face_shapes").
+			Select([]string{
+				"name",
+			}).
+			Where("id = ?", userDetail.FaceShapeTagID).
+			First(&faceShape).
+			Error; err != nil {
+			return res, http.StatusNotFound, errors.New("tag not found")
+		}
+
+		userDetail.FaceShape = &faceShape.Name
+	}
+
 	var addressDetail datastruct.UserAddress
 	if err := db.Table("addresses").
 		Select([]string{
