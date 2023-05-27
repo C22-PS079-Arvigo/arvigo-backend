@@ -59,9 +59,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Update face detection
 - Add get wishlist
 
-## [Unreleased]
 ### [1.0.6] - yusufw2429@gmail.com
 #### Added
 - Add home page
 - Add constant value for homepage
 - Update DDL
+
+## [Unreleased]
+### [1.0.7] - yusufw2429@gmail.com
+#### Added
+- Add product search
+- Add get product by brand
+- Add get product by category

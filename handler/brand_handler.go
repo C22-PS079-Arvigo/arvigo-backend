@@ -12,11 +12,14 @@ import (
 
 func RegisterBrandRoutes(e *echo.Echo) {
 	v1Group := e.Group("/v1")
-	locationGroup := v1Group.Group("/brands", middleware.AuthMiddleware)
-	locationGroup.GET("", getBrands)
-	locationGroup.POST("", createBrand)
-	locationGroup.PUT("/:id", updateBrand)
-	locationGroup.GET("/category/:id", getBrandByCategory)
+	brandGroup := v1Group.Group("/brands", middleware.AuthMiddleware)
+	brandGroup.GET("", getBrands)
+	brandGroup.POST("", createBrand)
+	brandGroup.PUT("/:id", updateBrand)
+	brandGroup.GET("/category/:id", getBrandByCategory)
+
+	brandGroup.GET("/:id/list-product", getListProductByBrand)
+
 }
 
 func getBrands(c echo.Context) error {
@@ -75,7 +78,7 @@ func createBrand(c echo.Context) error {
 func updateBrand(c echo.Context) error {
 	brandID := utils.StrToUint64(c.Param("id"), 0)
 	if brandID == 0 {
-		return utils.ResponseJSON(c, "Invalid category ID", nil, http.StatusBadRequest)
+		return utils.ResponseJSON(c, "Invalid brand ID", nil, http.StatusBadRequest)
 	}
 
 	var data datastruct.BrandInput
@@ -105,4 +108,18 @@ func updateBrand(c echo.Context) error {
 	}
 
 	return utils.ResponseJSON(c, "Product created", nil, statusCode)
+}
+
+func getListProductByBrand(c echo.Context) error {
+	brandID := utils.StrToUint64(c.Param("id"), 0)
+	if brandID == 0 {
+		return utils.ResponseJSON(c, "Invalid brand ID", nil, http.StatusBadRequest)
+	}
+
+	data, statusCode, err := repository.GetListProductByBrand(brandID)
+	if err != nil {
+		return utils.ResponseJSON(c, err.Error(), nil, statusCode)
+	}
+
+	return utils.ResponseJSON(c, "Success", data, statusCode)
 }

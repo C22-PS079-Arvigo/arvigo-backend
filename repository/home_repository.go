@@ -2,6 +2,7 @@ package repository
 
 import (
 	"errors"
+	"fmt"
 	"net/http"
 	"strings"
 
@@ -108,5 +109,30 @@ func GetHome(userID uint64) (res datastruct.HomeResponse, statusCode int, err er
 		FaceShape:      faceShapeProduct,
 		Recommendation: recommendationProduct,
 	}
+	return
+}
+
+func GetHomeSeach(search string) (res []datastruct.HomeProduct, statusCode int, err error) {
+	db := Database()
+	statusCode = http.StatusOK
+
+	if err := db.Table("products p").
+		Select([]string{
+			"p.id",
+			"p.name",
+			"p.images",
+			"b.name as brand",
+		}).
+		Joins("LEFT JOIN brands b on b.id = p.brand_id").
+		Where("p.merchant_id = 0 AND p.name LIKE ?", fmt.Sprintf("%%%s%%", search)).
+		Find(&res).
+		Error; err != nil {
+		return res, http.StatusInternalServerError, err
+	}
+
+	for i, v := range res {
+		res[i].Image = strings.Split(v.Image, ",")[0]
+	}
+
 	return
 }
