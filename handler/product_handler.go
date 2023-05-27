@@ -13,7 +13,7 @@ import (
 
 func RegisterProductRoutes(e *echo.Echo) {
 	v1Group := e.Group("/v1")
-	v1Group.GET("/product-recommendation", getRecommendationProduct)
+	v1Group.GET("/product-recommendation", getRecommendationProduct, middleware.ApiKeyMiddleware)
 
 	productGroup := v1Group.Group("/products", middleware.AuthMiddleware)
 	initialProductGroup := productGroup.Group("/initials")
