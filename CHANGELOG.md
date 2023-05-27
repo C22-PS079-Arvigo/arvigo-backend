@@ -65,10 +65,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add constant value for homepage
 - Update DDL
 
-## [Unreleased]
 ### [1.0.7] - yusufw2429@gmail.com
 #### Added
 - Add product search
 - Add get product by brand
 - Add get product by category
 - Add home merchant
+
+
+## [Unreleased]
+### [1.0.8] - yusufw2429@gmail.com
+#### Added
