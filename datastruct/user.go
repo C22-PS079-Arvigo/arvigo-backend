@@ -13,14 +13,25 @@ type User struct {
 	PlaceOfBirth              string     `gorm:"column:place_of_birth" json:"place_of_birth"`
 	IsCompletePersonalityTest bool       `gorm:"column:is_complete_personality_test" json:"is_complete_personality_test"`
 	IsCompleteFaceTest        bool       `gorm:"column:is_complete_face_test" json:"is_complete_face_test"`
-	PersonalityID             bool       `gorm:"column:personality_id" json:"personality_id"`
-	FaceShapeID               bool       `gorm:"column:face_shape_id" json:"face_shape_id"`
+	PersonalityID             uint64     `gorm:"column:personality_id" json:"personality_id"`
+	FaceShapeID               uint64     `gorm:"column:face_shape_id" json:"face_shape_id"`
 	IsVerified                bool       `gorm:"column:is_verified" json:"is_verified"`
 	Avatar                    string     `gorm:"column:avatar" json:"avatar"`
 	AddressID                 uint64     `gorm:"column:addresses_id" json:"addresses_id"`
 	MerchantID                uint64     `gorm:"column:merchant_id" json:"merchant_id"`
+	TagIDs                    []uint64   `gorm:"column:tag_ids" json:"-"`
 	CreatedAt                 time.Time  `gorm:"column:created_at" json:"created_at"`
 	UpdatedAt                 time.Time  `gorm:"column:updated_at" json:"updated_at"`
+}
+
+type UserWithPersonalityTag struct {
+	ID                        uint64 `gorm:"column:id"`
+	IsCompletePersonalityTest bool   `gorm:"column:is_complete_personality_test"`
+	IsCompleteFaceTest        bool   `gorm:"column:is_complete_face_test"`
+	PersonalityID             uint64 `gorm:"column:personality_id"`
+	FaceShapeID               uint64 `gorm:"column:face_shape_id"`
+	TagID                     string `gorm:"column:tag_ids"`
+	TagIDs                    []uint64
 }
 
 func (User) TableName() string {

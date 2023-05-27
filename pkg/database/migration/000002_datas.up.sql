@@ -311,6 +311,7 @@ CREATE TABLE user_personalities (
     id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT NOT NULL,
     is_active INT DEFAULT 0 NOT NULL,
+    tag_ids varchar(200) NOT NULL,
     ext_result int null,
     est_result int null,
     agr_result int null,

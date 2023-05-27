@@ -62,3 +62,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 ### [1.0.6] - yusufw2429@gmail.com
 #### Added
+- Add home page
+- Add constant value for homepage
+- Update DDL

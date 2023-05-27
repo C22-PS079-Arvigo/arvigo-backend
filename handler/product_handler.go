@@ -17,6 +17,8 @@ func RegisterProductRoutes(e *echo.Echo) {
 
 	productGroup := v1Group.Group("/products", middleware.AuthMiddleware)
 	initialProductGroup := productGroup.Group("/initials")
+	initialProductGroup.GET("/:id", getInitalProductByCategoryID)             // TODO: develop
+	initialProductGroup.GET("/marketplace/:id", getInitalProductByCategoryID) // TODO: develop
 
 	initialProductGroup.POST("", createInitialProductHandler)
 	initialProductGroup.GET("/category/:id", getInitalProductByCategoryID)

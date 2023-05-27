@@ -16,4 +16,5 @@ func RegisterAllRoutes(e *echo.Echo) {
 	handler.RegisterBrandRoutes(e)
 	handler.RegisterQuestionnaireRoutes(e)
 	handler.RegisterWishlistRoutes(e)
+	handler.RegisterHomeRoutes(e)
 }

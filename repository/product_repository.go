@@ -156,7 +156,7 @@ func CreateMerchantProduct(data datastruct.CreateMerchantProductInput) (statusCo
 	// remap payload
 	initialProduct = datastruct.Product{
 		ID:           0,
-		Name:         initialProduct.Name,
+		Name:         data.Name,
 		Description:  data.Description,
 		Images:       strings.Join(imagesURL, ","),
 		LinkExternal: "", // coming soon

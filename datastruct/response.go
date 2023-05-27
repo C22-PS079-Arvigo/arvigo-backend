@@ -119,4 +119,17 @@ type (
 		MarketplaceID   uint64  `gorm:"column:marketplace_id" json:"-"`
 		AddressID       uint64  `gorm:"column:addresses_id" json:"-"`
 	}
+
+	HomeResponse struct {
+		Personality    []HomeProduct `json:"personalities"`
+		FaceShape      []HomeProduct `json:"face_shapes"`
+		Recommendation []HomeProduct `json:"recommendations"`
+	}
+
+	HomeProduct struct {
+		ID    uint64 `gorm:"column:id" json:"id"`
+		Name  string `gorm:"column:name" json:"name"`
+		Brand string `gorm:"column:brand" json:"brand"`
+		Image string `gorm:"column:images" json:"image"`
+	}
 )
