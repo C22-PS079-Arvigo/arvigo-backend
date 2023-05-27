@@ -71,3 +71,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add product search
 - Add get product by brand
 - Add get product by category
+- Add home merchant

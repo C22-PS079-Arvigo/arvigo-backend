@@ -33,9 +33,7 @@ func getHome(c echo.Context) error {
 }
 
 func getHomeMerchant(c echo.Context) error {
-	userAuth := c.Get("userAuth").(*datastruct.UserAuth)
-
-	data, statusCode, err := repository.GetHome(userAuth.ID)
+	data, statusCode, err := repository.GetHomeMerchant()
 	if err != nil {
 		return utils.ResponseJSON(c, err.Error(), nil, statusCode)
 	}
@@ -49,7 +47,7 @@ func getHomeSearch(c echo.Context) error {
 		return utils.ResponseJSON(c, "Search must be filled", nil, http.StatusBadRequest)
 	}
 
-	data, statusCode, err := repository.GetHomeSeach(search)
+	data, statusCode, err := repository.GetHomeSearch(search)
 	if err != nil {
 		return utils.ResponseJSON(c, err.Error(), nil, statusCode)
 	}

@@ -112,7 +112,7 @@ func GetHome(userID uint64) (res datastruct.HomeResponse, statusCode int, err er
 	return
 }
 
-func GetHomeSeach(search string) (res []datastruct.HomeProduct, statusCode int, err error) {
+func GetHomeSearch(search string) (res []datastruct.HomeProduct, statusCode int, err error) {
 	db := Database()
 	statusCode = http.StatusOK
 
@@ -132,6 +132,79 @@ func GetHomeSeach(search string) (res []datastruct.HomeProduct, statusCode int, 
 
 	for i, v := range res {
 		res[i].Image = strings.Split(v.Image, ",")[0]
+	}
+
+	return
+}
+
+func GetHomeMerchant() (merchants []datastruct.HomeMerchantResponse, statusCode int, err error) {
+	db := Database()
+	statusCode = http.StatusOK
+
+	if err := db.Table("users").
+		Select([]string{
+			"addresses_id",
+			"m.name merchant_name",
+			"m.id merchant_id",
+		}).
+		Joins("join merchants m on users.merchant_id = m.id").
+		Where("merchant_id != 0").
+		Find(&merchants).
+		Error; err != nil {
+		return merchants, http.StatusInternalServerError, err
+	}
+
+	for i, v := range merchants {
+		_, location, _, _ := GetAddressByID(v.AddressID)
+		merchants[i].Location = location
+
+		var (
+			merchantProduct []datastruct.ProductMarketplaceWishlist
+		)
+		if err = db.Table("detail_product_marketplaces").
+			Select([]string{
+				"detail_product_marketplaces.id AS id",
+				"products.name",
+				"brands.name AS brand",
+				"products.images",
+				"products.price",
+				"merchants.name AS merchant",
+				"detail_product_marketplaces.link AS marketplace_link",
+				"detail_product_marketplaces.marketplace_id",
+				"detail_product_marketplaces.addresses_id",
+			}).
+			Joins("LEFT JOIN products ON products.id = detail_product_marketplaces.product_id").
+			Joins("LEFT JOIN brands ON brands.id = products.brand_id").
+			Joins("LEFT JOIN merchants ON products.merchant_id = merchants.id").
+			Where("products.merchant_id = ?", v.MerchantID).
+			Find(&merchantProduct).Error; err != nil {
+			return merchants, http.StatusInternalServerError, err
+		}
+
+		for i, v := range merchantProduct {
+			merchantProduct[i].Image = strings.Split(v.Image, ",")[0]
+
+			if v.AddressID != 0 {
+				merchantProduct[i].Type = "offline"
+				addr, _, _, err := GetAddressByID(v.AddressID)
+				if err == nil {
+					merchantProduct[i].Address = &addr
+				}
+				continue
+			}
+
+			if v.MarketplaceID != 0 {
+				merchantProduct[i].Type = "online"
+				marketplaceName := constant.Marketplace[v.MarketplaceID]
+				merchantProduct[i].Marketplace = &marketplaceName
+			}
+		}
+
+		var interfaceSlice []interface{} = make([]interface{}, len(merchantProduct))
+		for i, v := range merchantProduct {
+			interfaceSlice[i] = v
+		}
+		merchants[i].Product = interfaceSlice
 	}
 
 	return

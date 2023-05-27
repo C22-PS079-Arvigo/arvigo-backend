@@ -93,7 +93,7 @@ func GetUserWishlist(userID uint64) (res datastruct.UserWishlistResponse, status
 
 		if v.AddressID != 0 {
 			merchantProduct[i].Type = "offline"
-			addr, _, err := GetAddressByID(v.AddressID)
+			addr, _, _, err := GetAddressByID(v.AddressID)
 			if err == nil {
 				merchantProduct[i].Address = &addr
 			}

@@ -120,6 +120,14 @@ type (
 		AddressID       uint64  `gorm:"column:addresses_id" json:"-"`
 	}
 
+	HomeMerchantResponse struct {
+		Name       string        `gorm:"column:merchant_name" json:"merchant_name"`
+		AddressID  uint64        `gorm:"column:addresses_id" json:"-"`
+		MerchantID uint64        `gorm:"column:merchant_id" json:"-"`
+		Location   string        `json:"location"`
+		Product    []interface{} `json:"products"`
+	}
+
 	HomeResponse struct {
 		Personality    []HomeProduct `json:"personalities"`
 		FaceShape      []HomeProduct `json:"face_shapes"`
