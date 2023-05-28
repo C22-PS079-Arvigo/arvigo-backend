@@ -19,7 +19,6 @@ type User struct {
 	Avatar                    string     `gorm:"column:avatar" json:"avatar"`
 	AddressID                 uint64     `gorm:"column:addresses_id" json:"addresses_id"`
 	MerchantID                uint64     `gorm:"column:merchant_id" json:"merchant_id"`
-	TagIDs                    []uint64   `gorm:"column:tag_ids" json:"-"`
 	CreatedAt                 time.Time  `gorm:"column:created_at" json:"created_at"`
 	UpdatedAt                 time.Time  `gorm:"column:updated_at" json:"updated_at"`
 }
