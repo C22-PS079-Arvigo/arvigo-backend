@@ -4,7 +4,7 @@ steps:
   args: ['cp', '.env.example', '.env']
 
 - id: copy-gcp-credential
-  name: google/cloud-sdk
+  name: 'google/cloud-sdk'
   args: ['gcloud', 'storage', 'cp', '${_GCLOUD_STORAGE}', '.']
 
 - id: change-variable-env
@@ -37,7 +37,7 @@ steps:
   args: ['deployment.yaml']
 
 - id: Deploy-to-GKE
-  name: "gcr.io/cloud-builders/gke-deploy" 
+  name: 'gcr.io/cloud-builders/gke-deploy'
   args:
   - run
   - --filename=deployment.yaml
