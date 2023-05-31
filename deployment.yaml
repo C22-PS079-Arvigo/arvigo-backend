@@ -18,7 +18,7 @@ kind: Deployment
 metadata:
   name: arvigo-backend-workload
   labels:
-   app: arvigo-backend
+  app: arvigo-backend
 spec:
   replicas: 1
   selector:

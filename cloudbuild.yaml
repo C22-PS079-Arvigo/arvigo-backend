@@ -3,6 +3,10 @@ steps:
   name: 'ubuntu'
   args: ['cp', '.env.example', '.env']
 
+- id: copy-gcp-credential
+  name: google/cloud-sdk
+  args: ['gcloud', 'storage', 'cp', '${_GCLOUD_STORAGE}', '.']
+
 - id: change-variable-env
   name: 'gcr.io/$PROJECT_ID/envsubst'
   env:
@@ -11,6 +15,8 @@ steps:
     - 'DB_NAME=${_DB_NAME}'
     - 'JWT_SECRET=${_JWT_SECRET}'
     - 'SALT_SECRET=${_SALT_SECRET}'
+    - 'X_API_KEY_SECRET=${_X_API_KEY_SECRET}'
+    - 'STORAGE_BUCKET_NAME=${_STORAGE_BUCKET_NAME}'
   args: ['.env']
 
 - id: Build-docker
