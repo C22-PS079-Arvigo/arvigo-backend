@@ -16,8 +16,8 @@ steps:
       - "DB_NAME=${_DB_NAME}"
       - "JWT_SECRET=${_JWT_SECRET}"
       - "SALT_SECRET=${_SALT_SECRET}"
-      - "X_API_KEY_SECRET=${_X_API_KEY_SECRET}"
-      - "STORAGE_BUCKET_NAME=${_STORAGE_BUCKET_NAME}"
+      # - "X_API_KEY_SECRET=${_X_API_KEY_SECRET}"
+      # - "STORAGE_BUCKET_NAME=${_STORAGE_BUCKET_NAME}"
     args: [".env"]
 
   - id: Build-docker
