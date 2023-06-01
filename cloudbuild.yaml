@@ -3,10 +3,10 @@ steps:
     name: "ubuntu"
     args: ["cp", ".env.example", ".env"]
 
-  - id: copy-gcp-credential
-    name: "google/cloud-sdk"
-    args: ["gcloud", "storage", "cp", "${_GCLOUD_STORAGE}", "."]
-    timeout: 900s
+  # - id: copy-gcp-credential
+  #   name: "google/cloud-sdk"
+  #   args: ["gcloud", "storage", "cp", "${_GCLOUD_STORAGE}", "."]
+  #   timeout: 900s
 
   - id: change-variable-env
     name: "gcr.io/$PROJECT_ID/envsubst"
