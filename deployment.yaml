@@ -9,16 +9,16 @@ spec:
     app: arvigo-backend
   type: ClusterIP
   ports:
-    - protocol: TCP
-      port: 80
-      targetPort: 8080
+  - protocol: TCP
+    port: 80
+    targetPort: 8080
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: arvigo-backend-workload
   labels:
-    app: arvigo-backend
+  app: arvigo-backend
 spec:
   replicas: 1
   selector:
@@ -30,36 +30,36 @@ spec:
         app: arvigo-backend
     spec:
       containers:
-        - name: arvigo-backend-container
-          image: asia.gcr.io/$PROJECT_ID/production/arvigo-backend:$SHORT_SHA
-          imagePullPolicy: Always
-          ports:
-            - containerPort: 8080
-              protocol: TCP
-          resources:
-            requests:
-              cpu: "250m"
-              memory: "500Mi"
-          livenessProbe:
-            failureThreshold: 10
-            httpGet:
-              path: /health_check/ping
-              port: 8080
-              scheme: HTTP
-            initialDelaySeconds: 150
-            periodSeconds: 30
-            successThreshold: 1
-            timeoutSeconds: 30
-          readinessProbe:
-            failureThreshold: 10
-            httpGet:
-              path: /health_check/ping
-              port: 8080
-              scheme: HTTP
-            initialDelaySeconds: 150
-            periodSeconds: 30
-            successThreshold: 1
-            timeoutSeconds: 30
+      - name: arvigo-backend-container
+        image: asia.gcr.io/$PROJECT_ID/production/arvigo-backend:$SHORT_SHA
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8080
+          protocol: TCP
+        resources:
+          requests:
+            cpu: "250m"
+            memory: "500Mi"
+        livenessProbe:
+          failureThreshold: 10
+          httpGet:
+            path: /health_check/ping
+            port: 8080
+            scheme: HTTP
+          initialDelaySeconds: 150
+          periodSeconds: 30
+          successThreshold: 1
+          timeoutSeconds: 30
+        readinessProbe:
+          failureThreshold: 10
+          httpGet:
+            path: /health_check/ping
+            port: 8080
+            scheme: HTTP
+          initialDelaySeconds: 150
+          periodSeconds: 30
+          successThreshold: 1
+          timeoutSeconds: 30
 ---
 apiVersion: autoscaling/v1
 kind: HorizontalPodAutoscaler
@@ -85,16 +85,16 @@ metadata:
     kubernetes.io/ingress.class: "gce"
 spec:
   rules:
-    - host: api.arvigo.site
-      http:
-        paths:
-          - path: /*
-            pathType: ImplementationSpecific
-            backend:
-              service:
-                name: arvigo-backend-service
-                port:
-                  number: 80
+  - host: api.arvigo.site
+    http:
+      paths:
+      - path: /*
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: arvigo-backend-service
+            port: 
+              number: 80
 ---
 apiVersion: networking.gke.io/v1
 kind: ManagedCertificate
