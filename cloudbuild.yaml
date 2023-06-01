@@ -2,12 +2,6 @@ steps:
 - id: make-env-file
   name: 'ubuntu'
   args: ['cp', '.env.example', '.env']
-  timeout: 900s
-
-- id: copy-gcp-credential
-  name: 'google/cloud-sdk'
-  args: ['gcloud', 'storage', 'cp', '${_GCLOUD_STORAGE}', '.']
-  timeout: 900s
 
 - id: change-variable-env
   name: 'gcr.io/$PROJECT_ID/envsubst'
@@ -17,10 +11,7 @@ steps:
     - 'DB_NAME=${_DB_NAME}'
     - 'JWT_SECRET=${_JWT_SECRET}'
     - 'SALT_SECRET=${_SALT_SECRET}'
-    - 'X_API_KEY_SECRET=${_X_API_KEY_SECRET}'
-    - 'STORAGE_BUCKET_NAME=${_STORAGE_BUCKET_NAME}'
   args: ['.env']
-  timeout: 900s
 
 - id: Build-docker
   name: 'gcr.io/cloud-builders/docker'
@@ -38,10 +29,9 @@ steps:
     - 'SHORT_SHA=$SHORT_SHA'
     - 'PROJECT_ID=$PROJECT_ID'
   args: ['deployment.yaml']
-  timeout: 900s
 
 - id: Deploy-to-GKE
-  name: 'gcr.io/cloud-builders/gke-deploy'
+  name: "gcr.io/cloud-builders/gke-deploy" 
   args:
   - run
   - --filename=deployment.yaml
