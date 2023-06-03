@@ -50,20 +50,24 @@ VALUES
     ('Rimless', 1, DEFAULT, DEFAULT),
     ('Round', 1, DEFAULT, DEFAULT),
     
-    ('Foundation', 2, DEFAULT, DEFAULT),
-    ('Concealer', 2, DEFAULT, DEFAULT),
-    ('Powder', 2, DEFAULT, DEFAULT),
-    ('Blush', 2, DEFAULT, DEFAULT),
-    ('Highlighter', 2, DEFAULT, DEFAULT),
-    ('Bronzer', 2, DEFAULT, DEFAULT),
-    ('Eyeshadow', 2, DEFAULT, DEFAULT),
-    ('Eyeliner', 2, DEFAULT, DEFAULT),
-    ('Mascara', 2, DEFAULT, DEFAULT),
-    ('Lipstick', 2, DEFAULT, DEFAULT),
-    ('Lip Gloss', 2, DEFAULT, DEFAULT),
-    ('Lip Liner', 2, DEFAULT, DEFAULT),
-    ('Eyebrow', 2, DEFAULT, DEFAULT),
-    ('Setting Spray', 2, DEFAULT, DEFAULT);
+    ('Red Shades', 2, DEFAULT, DEFAULT),
+    ('Cluster', 2, DEFAULT, DEFAULT),
+    ('Green', 2, DEFAULT, DEFAULT),
+
+    ('Nude Shades', 2, DEFAULT, DEFAULT),
+    ('Natural', 2, DEFAULT, DEFAULT),
+    ('Blue', 2, DEFAULT, DEFAULT),
+
+    ('Pink Shades', 2, DEFAULT, DEFAULT),
+    ('Cat', 2, DEFAULT, DEFAULT),
+    ('Brown', 2, DEFAULT, DEFAULT),
+
+    ('Orange Shades', 2, DEFAULT, DEFAULT),
+    ('Open', 2, DEFAULT, DEFAULT),
+    ('Hazel', 2, DEFAULT, DEFAULT),
+
+    ('Berry Shades', 2, DEFAULT, DEFAULT),
+    ('Violet', 2, DEFAULT, DEFAULT);
 
 -- auto-generated definition
 INSERT INTO detail_face_shape_tags (face_shape_id, tag_id, created_at, updated_at)

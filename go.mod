@@ -61,5 +61,6 @@ require (
 	golang.org/x/text v0.9.0 // indirect
 	golang.org/x/time v0.3.0 // indirect
 	gopkg.in/ini.v1 v1.67.0 // indirect
+	gopkg.in/resty.v1 v1.12.0
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )

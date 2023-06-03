@@ -60,3 +60,71 @@ type UserAuth struct {
 	FullName string `json:"full_name"`
 	RoleID   uint64 `json:"role_id"`
 }
+
+type UserPersonality struct {
+	ID        uint64    `gorm:"column:id;primary_key"`
+	UserID    uint64    `gorm:"column:user_id"`
+	IsActive  int       `gorm:"column:is_active"`
+	TagIDs    string    `gorm:"column:tag_ids"`
+	ExtResult float64   `gorm:"column:ext_result"`
+	EstResult float64   `gorm:"column:est_result"`
+	AgrResult float64   `gorm:"column:agr_result"`
+	CsnResult float64   `gorm:"column:csn_result"`
+	OpnResult float64   `gorm:"column:opn_result"`
+	EXT1      int       `gorm:"column:EXT1"`
+	EXT2      int       `gorm:"column:EXT2"`
+	EXT3      int       `gorm:"column:EXT3"`
+	EXT4      int       `gorm:"column:EXT4"`
+	EXT5      int       `gorm:"column:EXT5"`
+	EXT6      int       `gorm:"column:EXT6"`
+	EXT7      int       `gorm:"column:EXT7"`
+	EXT8      int       `gorm:"column:EXT8"`
+	EXT9      int       `gorm:"column:EXT9"`
+	EXT10     int       `gorm:"column:EXT10"`
+	EST1      int       `gorm:"column:EST1"`
+	EST2      int       `gorm:"column:EST2"`
+	EST3      int       `gorm:"column:EST3"`
+	EST4      int       `gorm:"column:EST4"`
+	EST5      int       `gorm:"column:EST5"`
+	EST6      int       `gorm:"column:EST6"`
+	EST7      int       `gorm:"column:EST7"`
+	EST8      int       `gorm:"column:EST8"`
+	EST9      int       `gorm:"column:EST9"`
+	EST10     int       `gorm:"column:EST10"`
+	AGR1      int       `gorm:"column:AGR1"`
+	AGR2      int       `gorm:"column:AGR2"`
+	AGR3      int       `gorm:"column:AGR3"`
+	AGR4      int       `gorm:"column:AGR4"`
+	AGR5      int       `gorm:"column:AGR5"`
+	AGR6      int       `gorm:"column:AGR6"`
+	AGR7      int       `gorm:"column:AGR7"`
+	AGR8      int       `gorm:"column:AGR8"`
+	AGR9      int       `gorm:"column:AGR9"`
+	AGR10     int       `gorm:"column:AGR10"`
+	CSN1      int       `gorm:"column:CSN1"`
+	CSN2      int       `gorm:"column:CSN2"`
+	CSN3      int       `gorm:"column:CSN3"`
+	CSN4      int       `gorm:"column:CSN4"`
+	CSN5      int       `gorm:"column:CSN5"`
+	CSN6      int       `gorm:"column:CSN6"`
+	CSN7      int       `gorm:"column:CSN7"`
+	CSN8      int       `gorm:"column:CSN8"`
+	CSN9      int       `gorm:"column:CSN9"`
+	CSN10     int       `gorm:"column:CSN10"`
+	OPN1      int       `gorm:"column:OPN1"`
+	OPN2      int       `gorm:"column:OPN2"`
+	OPN3      int       `gorm:"column:OPN3"`
+	OPN4      int       `gorm:"column:OPN4"`
+	OPN5      int       `gorm:"column:OPN5"`
+	OPN6      int       `gorm:"column:OPN6"`
+	OPN7      int       `gorm:"column:OPN7"`
+	OPN8      int       `gorm:"column:OPN8"`
+	OPN9      int       `gorm:"column:OPN9"`
+	OPN10     int       `gorm:"column:OPN10"`
+	CreatedAt time.Time `gorm:"column:created_at"`
+	UpdatedAt time.Time `gorm:"column:updated_at"`
+}
+
+func (UserPersonality) TableName() string {
+	return "user_personalities"
+}

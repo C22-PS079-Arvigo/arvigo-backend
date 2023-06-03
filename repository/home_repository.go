@@ -63,7 +63,6 @@ func GetHome(userID uint64) (res datastruct.HomeResponse, statusCode int, err er
 		}
 	}
 
-	// personality TODO: integrate with ML
 	if user.IsCompletePersonalityTest {
 		if err := db.Table("products p").
 			Select([]string{
