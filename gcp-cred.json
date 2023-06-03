@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "arvigo-capstone-project",
+  "private_key_id": "1d6d6e93b7af7dd040e4e25804bbe6000c266870",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQCoH3JQVn4oTdyr\nBQEcMgGMZVlO5xnaLSE81MrIWuxRhHQ1nC7fzDFFUbq9WKfuWANul131SD7ap0JP\nCaxQNd0bzj1g+Z8LbPtTxemdkKnMmxYs90vS7cwKqAbSCNQuP36+VD2OCzHAaYkv\n04QP/VS9kFKarzD5zahFvGGlPSOd0cezZcc4SJArC3dw2z8n3Z/MQJDfLQc3mpod\nm8LYjRTWNNeK1YlLCh8xm7npXI7mq1Nligle6POz58TgCJIZuLlMXz1Ks0b5qRkS\n1oKeUtwZ5eNW/lLqVqmjQL6JVI0gE/n43AjZXIVe6xuMKWDHcUbTasK97TMbfCBQ\nQw7iy+sJAgMBAAECggEAKq0w22vZQmnhZhgzG/Elq3nencTULyndkg+CGjHaYyb4\nSNOIoo62wx3oBUCIAFyfImeSFj1slxx2HJIcB5BkvDYyJne3A7N6aN2IW9LpB2Mm\n0etEeBqc/OeCM7bCBatghPflWDVHP8yKYnWSxGxOIoCMN2/ZQtANswYK02Mds2Wv\nFeZ5kVsdwHaXBBDqBQWYL9w2CrT0GJqDYPCdHniLTm0z1DmZwxeQM124+CPJtBQc\nPqEG1HLQsDiLDvG3vPfBHc/Z6xkKA1DfM69AeLBW0V7HBaW6vH47wWchMIP0oMwm\nyB3f81cEbjfwwN/6JvGWFdz/htekA+S8ioaJUjU+8QKBgQDnNsQXV+eyW0Xe+e+z\nK/ypE28LPOvWXgh2VQEdVhuv3k87sCUWTZ/5j7eqf4KdYJLfiNU4kosL3o334lxf\nMOHyBh02stocLNQ7wwCN/9lDPbciVBbgIvW5z8pN7VrN7EtYcENgCTWLrHHN+smN\nzUsuCf5wFzDXfeGkZmHE/1LvuwKBgQC6JUN1CL8uBaAt3/4akrCv+ZD8I/Z7zDw2\nMkqIt3nsRzsx1muKXpY64n3/71lEzrNQy9I3M0Iwa2YPmXO2l5izXl80xjbFySfM\nrxUbVkKy/nF4vcSqNEBfDvC00NULJbzRucRsOdrmKm94ZXnAxiPtNy/La9eU/Y2s\nnRNlNO36CwKBgA3sy3SIc8jXHGcocFo/HPFl3Ts1CRMZCLNvvShyJiq6XdU/b4xf\nUnIqSKp5EXm+9jmGOSk2Ei+90JkMRfnprMHxwlKoBODLhmCvBtqGfSRClEP6AoKv\nOFNfg1ScJere/06tPDGNfG8UDKqWHwtuQMfeDDfd/bAMwckv7VV69xi/AoGAWwJh\nCtVt82hYulUrfX5+2GriUgSbPEfMoIrSGinqeHUTIfi9t3craDrYc8toD9Ynobcl\nXku3bsjzq2jRRFK2G+xmC/1lRiplRRPM9AKmtbDlda0CfFzzpAY/9Yeswbh/quJy\ngJ+AwMu6mFi0wGWfpxk2SvS9AGE/ZUee9fp856UCgYAgjY+LnYpghX1z/CMXnhow\nXbGD6BAcyWiRm9OF4Vc4PkDnb/AoZum+fGwIkTlg46lJua0FT/8e2jeXcG87Ak5U\nU6kWb1i34wgkurujhc2Z/ckz2hgyY+O9l4Wx8bQYa9Sdopf98LURwt7x3oOyK6/4\nRoqw+aL9EuccNsy6kZiDuw==\n-----END PRIVATE KEY-----\n",
+  "client_email": "arvigo-service-account@arvigo-capstone-project.iam.gserviceaccount.com",
+  "client_id": "111901638966217698374",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/arvigo-service-account%40arvigo-capstone-project.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}
