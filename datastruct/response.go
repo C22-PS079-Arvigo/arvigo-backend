@@ -72,9 +72,10 @@ type (
 	}
 
 	BrandResponse struct {
-		ID    uint64 `gorm:"column:id;primaryKey;autoIncrement" json:"id"`
-		Name  string `gorm:"column:name" json:"name"`
-		Image string `gorm:"column:image" json:"image"`
+		ID         uint64 `gorm:"column:id;primaryKey;autoIncrement" json:"id"`
+		Name       string `gorm:"column:name" json:"name"`
+		Image      string `gorm:"column:image" json:"image"`
+		CategoryID uint64 `gorm:"column:category_id" json:"category_id"`
 	}
 
 	CategoryResponse struct {

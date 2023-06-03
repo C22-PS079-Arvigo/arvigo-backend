@@ -12,7 +12,7 @@ func GetBrands() (res []datastruct.BrandResponse, statusCode int, err error) {
 	db := Database()
 	statusCode = http.StatusOK
 
-	if err = db.Table("brands").Select("id, name, image").Find(&res).Error; err != nil {
+	if err = db.Table("brands").Select("id, name, image, category_id").Find(&res).Error; err != nil {
 		return res, http.StatusInternalServerError, err
 	}
 

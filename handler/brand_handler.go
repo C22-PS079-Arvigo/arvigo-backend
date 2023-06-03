@@ -96,7 +96,7 @@ func updateBrand(c echo.Context) error {
 		return utils.ResponseJSON(c, "Failed to parse form data", nil, http.StatusBadRequest)
 	}
 
-	images := form.File["images"]
+	images := form.File["image"]
 	if len(images) == 0 {
 		return utils.ResponseJSON(c, "Images must be filled", nil, http.StatusBadRequest)
 	}
