@@ -11,8 +11,9 @@ import (
 
 func RegisterQuestionnaireRoutes(e *echo.Echo) {
 	v1Group := e.Group("/v1")
-	locationGroup := v1Group.Group("/questionnaires", middleware.AuthMiddleware)
-	locationGroup.GET("", getQuestionnaire)
+	questionnaireGroup := v1Group.Group("/questionnaires", middleware.AuthMiddleware)
+	questionnaireGroup.GET("", getQuestionnaire)
+	questionnaireGroup.POST("", getQuestionnaire)
 }
 
 func getQuestionnaire(c echo.Context) error {
