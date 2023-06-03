@@ -61,7 +61,7 @@ func createBrand(c echo.Context) error {
 		return utils.ResponseJSON(c, "Failed to parse form data", nil, http.StatusBadRequest)
 	}
 
-	images := form.File["images"]
+	images := form.File["image"]
 	if len(images) == 0 {
 		return utils.ResponseJSON(c, "Images must be filled", nil, http.StatusBadRequest)
 	}
@@ -69,10 +69,10 @@ func createBrand(c echo.Context) error {
 	data.Image = images[0]
 	statusCode, err := repository.CreateBrand(data)
 	if err != nil {
-		return utils.ResponseJSON(c, "Failed create product", err.Error(), statusCode)
+		return utils.ResponseJSON(c, "Failed create brand", err.Error(), statusCode)
 	}
 
-	return utils.ResponseJSON(c, "Product created", nil, statusCode)
+	return utils.ResponseJSON(c, "Brand created", nil, statusCode)
 }
 
 func updateBrand(c echo.Context) error {
@@ -104,10 +104,10 @@ func updateBrand(c echo.Context) error {
 	data.Image = images[0]
 	statusCode, err := repository.UpdateBrand(brandID, data)
 	if err != nil {
-		return utils.ResponseJSON(c, "Failed create product", err.Error(), statusCode)
+		return utils.ResponseJSON(c, "Failed update brand", err.Error(), statusCode)
 	}
 
-	return utils.ResponseJSON(c, "Product created", nil, statusCode)
+	return utils.ResponseJSON(c, "Brand updated", nil, statusCode)
 }
 
 func getListProductByBrand(c echo.Context) error {

@@ -12,7 +12,7 @@ func GetBrands() (res []datastruct.BrandResponse, statusCode int, err error) {
 	db := Database()
 	statusCode = http.StatusOK
 
-	if err = db.Table("brands").Select("name, image").Find(&res).Error; err != nil {
+	if err = db.Table("brands").Select("id, name, image").Find(&res).Error; err != nil {
 		return res, http.StatusInternalServerError, err
 	}
 
@@ -23,7 +23,7 @@ func GetBrandByCategory(categoryID uint64) (res []datastruct.BrandResponse, stat
 	db := Database()
 	statusCode = http.StatusOK
 
-	if err = db.Table("brands").Select("name, image").Where("category_id", categoryID).Find(&res).Error; err != nil {
+	if err = db.Table("brands").Select("id, name, image").Where("category_id", categoryID).Find(&res).Error; err != nil {
 		return res, http.StatusInternalServerError, err
 	}
 
@@ -59,7 +59,7 @@ func CreateBrand(data datastruct.BrandInput) (statusCode int, err error) {
 }
 
 func UpdateBrand(brandID uint64, data datastruct.BrandInput) (statusCode int, err error) {
-	statusCode = http.StatusOK
+	statusCode = http.StatusCreated
 
 	var (
 		db          = Database()

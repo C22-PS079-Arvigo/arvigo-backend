@@ -72,11 +72,13 @@ type (
 	}
 
 	BrandResponse struct {
+		ID    uint64 `gorm:"column:id;primaryKey;autoIncrement" json:"id"`
 		Name  string `gorm:"column:name" json:"name"`
 		Image string `gorm:"column:image" json:"image"`
 	}
 
 	CategoryResponse struct {
+		ID   uint64 `gorm:"column:id;primaryKey;autoIncrement" json:"id"`
 		Name string `gorm:"column:name" json:"name"`
 	}
 

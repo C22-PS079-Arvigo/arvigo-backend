@@ -11,7 +11,7 @@ func GetCategories() (res []datastruct.CategoryResponse, statusCode int, err err
 	db := Database()
 	statusCode = http.StatusOK
 
-	if err = db.Table("categories").Select("name").Find(&res).Error; err != nil {
+	if err = db.Table("categories").Select("id, name").Find(&res).Error; err != nil {
 		return res, http.StatusInternalServerError, err
 	}
 

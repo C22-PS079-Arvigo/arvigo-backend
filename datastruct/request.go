@@ -64,9 +64,9 @@ type (
 	}
 
 	BrandInput struct {
-		Name       string                `form:"column:name" json:"name"`
-		Image      *multipart.FileHeader `form:"column:image" json:"image"`
-		CategoryID uint64                `form:"column:category_id" json:"category_id"`
+		Name       string                `form:"name" json:"name"`
+		Image      *multipart.FileHeader `form:"image" json:"image"`
+		CategoryID uint64                `form:"category_id" json:"category_id"`
 	}
 
 	AddWhislistProductInput struct {
