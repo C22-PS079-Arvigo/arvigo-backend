@@ -17,3 +17,12 @@ var GetIDByShape = map[string]uint64{
 	"square":   5,
 	"triangle": 6,
 }
+
+var GetShapeByDetailTag = map[uint64][]string{
+	1: {"heart", "oval", "triangle"},
+	2: {"oval", "square"},
+	3: {"circle", "oval"},
+	4: {"oblong", "oval"},
+	5: {"heart", "oval", "triangle"},
+	6: {"oval", "square"},
+}

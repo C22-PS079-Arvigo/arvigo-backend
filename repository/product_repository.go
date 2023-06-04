@@ -428,6 +428,19 @@ func GetInitialProductByID(productID uint64) (res datastruct.InitialProductRespo
 		}
 	}
 
+	var tagIDs []uint64
+	if err := db.Table("detail_product_tags").
+		Select([]string{
+			"tag_id",
+		}).
+		Where("product_id = ?", productID).
+		Find(&tagIDs).
+		Error; err != nil {
+		return res, http.StatusInternalServerError, err
+	}
+
+	fmt.Println(tagIDs)
+
 	res = datastruct.InitialProductResponse{
 		InitialProduct:  products,
 		Images:          strings.Split(products.Images, ","),
