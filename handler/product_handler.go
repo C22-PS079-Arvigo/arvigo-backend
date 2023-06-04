@@ -17,8 +17,8 @@ func RegisterProductRoutes(e *echo.Echo) {
 
 	productGroup := v1Group.Group("/products", middleware.AuthMiddleware)
 	initialProductGroup := productGroup.Group("/initials")
-	initialProductGroup.GET("/:id", getInitalProductByCategoryID)             // TODO: develop
-	initialProductGroup.GET("/marketplace/:id", getInitalProductByCategoryID) // TODO: develop
+	initialProductGroup.GET("/:id", getInitalProductByID)
+	initialProductGroup.GET("/marketplace/:id", getMarketplaceProductByID)
 
 	initialProductGroup.POST("", createInitialProductHandler)
 	initialProductGroup.GET("/category/:id", getInitalProductByCategoryID)
@@ -106,6 +106,34 @@ func getInitalProductByCategoryID(c echo.Context) error {
 	}
 
 	data, statusCode, err := repository.GetInitialProductByCategoryID(categoryID)
+	if err != nil {
+		return utils.ResponseJSON(c, err.Error(), nil, statusCode)
+	}
+
+	return utils.ResponseJSON(c, "Success", data, statusCode)
+}
+
+func getInitalProductByID(c echo.Context) error {
+	pID := utils.StrToUint64(c.Param("id"), 0)
+	if pID == 0 {
+		return echo.NewHTTPError(http.StatusBadRequest, "Invalid product ID")
+	}
+
+	data, statusCode, err := repository.GetInitialProductByID(pID)
+	if err != nil {
+		return utils.ResponseJSON(c, err.Error(), nil, statusCode)
+	}
+
+	return utils.ResponseJSON(c, "Success", data, statusCode)
+}
+
+func getMarketplaceProductByID(c echo.Context) error {
+	pID := utils.StrToUint64(c.Param("id"), 0)
+	if pID == 0 {
+		return echo.NewHTTPError(http.StatusBadRequest, "Invalid product ID")
+	}
+
+	data, statusCode, err := repository.GetMarketplaceProductByID(pID)
 	if err != nil {
 		return utils.ResponseJSON(c, err.Error(), nil, statusCode)
 	}

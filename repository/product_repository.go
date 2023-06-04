@@ -10,8 +10,10 @@ import (
 	"strings"
 	"time"
 
+	"github.com/yusufwib/arvigo-backend/constant"
 	"github.com/yusufwib/arvigo-backend/datastruct"
 	"github.com/yusufwib/arvigo-backend/utils"
+	"gorm.io/gorm"
 )
 
 func CreateInitialProduct(data datastruct.CreateInitialProductInput) (statusCode int, err error) {
@@ -327,6 +329,156 @@ func GetInitialProductByCategoryID(categoryID uint64) (res []datastruct.InitialP
 			Images:         strings.Split(product.Images, ","),
 			Variants:       productVariantMap[product.ID],
 		})
+	}
+
+	return
+}
+
+func GetInitialProductByID(productID uint64) (res datastruct.InitialProductResponse, statusCode int, err error) {
+	db := Database()
+	statusCode = http.StatusOK
+
+	var (
+		marketplaceDetailIDs []uint64
+		products             datastruct.InitialProduct
+		productVariants      []datastruct.InitialProductVariant
+	)
+	if err := db.Table("products p").
+		Select([]string{
+			"p.id",
+			"p.name",
+			"p.description",
+			"p.images",
+			"p.link_external",
+			"c.name as category_name",
+			"b.name as brand_name",
+		}).
+		Where("p.merchant_id = 0 AND p.id = ?", productID).
+		Joins("LEFT JOIN categories c on c.id = p.category_id").
+		Joins("LEFT JOIN brands b on b.id = p.brand_id").
+		First(&products).
+		Error; err != nil {
+		return res, http.StatusInternalServerError, err
+	}
+
+	if err := db.Table("detail_product_variants").
+		Select([]string{
+			"name",
+			"link_ar",
+			"is_primary_variant",
+			"product_id",
+		}).
+		Where("product_id = ? ", productID).
+		Find(&productVariants).
+		Error; err != nil {
+		return res, http.StatusInternalServerError, err
+	}
+
+	if err := db.Table("detail_linked_products").
+		Select([]string{
+			"dpm.id",
+		}).
+		Joins("left join detail_product_marketplaces dpm on detail_linked_products.merchant_product_id = dpm.product_id").
+		Where("initial_product_id = ? ", productID).
+		Find(&marketplaceDetailIDs).
+		Error; err != nil {
+		return res, http.StatusInternalServerError, err
+	}
+
+	var merchantProduct []datastruct.ProductMarketplaceWishlist
+	if len(marketplaceDetailIDs) > 0 {
+
+		if err = db.Table("detail_product_marketplaces").
+			Select([]string{
+				"detail_product_marketplaces.id AS id",
+				"products.name",
+				"brands.name AS brand",
+				"products.images",
+				"products.price",
+				"merchants.name AS merchant",
+				"detail_product_marketplaces.link AS marketplace_link",
+				"detail_product_marketplaces.marketplace_id",
+				"detail_product_marketplaces.addresses_id",
+			}).
+			Joins("LEFT JOIN products ON products.id = detail_product_marketplaces.product_id").
+			Joins("LEFT JOIN brands ON brands.id = products.brand_id").
+			Joins("LEFT JOIN merchants ON products.merchant_id = merchants.id").
+			Where("detail_product_marketplaces.id IN (?)", marketplaceDetailIDs).
+			Find(&merchantProduct).Error; err != nil {
+			return res, http.StatusInternalServerError, err
+		}
+
+		for i, v := range merchantProduct {
+			merchantProduct[i].Image = strings.Split(v.Image, ",")[0]
+
+			if v.AddressID != 0 {
+				merchantProduct[i].Type = "offline"
+				addr, _, _, err := GetAddressByID(v.AddressID)
+				if err == nil {
+					merchantProduct[i].Address = &addr
+				}
+				continue
+			}
+
+			if v.MarketplaceID != 0 {
+				merchantProduct[i].Type = "online"
+				marketplaceName := constant.Marketplace[v.MarketplaceID]
+				merchantProduct[i].Marketplace = &marketplaceName
+			}
+		}
+	}
+
+	res = datastruct.InitialProductResponse{
+		InitialProduct:  products,
+		Images:          strings.Split(products.Images, ","),
+		Variants:        productVariants,
+		ListMarketplace: merchantProduct,
+	}
+
+	return
+}
+
+func GetMarketplaceProductByID(productID uint64) (merchantProduct datastruct.ProductMarketplaceDetail, statusCode int, err error) {
+	db := Database()
+	statusCode = http.StatusOK
+
+	if err = db.Table("detail_product_marketplaces").
+		Select([]string{
+			"detail_product_marketplaces.id AS id",
+			"products.name",
+			"brands.name AS brand",
+			"products.images",
+			"products.price",
+			"merchants.name AS merchant",
+			"detail_product_marketplaces.link AS marketplace_link",
+			"detail_product_marketplaces.marketplace_id",
+			"detail_product_marketplaces.addresses_id",
+		}).
+		Joins("LEFT JOIN products ON products.id = detail_product_marketplaces.product_id").
+		Joins("LEFT JOIN brands ON brands.id = products.brand_id").
+		Joins("LEFT JOIN merchants ON products.merchant_id = merchants.id").
+		Where("detail_product_marketplaces.id = ?", productID).
+		Find(&merchantProduct).Error; err != nil {
+		return merchantProduct, http.StatusInternalServerError, err
+	}
+
+	merchantProduct.Images = strings.Split(merchantProduct.Image, ",")
+	if merchantProduct.AddressID != 0 {
+		merchantProduct.Type = "offline"
+		addr, _, _, err := GetAddressByID(merchantProduct.AddressID)
+		if err == nil {
+			merchantProduct.Address = &addr
+		}
+	} else if merchantProduct.MarketplaceID != 0 {
+		merchantProduct.Type = "online"
+		marketplaceName := constant.Marketplace[merchantProduct.MarketplaceID]
+		merchantProduct.Marketplace = &marketplaceName
+	}
+
+	if err = db.Table("detail_product_marketplaces").
+		Where("id = ?", productID).
+		UpdateColumn("clicked", gorm.Expr("clicked + ?", 1)).Error; err != nil {
+		return merchantProduct, http.StatusInternalServerError, err
 	}
 
 	return
