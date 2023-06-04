@@ -18,11 +18,26 @@ var GetIDByShape = map[string]uint64{
 	"triangle": 6,
 }
 
-var GetShapeByDetailTag = map[uint64][]string{
-	1: {"heart", "oval", "triangle"},
-	2: {"oval", "square"},
-	3: {"circle", "oval"},
-	4: {"oblong", "oval"},
-	5: {"heart", "oval", "triangle"},
-	6: {"oval", "square"},
+var GetTagNameByDetailTag = map[uint64][]string{
+	1: {"Heart", "Oval", "Triangle"},
+	2: {"Oval", "Square"},
+	3: {"Circle", "Oval"},
+	4: {"Oblong", "Oval"},
+	5: {"Heart", "Oval", "Triangle"},
+	6: {"Oval", "Square"},
+
+	7:  {"Extraversion"},
+	8:  {"Extraversion", "Opennes"},
+	9:  {"Extraversion"},
+	10: {"Neurotic"},
+	11: {"Neurotic"},
+	12: {"Neurotic"},
+	13: {"Agreeable"},
+	14: {"Agreeable"},
+	15: {"Agreeable"},
+	16: {"Conscientious"},
+	17: {"Conscientious"},
+	18: {"Conscientious"},
+	19: {"Opennes"},
+	20: {"Opennes"},
 }

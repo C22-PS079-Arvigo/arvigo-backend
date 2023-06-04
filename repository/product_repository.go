@@ -429,6 +429,7 @@ func GetInitialProductByID(productID uint64) (res datastruct.InitialProductRespo
 	}
 
 	var tagIDs []uint64
+	var tags []string
 	if err := db.Table("detail_product_tags").
 		Select([]string{
 			"tag_id",
@@ -439,13 +440,16 @@ func GetInitialProductByID(productID uint64) (res datastruct.InitialProductRespo
 		return res, http.StatusInternalServerError, err
 	}
 
-	fmt.Println(tagIDs)
+	for _, v := range tagIDs {
+		tags = append(tags, constant.GetTagNameByDetailTag[v]...)
+	}
 
 	res = datastruct.InitialProductResponse{
 		InitialProduct:  products,
 		Images:          strings.Split(products.Images, ","),
 		Variants:        productVariants,
 		ListMarketplace: merchantProduct,
+		Tags:            utils.RemoveDuplicates(tags),
 	}
 
 	return
@@ -618,5 +622,3 @@ func UpdateMerchantProduct(data datastruct.UpdateProductInput) (statusCode int, 
 
 	return
 }
-
-// id_product, nama, deskripsi, kategori, warna, nama_toko, clicked

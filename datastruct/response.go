@@ -60,6 +60,7 @@ type (
 		Images          []string                     `json:"images"`
 		Variants        []InitialProductVariant      `json:"variants"`
 		ListMarketplace []ProductMarketplaceWishlist `json:"marketplaces"`
+		Tags            []string                     `json:"tags"`
 	}
 
 	InitialProduct struct {
@@ -162,9 +163,10 @@ type (
 	}
 
 	HomeProduct struct {
-		ID    uint64 `gorm:"column:id" json:"id"`
-		Name  string `gorm:"column:name" json:"name"`
-		Brand string `gorm:"column:brand" json:"brand"`
-		Image string `gorm:"column:images" json:"image"`
+		ID    uint64   `gorm:"column:id" json:"id"`
+		Name  string   `gorm:"column:name" json:"name"`
+		Brand string   `gorm:"column:brand" json:"brand"`
+		Image string   `gorm:"column:images" json:"image"`
+		Tags  []string `json:"tags"`
 	}
 )

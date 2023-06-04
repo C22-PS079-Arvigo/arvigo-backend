@@ -60,6 +60,22 @@ func GetHome(userID uint64) (res datastruct.HomeResponse, statusCode int, err er
 
 		for i, v := range faceShapeProduct {
 			faceShapeProduct[i].Image = strings.Split(v.Image, ",")[0]
+			var tagIDs []uint64
+			var tags []string
+			if err := db.Table("detail_product_tags").
+				Select([]string{
+					"tag_id",
+				}).
+				Where("product_id = ?", v.ID).
+				Find(&tagIDs).
+				Error; err != nil {
+				return res, http.StatusInternalServerError, err
+			}
+
+			for _, v := range tagIDs {
+				tags = append(tags, constant.GetTagNameByDetailTag[v]...)
+			}
+			faceShapeProduct[i].Tags = utils.RemoveDuplicates(tags)
 		}
 	}
 
@@ -81,10 +97,26 @@ func GetHome(userID uint64) (res datastruct.HomeResponse, statusCode int, err er
 
 		for i, v := range personalityProduct {
 			personalityProduct[i].Image = strings.Split(v.Image, ",")[0]
+			var tagIDs []uint64
+			var tags []string
+			if err := db.Table("detail_product_tags").
+				Select([]string{
+					"tag_id",
+				}).
+				Where("product_id = ?", v.ID).
+				Find(&tagIDs).
+				Error; err != nil {
+				return res, http.StatusInternalServerError, err
+			}
+
+			for _, v := range tagIDs {
+				tags = append(tags, constant.GetTagNameByDetailTag[v]...)
+			}
+			personalityProduct[i].Tags = utils.RemoveDuplicates(tags)
 		}
 	}
 
-	// recommendation TODO: integrate with ML
+	// recommendation TODO: integrate with ML/sort subs
 	if err := db.Table("products p").
 		Select([]string{
 			"p.id",
@@ -101,6 +133,22 @@ func GetHome(userID uint64) (res datastruct.HomeResponse, statusCode int, err er
 
 	for i, v := range recommendationProduct {
 		recommendationProduct[i].Image = strings.Split(v.Image, ",")[0]
+		var tagIDs []uint64
+		var tags []string
+		if err := db.Table("detail_product_tags").
+			Select([]string{
+				"tag_id",
+			}).
+			Where("product_id = ?", v.ID).
+			Find(&tagIDs).
+			Error; err != nil {
+			return res, http.StatusInternalServerError, err
+		}
+
+		for _, v := range tagIDs {
+			tags = append(tags, constant.GetTagNameByDetailTag[v]...)
+		}
+		recommendationProduct[i].Tags = utils.RemoveDuplicates(tags)
 	}
 
 	res = datastruct.HomeResponse{
