@@ -18,6 +18,18 @@ type (
 		CreatedAt   time.Time `gorm:"column:created_at" json:"created_at"`
 		UpdatedAt   time.Time `gorm:"column:updated_at" json:"updated_at"`
 	}
+
+	FaceShapeMachineLearningPayload struct {
+		Image string `json:"image"`
+	}
+
+	IsHumanRes struct {
+		Result bool `json:"result"`
+	}
+
+	FaceTestRes struct {
+		Shape string `json:"shape"`
+	}
 )
 
 func (FaceShape) TableName() string {

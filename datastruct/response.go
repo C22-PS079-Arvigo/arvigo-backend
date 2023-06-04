@@ -10,9 +10,17 @@ type (
 
 	UserDetailResponse struct {
 		UserDetail
-		Address UserAddress `json:"address"`
+		Address                UserAddress                `json:"address"`
+		PersonalityPercentages PersonalityPercentagesUser `json:"personality"`
 	}
 
+	PersonalityPercentagesUser struct {
+		Agreeable     float64 `gorm:"column:agr_result" json:"percentage_of_agreeable"`
+		Conscientious float64 `gorm:"column:csn_result" json:"percentage_of_conscientious"`
+		Extraversion  float64 `gorm:"column:ext_result" json:"percentage_of_extraversion"`
+		Neurotic      float64 `gorm:"column:est_result" json:"percentage_of_neurotic"`
+		Openness      float64 `gorm:"column:opn_result" json:"percentage_of_openess"`
+	}
 	FaceShapeResponse struct {
 		ImageUrl string `json:"image_url"`
 		Result   string `json:"result"`
@@ -31,7 +39,6 @@ type (
 		IsCompleteFaceTest        bool       `json:"is_complete_face_test"`
 		PersonalityID             uint64     `gorm:"column:personality_id" json:"-"`
 		FaceShapeTagID            uint64     `gorm:"column:face_shape_id" json:"-"`
-		Personality               *string    `json:"personality"`
 		FaceShape                 *string    `json:"face_shape"`
 		IsVerified                bool       `json:"is_verified"`
 		Avatar                    string     `json:"avatar"`

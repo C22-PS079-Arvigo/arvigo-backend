@@ -40,6 +40,17 @@ func GetUserByID(id uint64) (res datastruct.UserDetailResponse, statusCode int, 
 		userDetail.FaceShape = &faceShape.Name
 	}
 
+	var personality datastruct.PersonalityPercentagesUser
+	if userDetail.FaceShapeTagID != 0 {
+		if err := db.Table("user_personalities").
+			Select("*").
+			Where("user_id = ? AND is_active = 1", userDetail.ID).
+			Find(&personality).
+			Error; err != nil {
+			return res, http.StatusNotFound, err
+		}
+	}
+
 	var addressDetail datastruct.UserAddress
 	if err := db.Table("addresses").
 		Select([]string{
@@ -62,8 +73,9 @@ func GetUserByID(id uint64) (res datastruct.UserDetailResponse, statusCode int, 
 	}
 
 	res = datastruct.UserDetailResponse{
-		Address:    addressDetail,
-		UserDetail: userDetail,
+		Address:                addressDetail,
+		UserDetail:             userDetail,
+		PersonalityPercentages: personality,
 	}
 	return
 }

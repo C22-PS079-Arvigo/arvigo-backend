@@ -89,6 +89,33 @@ func RegisterUser(userData datastruct.UserRegisterInput) (tokenResponse datastru
 	return tokenResponse, http.StatusCreated, nil
 }
 
+func UpdateUser(userData datastruct.UserRegisterInput, userID uint64) (statusCode int, err error) {
+	db := Database()
+
+	if strings.TrimSpace(userData.Password) != strings.TrimSpace(userData.PasswordConfirmation) {
+		return http.StatusBadRequest, errors.New("password is doesn't match")
+	}
+
+	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(userData.Password), bcrypt.MinCost)
+	if err != nil {
+		return http.StatusBadRequest, err
+	}
+
+	userPayload := datastruct.User{
+		FullName:  userData.FullName,
+		Email:     userData.Email,
+		Password:  string(hashedPassword),
+		RoleID:    constant.MobileApp,
+		CreatedAt: time.Now(),
+		UpdatedAt: time.Now(),
+	}
+
+	if err = db.Where("id = ? ", userID).Updates(&userPayload).Error; err != nil {
+		return http.StatusInternalServerError, err
+	}
+	return http.StatusOK, nil
+}
+
 func RegisterPartner(partnerData datastruct.PartnerRegisterInput) (tokenResponse datastruct.LoginRegisterResponse, statusCode int, err error) {
 	db := Database()
 

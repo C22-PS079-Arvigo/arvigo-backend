@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	"github.com/labstack/echo/v4"
+	"github.com/yusufwib/arvigo-backend/datastruct"
 	"github.com/yusufwib/arvigo-backend/middleware"
 	"github.com/yusufwib/arvigo-backend/repository"
 	"github.com/yusufwib/arvigo-backend/utils"
@@ -22,7 +23,8 @@ func faceShapeRecognitionHandler(c echo.Context) error {
 		return utils.ResponseJSON(c, "Failed to parse form data", nil, http.StatusBadRequest)
 	}
 
-	data, statusCode, err := repository.FaceShapeRecognition(form)
+	userAuth := c.Get("userAuth").(*datastruct.UserAuth)
+	data, statusCode, err := repository.FaceShapeRecognition(form, userAuth.ID)
 	if err != nil {
 		return utils.ResponseJSON(c, err.Error(), data, statusCode)
 	}

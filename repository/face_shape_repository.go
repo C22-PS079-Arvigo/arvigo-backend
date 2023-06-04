@@ -1,6 +1,7 @@
 package repository
 
 import (
+	"encoding/json"
 	"errors"
 	"fmt"
 	"io"
@@ -8,13 +9,16 @@ import (
 	"mime/multipart"
 	"net/http"
 	"os"
+	"time"
 
+	"github.com/yusufwib/arvigo-backend/constant"
 	"github.com/yusufwib/arvigo-backend/datastruct"
 	"github.com/yusufwib/arvigo-backend/pkg/storage"
 	"github.com/yusufwib/arvigo-backend/utils"
 )
 
-func FaceShapeRecognition(form *multipart.Form) (res datastruct.FaceShapeResponse, statusCode int, err error) {
+func FaceShapeRecognition(form *multipart.Form, userID uint64) (res datastruct.FaceShapeResponse, statusCode int, err error) {
+	db := Database()
 	fileHeaders := form.File["image"]
 	if len(fileHeaders) == 0 {
 		return res, http.StatusBadRequest, errors.New("failed to get image from form data")
@@ -56,8 +60,58 @@ func FaceShapeRecognition(form *multipart.Form) (res datastruct.FaceShapeRespons
 	if err != nil {
 		return res, http.StatusInternalServerError, fmt.Errorf("failed to upload image: %v", err)
 	}
-
 	res.ImageUrl = publicURL
-	res.Result = encodedImg
+
+	var (
+		isHumanRes  datastruct.IsHumanRes
+		faceTestRes datastruct.FaceTestRes
+	)
+	response, err := utils.FetchMachineLearningAPI("POST", "/is_human", datastruct.FaceShapeMachineLearningPayload{
+		Image: encodedImg,
+	})
+
+	if err != nil {
+		statusCode = http.StatusInternalServerError
+		return
+	}
+
+	err = json.Unmarshal(response, &isHumanRes)
+	if err != nil {
+		statusCode = http.StatusInternalServerError
+		return
+	}
+
+	if !isHumanRes.Result {
+		statusCode = http.StatusBadRequest
+		err = errors.New("is not human")
+		return
+	}
+	responseFaceShape, err := utils.FetchMachineLearningAPI("POST", "/face_shape", datastruct.FaceShapeMachineLearningPayload{
+		Image: encodedImg,
+	})
+
+	if err != nil {
+		statusCode = http.StatusInternalServerError
+		return
+	}
+
+	err = json.Unmarshal(responseFaceShape, &faceTestRes)
+	if err != nil {
+		statusCode = http.StatusInternalServerError
+		return
+	}
+
+	faceShapeID := constant.GetIDByShape[faceTestRes.Shape]
+	if err = db.Model(&datastruct.User{}).
+		Where("id = ?", userID).
+		Updates(map[string]interface{}{
+			"face_shape_id":         faceShapeID,
+			"is_complete_face_test": 1,
+			"updated_at":            time.Now(),
+		}).Error; err != nil {
+		return res, http.StatusInternalServerError, err
+	}
+
+	res.Result = faceTestRes.Shape
 	return
 }
