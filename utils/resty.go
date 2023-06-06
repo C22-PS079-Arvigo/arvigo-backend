@@ -16,7 +16,8 @@ func FetchMachineLearningAPI(method, path string, body interface{}) (res []byte,
 
 	// Create the request object
 	restyReq := client.R().
-		SetHeader("Content-Type", "application/json")
+		SetHeader("Content-Type", "application/json").
+		SetHeader("X-API-KEY", "05d27624-e862-4127-afc8-d382a137ec52")
 
 	// Set the request method
 	var response *resty.Response
