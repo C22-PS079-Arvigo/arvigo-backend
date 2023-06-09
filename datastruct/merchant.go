@@ -19,6 +19,16 @@ type MerchantProduct struct {
 	Clicked uint64  `gorm:"column:clicked" json:"clicked"`
 }
 
+type MerchantProductByID struct {
+	ID          uint64   `gorm:"column:id" json:"id"`
+	Image       string   `gorm:"column:images" json:"-"`
+	Images      []string `json:"images"`
+	Description string   `gorm:"column:description" json:"description"`
+	Name        string   `gorm:"column:name" json:"name"`
+	Price       float64  `gorm:"column:price" json:"price"`
+	Status      string   `gorm:"column:status" json:"status"`
+}
+
 type MerchantVisitor struct {
 	Today     uint64 `gorm:"column:today" json:"today"`
 	ThisMonth uint64 `gorm:"column:this_month" json:"this_month"`

@@ -14,13 +14,22 @@ func RegisterMerchantRoutes(e *echo.Echo) {
 
 	merchantGroup := v1Group.Group("/merchant-app", middleware.AuthMiddleware)
 	merchantGroup.GET("/home", getMerchantAppHome)
-	// merchantGroup.GET("/product/:id", getHomeMerchant)
+	merchantGroup.GET("/product/:id", getMerchantAppHomeByID)
 }
 
 func getMerchantAppHome(c echo.Context) error {
 	userAuth := c.Get("userAuth").(*datastruct.UserAuth)
 
 	data, statusCode, err := repository.GetMerchantAppHome(userAuth.ID)
+	if err != nil {
+		return utils.ResponseJSON(c, err.Error(), nil, statusCode)
+	}
+
+	return utils.ResponseJSON(c, "Success", data, statusCode)
+}
+
+func getMerchantAppHomeByID(c echo.Context) error {
+	data, statusCode, err := repository.GetMerchantHomeProductByID(12)
 	if err != nil {
 		return utils.ResponseJSON(c, err.Error(), nil, statusCode)
 	}

@@ -178,4 +178,9 @@ type (
 		MerchantProduct []MerchantProduct `json:"products"`
 		MerchantVisitor MerchantVisitor   `json:"visitors"`
 	}
+
+	MerchantHomeDetail struct {
+		MerchantProductByID
+		Marketplace []MerchantMarketplace `json:"marketplaces"`
+	}
 )

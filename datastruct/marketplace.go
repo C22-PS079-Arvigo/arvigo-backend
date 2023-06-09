@@ -10,6 +10,11 @@ type Marketplace struct {
 	UpdatedAt time.Time `gorm:"column:updated_at" json:"updated_at"`
 }
 
+type MerchantMarketplace struct {
+	Name    string `gorm:"column:name" json:"name"`
+	Clicked uint64 `gorm:"column:clicked" json:"clicked"`
+}
+
 func (Marketplace) TableName() string {
 	return "marketplaces"
 }
