@@ -166,6 +166,7 @@ func CreateMerchantProduct(data datastruct.CreateMerchantProductInput) (statusCo
 		BrandID:      initialProduct.BrandID,
 		MerchantID:   data.MerchantID,
 		Price:        data.Price,
+		Status:       constant.StatusWaiting,
 		CreatedAt:    currentTime,
 		UpdatedAt:    currentTime,
 	}
@@ -350,6 +351,9 @@ func GetInitialProductByID(productID uint64) (res datastruct.InitialProductRespo
 			"p.description",
 			"p.images",
 			"p.link_external",
+			"p.status",
+			"p.is_subscription_active",
+			"p.rejected_note",
 			"c.name as category_name",
 			"b.name as brand_name",
 		}).
@@ -455,7 +459,7 @@ func GetInitialProductByID(productID uint64) (res datastruct.InitialProductRespo
 	return
 }
 
-func GetMarketplaceProductByID(productID uint64) (merchantProduct datastruct.ProductMarketplaceDetail, statusCode int, err error) {
+func GetMarketplaceProductByID(productID, userID uint64) (merchantProduct datastruct.ProductMarketplaceDetail, statusCode int, err error) {
 	db := Database()
 	statusCode = http.StatusOK
 
@@ -467,6 +471,7 @@ func GetMarketplaceProductByID(productID uint64) (merchantProduct datastruct.Pro
 			"products.images",
 			"products.price",
 			"merchants.name AS merchant",
+			"merchants.id AS merchant_id",
 			"detail_product_marketplaces.link AS marketplace_link",
 			"detail_product_marketplaces.marketplace_id",
 			"detail_product_marketplaces.addresses_id",
@@ -495,6 +500,19 @@ func GetMarketplaceProductByID(productID uint64) (merchantProduct datastruct.Pro
 	if err = db.Table("detail_product_marketplaces").
 		Where("id = ?", productID).
 		UpdateColumn("clicked", gorm.Expr("clicked + ?", 1)).Error; err != nil {
+		return merchantProduct, http.StatusInternalServerError, err
+	}
+
+	currentTime := time.Now()
+	clickedUser := datastruct.DetailProductMarketplaceClicked{
+		DetailProductMarketplaceID: merchantProduct.ID,
+		MerchantID:                 merchantProduct.MerchantID,
+		UserID:                     userID,
+		CreatedAt:                  currentTime,
+		UpdatedAt:                  currentTime,
+	}
+
+	if err = db.Table("detail_product_marketplace_clicked").Create(&clickedUser).Error; err != nil {
 		return merchantProduct, http.StatusInternalServerError, err
 	}
 

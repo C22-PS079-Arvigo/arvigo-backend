@@ -42,4 +42,6 @@ drop table if exists face_shapes;
 
 drop table if exists detail_face_shape_tags;
 
+drop table if exists detail_product_marketplace_clicked;
+
 drop table if exists schema_migrations;

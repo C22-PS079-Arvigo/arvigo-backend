@@ -64,13 +64,16 @@ type (
 	}
 
 	InitialProduct struct {
-		ID           uint64 `gorm:"column:id;primaryKey;autoIncrement" json:"id"`
-		Name         string `gorm:"column:name" json:"name"`
-		Description  string `gorm:"column:description" json:"description"`
-		LinkExternal string `gorm:"column:link_external" json:"link_external"`
-		CategoryName string `gorm:"column:category_name" json:"category_name"`
-		BrandName    string `gorm:"column:brand_name" json:"brand_name"`
-		Images       string `gorm:"column:images" json:"-"`
+		ID                   uint64 `gorm:"column:id;primaryKey;autoIncrement" json:"id"`
+		Name                 string `gorm:"column:name" json:"name"`
+		Description          string `gorm:"column:description" json:"description"`
+		LinkExternal         string `gorm:"column:link_external" json:"link_external"`
+		CategoryName         string `gorm:"column:category_name" json:"category_name"`
+		Status               string `gorm:"column:status" json:"status"`
+		IsSubscriptionActive bool   `gorm:"column:is_subscription_active" json:"is_subscription_active"`
+		RejectedNote         string `gorm:"column:rejected_note" json:"rejected_note"`
+		BrandName            string `gorm:"column:brand_name" json:"brand_name"`
+		Images               string `gorm:"column:images" json:"-"`
 	}
 
 	InitialProductVariant struct {
@@ -140,6 +143,7 @@ type (
 		Images          []string `json:"images"`
 		Price           float64  `gorm:"column:price" json:"price"`
 		Merchant        string   `gorm:"column:merchant" json:"merchant"`
+		MerchantID      uint64   `gorm:"column:merchant_id" json:"-"`
 		Type            string   `json:"store_type"`
 		Address         *string  `json:"address"`
 		Marketplace     *string  `json:"marketplace_name"`
@@ -168,5 +172,10 @@ type (
 		Brand string   `gorm:"column:brand" json:"brand"`
 		Image string   `gorm:"column:images" json:"image"`
 		Tags  []string `json:"tags"`
+	}
+
+	MerchantHome struct {
+		MerchantProduct []MerchantProduct `json:"products"`
+		MerchantVisitor MerchantVisitor   `json:"visitors"`
 	}
 )

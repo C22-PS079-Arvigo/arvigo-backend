@@ -85,6 +85,15 @@ type (
 		CreatedAt         time.Time `gorm:"column:created_at" json:"created_at"`
 		UpdatedAt         time.Time `gorm:"column:updated_at" json:"updated_at"`
 	}
+
+	DetailProductMarketplaceClicked struct {
+		ID                         uint64    `gorm:"column:id;primaryKey;autoIncrement" json:"id"`
+		DetailProductMarketplaceID uint64    `gorm:"column:detail_product_marketplaces" json:"detail_product_marketplaces"`
+		MerchantID                 uint64    `gorm:"column:merchant_id" json:"merchant_id"`
+		UserID                     uint64    `gorm:"column:user_id" json:"user_id"`
+		CreatedAt                  time.Time `gorm:"column:created_at" json:"created_at"`
+		UpdatedAt                  time.Time `gorm:"column:updated_at" json:"updated_at"`
+	}
 )
 
 func (Product) TableName() string {

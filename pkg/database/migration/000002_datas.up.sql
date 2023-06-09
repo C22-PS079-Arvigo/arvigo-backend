@@ -258,6 +258,18 @@ CREATE TABLE detail_product_marketplaces
 CREATE INDEX idx_detail_product_marketplaces_1 ON detail_product_marketplaces (product_id, marketplace_id);
 CREATE INDEX idx_detail_product_marketplaces_2 ON detail_product_marketplaces (product_id, addresses_id);
 
+-- auto-generated definition
+DROP TABLE IF EXISTS detail_product_marketplace_clicked;
+CREATE TABLE detail_product_marketplace_clicked
+(
+    id int unsigned auto_increment primary key,
+    detail_product_marketplaces  int default 0 not null,
+    merchant_id int not null,
+    user_id int not null,
+    created_at timestamp default CURRENT_TIMESTAMP null,
+    updated_at timestamp default CURRENT_TIMESTAMP null on update CURRENT_TIMESTAMP
+);
+CREATE INDEX idx_detail_product_marketplace_clicked_1 ON detail_product_marketplace_clicked (detail_product_marketplaces, user_id);
 
 -- auto-generated definition
 DROP TABLE IF EXISTS wishlists;

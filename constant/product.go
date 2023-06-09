@@ -2,7 +2,7 @@ package constant
 
 const (
 	StatusApproved   = "APPROVED"
-	StatusWaiting    = "WAITING"
+	StatusWaiting    = "WAITING LIST"
 	StatusRejected   = "REJECTED"
 	StatusSubscribed = "SUBSCRIBED"
 )

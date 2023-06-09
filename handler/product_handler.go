@@ -132,8 +132,8 @@ func getMarketplaceProductByID(c echo.Context) error {
 	if pID == 0 {
 		return echo.NewHTTPError(http.StatusBadRequest, "Invalid product ID")
 	}
-
-	data, statusCode, err := repository.GetMarketplaceProductByID(pID)
+	userAuth := c.Get("userAuth").(*datastruct.UserAuth)
+	data, statusCode, err := repository.GetMarketplaceProductByID(pID, userAuth.ID)
 	if err != nil {
 		return utils.ResponseJSON(c, err.Error(), nil, statusCode)
 	}
