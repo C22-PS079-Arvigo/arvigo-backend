@@ -1,6 +1,8 @@
 package handler
 
 import (
+	"net/http"
+
 	"github.com/labstack/echo/v4"
 
 	"github.com/yusufwib/arvigo-backend/datastruct"
@@ -29,7 +31,11 @@ func getMerchantAppHome(c echo.Context) error {
 }
 
 func getMerchantAppHomeByID(c echo.Context) error {
-	data, statusCode, err := repository.GetMerchantHomeProductByID(12)
+	pID := utils.StrToUint64(c.Param("id"), 0)
+	if pID == 0 {
+		return utils.ResponseJSON(c, "invalid product id", nil, http.StatusBadRequest)
+	}
+	data, statusCode, err := repository.GetMerchantHomeProductByID(pID)
 	if err != nil {
 		return utils.ResponseJSON(c, err.Error(), nil, statusCode)
 	}

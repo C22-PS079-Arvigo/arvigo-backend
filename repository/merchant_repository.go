@@ -13,7 +13,6 @@ import (
 func GetMerchantAppHome(userID uint64) (res datastruct.MerchantHome, statusCode int, err error) {
 	statusCode = http.StatusOK
 
-	userID = 2
 	var (
 		db               = Database()
 		merchantProducts []datastruct.MerchantProduct
