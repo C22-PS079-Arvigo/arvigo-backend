@@ -138,6 +138,23 @@ func VerifyPaymentUser(subsID uint64, data datastruct.VerifyPaymentUser) (status
 		}).Error; err != nil {
 			return http.StatusInternalServerError, err
 		}
+
+		var userID uint64
+		if err := db.Debug().Table("detail_user_subscriptions dus").
+			Select([]string{
+				"dus.user_id",
+			}).
+			Where("dus.id = ?", subsID).
+			Find(&userID).
+			Error; err != nil {
+			return http.StatusInternalServerError, err
+		}
+
+		if err = db.Table("users").Where("id = ?", userID).Updates(map[string]interface{}{
+			"is_subscription_active": 1,
+		}).Error; err != nil {
+			return http.StatusInternalServerError, err
+		}
 	} else {
 		if err = db.Table("detail_user_subscriptions").Where("id = ?", subsID).Update("status", status).Error; err != nil {
 			return http.StatusInternalServerError, err
@@ -154,8 +171,10 @@ func VerifyPaymentMerchant(subsID uint64, data datastruct.VerifyPaymentMerchant)
 	)
 
 	status := constant.StatusRejected
+	isActive := 0
 	if data.Status {
 		status = constant.StatusApproved
+		isActive = 1
 		if err = db.Table("detail_user_subscriptions").Where("id = ?", subsID).Updates(map[string]interface{}{
 			"status":             status,
 			"subscription_start": time.Now(),
@@ -178,8 +197,9 @@ func VerifyPaymentMerchant(subsID uint64, data datastruct.VerifyPaymentMerchant)
 	for _, v := range productIDs {
 		if err = db.Table("products").Where("id = ?", v).
 			Updates(map[string]interface{}{
-				"status":        status,
-				"rejected_note": data.RejectedNote,
+				"status":                 status,
+				"rejected_note":          data.RejectedNote,
+				"is_subscription_active": isActive,
 			}).Error; err != nil {
 			return http.StatusInternalServerError, err
 		}

@@ -37,6 +37,7 @@ type (
 		PlaceOfBirth              string     `json:"place_of_birth"`
 		IsCompletePersonalityTest bool       `json:"is_complete_personality_test"`
 		IsCompleteFaceTest        bool       `json:"is_complete_face_test"`
+		IsSubscriptionActive      bool       `json:"is_subscription_active"`
 		PersonalityID             uint64     `gorm:"column:personality_id" json:"-"`
 		FaceShapeTagID            uint64     `gorm:"column:face_shape_id" json:"-"`
 		FaceShape                 *string    `json:"face_shape"`
