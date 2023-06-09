@@ -640,3 +640,26 @@ func UpdateMerchantProduct(data datastruct.UpdateProductInput) (statusCode int, 
 
 	return
 }
+
+func DeleteProduct(id uint64) (statusCode int, err error) {
+	db := Database()
+	// Delete records from detail_product_variants
+	db.Exec("DELETE FROM detail_product_variants WHERE product_id = ?", 1)
+
+	// Delete records from detail_product_tags
+	db.Exec("DELETE FROM detail_product_tags WHERE product_id = ?", 1)
+
+	// Delete records from detail_product_marketplaces
+	db.Exec("DELETE FROM detail_product_marketplaces WHERE product_id = ?", 1)
+
+	// Delete records from wishlists
+	db.Exec("DELETE FROM wishlists WHERE product_id = ?", 1)
+
+	// Delete records from detail_linked_products
+	db.Exec("DELETE FROM detail_linked_products WHERE merchant_product_id = ?", 1)
+
+	// Delete record from products
+	db.Exec("DELETE FROM products WHERE id = ?", 1)
+
+	return
+}

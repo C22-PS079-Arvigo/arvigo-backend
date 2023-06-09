@@ -16,6 +16,7 @@ func RegisterProductRoutes(e *echo.Echo) {
 	v1Group.GET("/product-recommendation", getRecommendationProduct, middleware.ApiKeyMiddleware)
 
 	productGroup := v1Group.Group("/products", middleware.AuthMiddleware)
+	productGroup.DELETE("/:id", delProductByID)
 	initialProductGroup := productGroup.Group("/initials")
 	initialProductGroup.GET("/:id", getInitalProductByID)
 	initialProductGroup.GET("/marketplace/:id", getMarketplaceProductByID)
@@ -177,4 +178,17 @@ func updateMerchantProduct(c echo.Context) error {
 	}
 
 	return utils.ResponseJSON(c, "Product updated", nil, statusCode)
+}
+
+func delProductByID(c echo.Context) error {
+	pID := utils.StrToUint64(c.Param("id"), 0)
+	if pID == 0 {
+		return echo.NewHTTPError(http.StatusBadRequest, "Invalid product ID")
+	}
+	statusCode, err := repository.DeleteProduct(pID)
+	if err != nil {
+		return utils.ResponseJSON(c, err.Error(), nil, statusCode)
+	}
+
+	return utils.ResponseJSON(c, "Success", nil, statusCode)
 }
