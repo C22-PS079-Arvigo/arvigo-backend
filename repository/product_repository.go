@@ -105,6 +105,105 @@ func CreateInitialProduct(data datastruct.CreateInitialProductInput) (statusCode
 	return
 }
 
+func UpdateInitialProduct(data datastruct.CreateInitialProductInput, productID uint64) (statusCode int, err error) {
+	statusCode = http.StatusCreated
+
+	var (
+		db                 = Database()
+		currentTime        = time.Now()
+		imagesURL          []string
+		detailVariants     []datastruct.DetailProductVariant
+		productTagsPayload []datastruct.DetailProductTag
+	)
+
+	err = json.Unmarshal([]byte(data.DetailProductVariants), &detailVariants)
+	if err != nil {
+		return http.StatusBadRequest, errors.New("failed to parse variants")
+	}
+
+	for _, img := range data.Images {
+		url, err := UploadImageToGCS(img)
+		if err != nil {
+			return http.StatusInternalServerError, err
+		}
+		imagesURL = append(imagesURL, url)
+	}
+
+	productPayload := datastruct.Product{
+		ID:           productID,
+		Name:         data.Name,
+		Description:  data.Description,
+		Images:       strings.Join(imagesURL, ","),
+		LinkExternal: "", // coming soon!
+		CategoryID:   data.CategoryID,
+		BrandID:      data.BrandID,
+		MerchantID:   0, // 0 is for create from admin
+		UpdatedAt:    currentTime,
+	}
+
+	// Begin a transaction
+	tx := db.Begin()
+
+	// Defer the rollback function in case of error
+	defer func() {
+		if r := recover(); r != nil {
+			tx.Rollback()
+		}
+	}()
+
+	if err = tx.Where("id", productPayload.ID).Updates(&productPayload).Error; err != nil {
+		return http.StatusInternalServerError, err
+	}
+
+	explodedTags := strings.Split(data.DetailProductTags, ",")
+	for _, tagID := range explodedTags {
+		tagIDNum := utils.StrToUint64(tagID, 0)
+		if tagIDNum == 0 {
+			return http.StatusInternalServerError, errors.New("cannot add tags")
+		}
+
+		productTagsPayload = append(productTagsPayload, datastruct.DetailProductTag{
+			TagID:     tagIDNum,
+			ProductID: productPayload.ID,
+			CreatedAt: currentTime,
+			UpdatedAt: currentTime,
+		})
+	}
+
+	var tags datastruct.DetailProductTag
+	if err = tx.Where("product_id", productPayload.ID).Delete(&tags).Error; err != nil {
+		return http.StatusInternalServerError, err
+	}
+
+	if err = tx.Create(&productTagsPayload).Error; err != nil {
+		return http.StatusInternalServerError, err
+	}
+
+	// Create variants
+	for i := range detailVariants {
+		detailVariants[i].ProductID = productPayload.ID
+		detailVariants[i].CreatedAt = currentTime
+		detailVariants[i].UpdatedAt = currentTime
+	}
+
+	var variants datastruct.DetailProductVariant
+	if err = tx.Where("product_id", productPayload.ID).Delete(&variants).Error; err != nil {
+		return http.StatusInternalServerError, err
+	}
+	if err = tx.Create(&detailVariants).Error; err != nil {
+		return http.StatusInternalServerError, err
+	}
+
+	// Commit the transaction if all queries succeed
+	if err = tx.Commit().Error; err != nil {
+		tx.Rollback()
+		log.Println("Error committing transaction:", err)
+		return http.StatusInternalServerError, err
+	}
+
+	return
+}
+
 func CreateMerchantProduct(data datastruct.CreateMerchantProductInput) (statusCode int, err error) {
 	statusCode = http.StatusCreated
 

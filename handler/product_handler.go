@@ -22,6 +22,7 @@ func RegisterProductRoutes(e *echo.Echo) {
 	initialProductGroup.GET("/marketplace/:id", getMarketplaceProductByID)
 
 	initialProductGroup.POST("", createInitialProductHandler)
+	initialProductGroup.PUT("/:id", updateInitialProductHandler)
 	initialProductGroup.GET("/category/:id", getInitalProductByCategoryID)
 
 	merchantProductGroup := productGroup.Group("/merchants")
@@ -58,6 +59,40 @@ func createInitialProductHandler(c echo.Context) error {
 	}
 
 	return utils.ResponseJSON(c, "Product created", nil, statusCode)
+}
+
+func updateInitialProductHandler(c echo.Context) error {
+	pID := utils.StrToUint64(c.Param("id"), 0)
+	if pID == 0 {
+		return echo.NewHTTPError(http.StatusBadRequest, "Invalid product ID")
+	}
+	var data datastruct.CreateInitialProductInput
+	if err := c.Bind(&data); err != nil {
+		return utils.ResponseJSON(c, err.Error(), nil, http.StatusBadRequest)
+	}
+
+	validationErrors := utils.ValidateStruct(data)
+	if len(validationErrors) > 0 {
+		return utils.ResponseJSON(c, "The data is not valid", validationErrors, http.StatusBadRequest)
+	}
+
+	form, err := c.MultipartForm()
+	if err != nil {
+		return utils.ResponseJSON(c, "Failed to parse form data", nil, http.StatusBadRequest)
+	}
+
+	images := form.File["images"]
+	if len(images) == 0 {
+		return utils.ResponseJSON(c, "Images must be filled", nil, http.StatusBadRequest)
+	}
+
+	data.Images = images
+	statusCode, err := repository.UpdateInitialProduct(data, pID)
+	if err != nil {
+		return utils.ResponseJSON(c, "Failed update product", err.Error(), statusCode)
+	}
+
+	return utils.ResponseJSON(c, "Product updated", nil, statusCode)
 }
 
 func createMerchantProductHandler(c echo.Context) error {
