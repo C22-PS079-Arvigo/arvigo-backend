@@ -16,6 +16,7 @@ func RegisterWishlistRoutes(e *echo.Echo) {
 
 	wishlistGroup.POST("", addToWishlist)
 	wishlistGroup.GET("", getUserWishlist)
+	wishlistGroup.DELETE("", removeWishlist)
 }
 
 func addToWishlist(c echo.Context) error {
@@ -31,6 +32,26 @@ func addToWishlist(c echo.Context) error {
 	}
 
 	statusCode, err := repository.AddWhislistProduct(userAuth.ID, data)
+	if err != nil {
+		return utils.ResponseJSON(c, err.Error(), nil, statusCode)
+	}
+
+	return utils.ResponseJSON(c, "Success", nil, statusCode)
+}
+
+func removeWishlist(c echo.Context) error {
+	userAuth := c.Get("userAuth").(*datastruct.UserAuth)
+	var data datastruct.AddWhislistProductInput
+	if err := c.Bind(&data); err != nil {
+		return utils.ResponseJSON(c, err.Error(), nil, http.StatusBadRequest)
+	}
+
+	validationErrors := utils.ValidateStruct(data)
+	if len(validationErrors) > 0 {
+		return utils.ResponseJSON(c, "The data is not valid", validationErrors, http.StatusBadRequest)
+	}
+
+	statusCode, err := repository.DeleteWhislistProduct(userAuth.ID, data)
 	if err != nil {
 		return utils.ResponseJSON(c, err.Error(), nil, statusCode)
 	}

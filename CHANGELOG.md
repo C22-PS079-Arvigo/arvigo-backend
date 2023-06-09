@@ -73,7 +73,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add home merchant
 
 
-## [Unreleased]
 ### [1.0.8] - yusufw2429@gmail.com
 #### Added
 - Add X-API-Key for integration with ML (not using jwt)
@@ -82,3 +81,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add resty pkg utils
 - Integrate questionnaire with ML
 - Update user profile
+
+## [Unreleased]
+### [1.0.9] - yusufw2429@gmail.com
+#### Added
+- Delete wishlist

@@ -17,7 +17,7 @@ import (
 )
 
 const (
-	version = "1.0.8" // release-arvigo-backend-1.0.8
+	version = "1.0.9" // release-arvigo-backend-1.0.9
 	appName = "arvigo-backend"
 )
 

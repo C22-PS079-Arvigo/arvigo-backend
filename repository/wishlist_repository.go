@@ -29,6 +29,24 @@ func AddWhislistProduct(userID uint64, data datastruct.AddWhislistProductInput) 
 	return
 }
 
+func DeleteWhislistProduct(userID uint64, data datastruct.AddWhislistProductInput) (statusCode int, err error) {
+	db := Database()
+	statusCode = http.StatusOK
+
+	var wishlist datastruct.Wishlist
+	if data.ProductID != nil {
+		if err = db.Where("product_id = ? AND user_id = ?", data.ProductID, userID).Delete(&wishlist).Error; err != nil {
+			return http.StatusInternalServerError, err
+		}
+	} else if data.DetailProductMarketplaceID != nil {
+		if err = db.Where("detail_product_marketplace_id AND user_id = ?", data.DetailProductMarketplaceID, userID).Delete(&wishlist).Error; err != nil {
+			return http.StatusInternalServerError, err
+		}
+	}
+
+	return
+}
+
 func GetUserWishlist(userID uint64) (res datastruct.UserWishlistResponse, statusCode int, err error) {
 	statusCode = http.StatusOK
 	var (
