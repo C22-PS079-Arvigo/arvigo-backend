@@ -38,21 +38,34 @@ func (User) TableName() string {
 }
 
 type UserSubscription struct {
-	ID                uint64    `gorm:"column:id;primaryKey;autoIncrement" json:"id"`
-	UserID            int       `gorm:"column:user_id" json:"user_id"`
-	Price             int       `gorm:"column:price" json:"price"`
-	UniqueCode        int       `gorm:"column:unique_code" json:"unique_code"`
-	SubscriptionStart time.Time `gorm:"column:subscription_start" json:"subscription_start"`
-	SubscriptionEnd   time.Time `gorm:"column:subscription_end" json:"subscription_end"`
-	IsVerified        int       `gorm:"column:is_verified" json:"is_verified"`
-	Message           string    `gorm:"column:message" json:"message"`
-	PaidAt            time.Time `gorm:"column:paid_at" json:"paid_at"`
-	CreatedAt         time.Time `gorm:"column:created_at" json:"created_at"`
-	UpdatedAt         time.Time `gorm:"column:updated_at" json:"updated_at"`
+	ID                uint64     `gorm:"column:id;primaryKey;autoIncrement" json:"id"`
+	UserID            uint64     `gorm:"column:user_id" json:"user_id"`
+	Price             uint64     `gorm:"column:price" json:"price"`
+	UniqueCode        uint64     `gorm:"column:unique_code" json:"unique_code"`
+	SubscriptionStart *time.Time `gorm:"column:subscription_start" json:"subscription_start"`
+	SubscriptionEnd   *time.Time `gorm:"column:subscription_end" json:"subscription_end"`
+	Status            string     `gorm:"column:status" json:"status"`
+	Message           string     `gorm:"column:message" json:"message"`
+	Bank              string     `gorm:"column:bank" json:"bank"`
+	PaidAt            *time.Time `gorm:"column:paid_at" json:"paid_at"`
+	CreatedAt         time.Time  `gorm:"column:created_at" json:"created_at"`
+	UpdatedAt         time.Time  `gorm:"column:updated_at" json:"updated_at"`
 }
 
 func (UserSubscription) TableName() string {
 	return "detail_user_subscriptions"
+}
+
+type UserSubscriptionProduct struct {
+	ID             uint64    `gorm:"column:id;primaryKey;autoIncrement" json:"id"`
+	ProductID      uint64    `gorm:"column:product_id" json:"product_id"`
+	SubscriptionID uint64    `gorm:"column:subscription_id" json:"subscription_id"`
+	CreatedAt      time.Time `gorm:"column:created_at" json:"created_at"`
+	UpdatedAt      time.Time `gorm:"column:updated_at" json:"updated_at"`
+}
+
+func (UserSubscriptionProduct) TableName() string {
+	return "detail_user_subscription_products"
 }
 
 type UserAuth struct {

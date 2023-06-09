@@ -90,3 +90,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Delete product
 - Product by id on mitra
 - Merchant and products
+- subscription module

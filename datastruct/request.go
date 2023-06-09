@@ -73,4 +73,28 @@ type (
 		ProductID                  *uint64 `json:"product_id"`
 		DetailProductMarketplaceID *uint64 `json:"detail_product_marketplace_id"`
 	}
+
+	UserCreatePaymentInput struct {
+		Price      uint64 `json:"price" validate:"required"`
+		UniqueCode uint64 `json:"unique_code" validate:"required"`
+		Message    string `json:"message" validate:"required"`
+		Bank       string `json:"bank" validate:"required"`
+	}
+
+	PartnerCreatePaymentInput struct {
+		Price      uint64   `json:"price" validate:"required"`
+		UniqueCode uint64   `json:"unique_code" validate:"required"`
+		Message    string   `json:"message" validate:"required"`
+		Bank       string   `json:"bank" validate:"required"`
+		ProductIDs []uint64 `json:"product_id" validate:"required"`
+	}
+
+	VerifyPaymentUser struct {
+		Status bool `json:"status" validate:"required"`
+	}
+
+	VerifyPaymentMerchant struct {
+		Status       bool   `json:"status"`
+		RejectedNote string `json:"rejected_note" validate:"required"`
+	}
 )

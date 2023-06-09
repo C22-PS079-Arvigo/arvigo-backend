@@ -299,11 +299,23 @@ CREATE TABLE detail_user_subscriptions
     subscription_end timestamp null,
     is_verified int default 0 not null,
     message varchar(100) null,
+    bank varchar(100) not null,
     paid_at timestamp null,
     created_at timestamp default CURRENT_TIMESTAMP null,
     updated_at timestamp default CURRENT_TIMESTAMP null on update CURRENT_TIMESTAMP
 );
 CREATE INDEX idx_detail_user_subscriptions_1 ON detail_user_subscriptions (user_id);
+
+DROP TABLE IF EXISTS detail_user_subscription_products;
+CREATE TABLE detail_user_subscription_products
+(
+    id int unsigned auto_increment primary key,
+    subscription_id int not null,
+    product_id int not null,
+    created_at timestamp default CURRENT_TIMESTAMP null,
+    updated_at timestamp default CURRENT_TIMESTAMP null on update CURRENT_TIMESTAMP
+);
+CREATE INDEX idx_detail_user_subscription_products_1 ON detail_user_subscription_products (product_id, subscription_id);
 
 
 -- auto-generated definition

@@ -183,4 +183,37 @@ type (
 		MerchantProductByID
 		Marketplace []MerchantMarketplace `json:"marketplaces"`
 	}
+
+	UserSubscriptionResponse struct {
+		ID                uint64     `gorm:"column:id;primaryKey;autoIncrement" json:"id"`
+		UserName          string     `gorm:"column:user_name" json:"user_name"`
+		UserID            uint64     `gorm:"column:user_id" json:"user_id"`
+		Price             uint64     `gorm:"column:price" json:"price"`
+		UniqueCode        uint64     `gorm:"column:unique_code" json:"unique_code"`
+		SubscriptionStart *time.Time `gorm:"column:subscription_start" json:"subscription_start"`
+		SubscriptionEnd   *time.Time `gorm:"column:subscription_end" json:"subscription_end"`
+		Status            string     `gorm:"column:status" json:"status"`
+		Message           string     `gorm:"column:message" json:"message"`
+		Bank              string     `gorm:"column:bank" json:"bank"`
+		PaidAt            *time.Time `gorm:"column:paid_at" json:"paid_at"`
+		CreatedAt         time.Time  `gorm:"column:created_at" json:"created_at"`
+		UpdatedAt         time.Time  `gorm:"column:updated_at" json:"updated_at"`
+	}
+
+	MerchantSubscriptionResponse struct {
+		ID                uint64     `gorm:"column:id;primaryKey;autoIncrement" json:"id"`
+		UserName          string     `gorm:"column:user_name" json:"user_name"`
+		UserID            uint64     `gorm:"column:user_id" json:"user_id"`
+		Price             uint64     `gorm:"column:price" json:"price"`
+		UniqueCode        uint64     `gorm:"column:unique_code" json:"unique_code"`
+		SubscriptionStart *time.Time `gorm:"column:subscription_start" json:"subscription_start"`
+		SubscriptionEnd   *time.Time `gorm:"column:subscription_end" json:"subscription_end"`
+		Status            string     `gorm:"column:status" json:"status"`
+		Message           string     `gorm:"column:message" json:"message"`
+		Bank              string     `gorm:"column:bank" json:"bank"`
+		Product           string     `gorm:"column:products" json:"products"`
+		PaidAt            *time.Time `gorm:"column:paid_at" json:"paid_at"`
+		CreatedAt         time.Time  `gorm:"column:created_at" json:"created_at"`
+		UpdatedAt         time.Time  `gorm:"column:updated_at" json:"updated_at"`
+	}
 )
