@@ -762,3 +762,47 @@ func DeleteProduct(id uint64) (statusCode int, err error) {
 
 	return
 }
+
+func GetMerchantDashboard() (merchants []datastruct.HomeMerchantResponse, statusCode int, err error) {
+	db := Database()
+	statusCode = http.StatusOK
+
+	if err := db.Table("users").
+		Select([]string{
+			"addresses_id",
+			"m.name merchant_name",
+			"m.id merchant_id",
+		}).
+		Joins("join merchants m on users.merchant_id = m.id").
+		Where("merchant_id != 0").
+		Find(&merchants).
+		Error; err != nil {
+		return merchants, http.StatusInternalServerError, err
+	}
+
+	for i, v := range merchants {
+		_, location, _, _ := GetAddressByID(v.AddressID)
+		merchants[i].Location = location
+
+		var merchantProducts []datastruct.MerchantProductDashboard
+		if err = db.Table("products p").
+			Select("p.id, images, name, price, status, sum(dpm.clicked) as clicked").
+			Joins("left join detail_product_marketplaces dpm on p.id = dpm.product_id").
+			Where("merchant_id = ?", v.MerchantID).
+			Group("p.id").
+			Scan(&merchantProducts).Error; err != nil {
+			return merchants, http.StatusInternalServerError, err
+		}
+
+		for i, v := range merchantProducts {
+			merchantProducts[i].Images = strings.Split(v.Image, ",")
+		}
+		var interfaceSlice []interface{} = make([]interface{}, len(merchantProducts))
+		for i, v := range merchantProducts {
+			interfaceSlice[i] = v
+		}
+		merchants[i].Product = interfaceSlice
+	}
+
+	return
+}

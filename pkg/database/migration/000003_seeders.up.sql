@@ -153,3 +153,9 @@ VALUES
     ('Website', "", DEFAULT, DEFAULT),
     ('Tokopedia', "", DEFAULT, DEFAULT),
     ('Shopee', "", DEFAULT, DEFAULT);
+
+INSERT INTO users (email, password, role_id, full_name, gender, date_of_birth, place_of_birth,
+                    is_complete_personality_test, is_complete_face_test, personality_id, face_shape_id,
+                    is_verified, avatar, addresses_id, merchant_id, created_at, updated_at)
+VALUES ('admin@gmail.com', '$2a$04$LuV7xCkK2l/La9qtQRo0nu3KAwefFppTYwiJPpS/4iypJrpYpQGmu', 1, 'Admin', '', null, '', 0,
+        0, 0, 0, 0, '', 0, 0, '2023-06-03 07:14:18', '2023-06-03 07:14:56');

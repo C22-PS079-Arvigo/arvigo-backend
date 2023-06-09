@@ -15,6 +15,7 @@ func RegisterProductRoutes(e *echo.Echo) {
 	v1Group := e.Group("/v1")
 	v1Group.GET("/product-recommendation", getRecommendationProduct, middleware.ApiKeyMiddleware)
 
+	v1Group.GET("/merchants/product", getDashboardMerchant, middleware.AuthMiddleware)
 	productGroup := v1Group.Group("/products", middleware.AuthMiddleware)
 	productGroup.DELETE("/:id", delProductByID)
 	initialProductGroup := productGroup.Group("/initials")
@@ -128,6 +129,15 @@ func createMerchantProductHandler(c echo.Context) error {
 
 func getRecommendationProduct(c echo.Context) error {
 	data, statusCode, err := repository.GetProductRecommendationMachineLearningDummy()
+	if err != nil {
+		return utils.ResponseJSON(c, err.Error(), nil, statusCode)
+	}
+
+	return utils.ResponseJSON(c, "Success", data, statusCode)
+}
+
+func getDashboardMerchant(c echo.Context) error {
+	data, statusCode, err := repository.GetMerchantDashboard()
 	if err != nil {
 		return utils.ResponseJSON(c, err.Error(), nil, statusCode)
 	}
