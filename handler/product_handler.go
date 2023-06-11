@@ -65,7 +65,7 @@ func createInitialProductHandler(c echo.Context) error {
 func updateInitialProductHandler(c echo.Context) error {
 	pID := utils.StrToUint64(c.Param("id"), 0)
 	if pID == 0 {
-		return echo.NewHTTPError(http.StatusBadRequest, "Invalid product ID")
+		return utils.ResponseJSON(c, "Invalid product ID", nil, http.StatusBadRequest)
 	}
 	var data datastruct.CreateInitialProductInput
 	if err := c.Bind(&data); err != nil {
@@ -148,7 +148,7 @@ func getDashboardMerchant(c echo.Context) error {
 func getInitalProductByCategoryID(c echo.Context) error {
 	categoryID := utils.StrToUint64(c.Param("id"), 0)
 	if categoryID == 0 {
-		return echo.NewHTTPError(http.StatusBadRequest, "Invalid category ID")
+		return utils.ResponseJSON(c, "Invalid category ID", nil, http.StatusBadRequest)
 	}
 
 	data, statusCode, err := repository.GetInitialProductByCategoryID(categoryID)
@@ -162,7 +162,7 @@ func getInitalProductByCategoryID(c echo.Context) error {
 func getInitalProductByID(c echo.Context) error {
 	pID := utils.StrToUint64(c.Param("id"), 0)
 	if pID == 0 {
-		return echo.NewHTTPError(http.StatusBadRequest, "Invalid product ID")
+		return utils.ResponseJSON(c, "Invalid product ID", nil, http.StatusBadRequest)
 	}
 
 	data, statusCode, err := repository.GetInitialProductByID(pID)
@@ -176,7 +176,7 @@ func getInitalProductByID(c echo.Context) error {
 func getMarketplaceProductByID(c echo.Context) error {
 	pID := utils.StrToUint64(c.Param("id"), 0)
 	if pID == 0 {
-		return echo.NewHTTPError(http.StatusBadRequest, "Invalid product ID")
+		return utils.ResponseJSON(c, "Invalid product ID", nil, http.StatusBadRequest)
 	}
 	userAuth := c.Get("userAuth").(*datastruct.UserAuth)
 	data, statusCode, err := repository.GetMarketplaceProductByID(pID, userAuth.ID)
@@ -228,7 +228,7 @@ func updateMerchantProduct(c echo.Context) error {
 func delProductByID(c echo.Context) error {
 	pID := utils.StrToUint64(c.Param("id"), 0)
 	if pID == 0 {
-		return echo.NewHTTPError(http.StatusBadRequest, "Invalid product ID")
+		return utils.ResponseJSON(c, "Invalid product ID", nil, http.StatusBadRequest)
 	}
 	statusCode, err := repository.DeleteProduct(pID)
 	if err != nil {

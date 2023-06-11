@@ -83,7 +83,7 @@ func partnerCreatePayment(c echo.Context) error {
 func verifyPaymentUser(c echo.Context) error {
 	pID := utils.StrToUint64(c.Param("id"), 0)
 	if pID == 0 {
-		return echo.NewHTTPError(http.StatusBadRequest, "Invalid subscription ID")
+		return utils.ResponseJSON(c, "invalid subscription id", nil, http.StatusBadRequest)
 	}
 	var data datastruct.VerifyPaymentUser
 	if err := c.Bind(&data); err != nil {
@@ -105,7 +105,7 @@ func verifyPaymentUser(c echo.Context) error {
 func verifyPaymentMerchant(c echo.Context) error {
 	pID := utils.StrToUint64(c.Param("id"), 0)
 	if pID == 0 {
-		return echo.NewHTTPError(http.StatusBadRequest, "Invalid subscription ID")
+		return utils.ResponseJSON(c, "invalid subscription id", nil, http.StatusBadRequest)
 	}
 	var data datastruct.VerifyPaymentMerchant
 	if err := c.Bind(&data); err != nil {
