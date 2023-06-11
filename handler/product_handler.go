@@ -128,7 +128,7 @@ func createMerchantProductHandler(c echo.Context) error {
 }
 
 func getRecommendationProduct(c echo.Context) error {
-	data, statusCode, err := repository.GetProductRecommendationMachineLearningDummy()
+	data, statusCode, err := repository.GetProductRecommendationMachineLearning()
 	if err != nil {
 		return utils.ResponseJSON(c, err.Error(), nil, statusCode)
 	}

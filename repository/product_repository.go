@@ -650,47 +650,26 @@ func GetProductRecommendationMachineLearning() (res []datastruct.ProductRecommen
 	statusCode = http.StatusOK
 
 	var (
-		db               = Database()
-		linkedProductIDs = []uint64{}
-		merchantIDs      = []uint64{}
+		db = Database()
 	)
 
-	columns := []string{
-		"p.id",
-		"p.name",
-		"p.description",
-		"c.name AS category",
-		"b.name AS brand",
-		"GROUP_CONCAT(DISTINCT t.name) AS tags",
-		"GROUP_CONCAT(DISTINCT dlp.merchant_id) AS merchant_id",
-		"GROUP_CONCAT(DISTINCT dlp.merchant_product_id) AS linked_product",
-	}
-
-	if err = db.Table("products p").Select(columns).
+	if err := db.
+		Select("p.id, p.name, p.description, c.name AS category, b.name AS brand, "+
+			"GROUP_CONCAT(DISTINCT t.name) AS tags, "+
+			"GROUP_CONCAT(DISTINCT m.name) AS merchants, "+
+			"SUM(dpm.clicked) AS clicked").
+		Table("products p").
 		Joins("LEFT JOIN categories c ON p.category_id = c.id").
 		Joins("LEFT JOIN brands b ON p.brand_id = b.id").
 		Joins("LEFT JOIN detail_product_tags dpt ON p.id = dpt.product_id").
 		Joins("LEFT JOIN tags t ON dpt.tag_id = t.id").
 		Joins("LEFT JOIN detail_linked_products dlp ON p.id = dlp.initial_product_id").
+		Joins("LEFT JOIN merchants m ON m.id = dlp.merchant_id").
+		Joins("LEFT JOIN detail_product_marketplaces dpm ON dpm.product_id = dlp.merchant_product_id").
 		Where("p.merchant_id = ?", 0).
 		Group("p.id").
 		Find(&res).Error; err != nil {
 		return res, http.StatusInternalServerError, err
-	}
-
-	for _, v := range res {
-		merchantIDSplitted := strings.Split(v.MerchantIDs, ",")
-		linkedIDSplitted := strings.Split(v.ProductIDs, ",")
-
-		for _, id := range merchantIDSplitted {
-			merchantID := utils.StrToUint64(id, 0)
-			merchantIDs = append(merchantIDs, merchantID)
-		}
-
-		for _, id := range linkedIDSplitted {
-			productID := utils.StrToUint64(id, 0)
-			linkedProductIDs = append(linkedProductIDs, productID)
-		}
 	}
 
 	return
