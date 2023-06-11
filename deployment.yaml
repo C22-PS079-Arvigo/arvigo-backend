@@ -78,8 +78,8 @@ spec:
         spec:
           containers:
             - name: arvigo-backend-container
-            image: asia.gcr.io/$PROJECT_ID/production/arvigo-backend:$SHORT_SHA
-            command: ["curl", "--request", "POST", "http://localhost:8080/v1/cron-job/subscription"]
+              image: asia.gcr.io/$PROJECT_ID/production/arvigo-backend:$SHORT_SHA
+              command: ["curl", "--request", "POST", "http://localhost:8080/v1/cron-job/subscription"]
           restartPolicy: OnFailure
 ---
 apiVersion: autoscaling/v1
