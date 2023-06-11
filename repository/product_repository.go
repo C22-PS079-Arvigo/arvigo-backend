@@ -506,7 +506,7 @@ func GetInitialProductByID(productID uint64) (res datastruct.InitialProductRespo
 			Joins("LEFT JOIN products ON products.id = detail_product_marketplaces.product_id").
 			Joins("LEFT JOIN brands ON brands.id = products.brand_id").
 			Joins("LEFT JOIN merchants ON products.merchant_id = merchants.id").
-			Where("detail_product_marketplaces.id IN (?)", marketplaceDetailIDs).
+			Where("detail_product_marketplaces.id IN (?) AND products.status IN (?)", marketplaceDetailIDs, []string{constant.StatusApproved, constant.StatusSubscribed}).
 			Find(&merchantProduct).Error; err != nil {
 			return res, http.StatusInternalServerError, err
 		}
