@@ -562,16 +562,20 @@ func GetInitialProductByID(productID uint64) (res datastruct.InitialProductRespo
 
 	currentIDstr := strconv.Itoa(int(productID))
 	var recommendationProduct []datastruct.RecommendationProductML
-	if len(productsMLIDs[currentIDstr]) > 0 {
+	idsFromML := productsMLIDs[currentIDstr]
+	if len(idsFromML) > 0 {
+		if len(idsFromML) >= 5 {
+			idsFromML = idsFromML[:5]
+		}
 		if err := db.Table("products p").
 			Select([]string{
 				"p.id",
 				"p.name",
 				"p.images",
-				"b.name as brand",
+				"b.name as brand_name",
 			}).
 			Joins("LEFT JOIN brands b on b.id = p.brand_id").
-			Where("p.id IN (?)", productsMLIDs[currentIDstr]).
+			Where("p.id IN (?)", idsFromML).
 			Find(&recommendationProduct).
 			Error; err != nil {
 			return res, http.StatusInternalServerError, err
