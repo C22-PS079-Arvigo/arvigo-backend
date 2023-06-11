@@ -195,6 +195,9 @@ func VerifyPaymentMerchant(subsID uint64, data datastruct.VerifyPaymentMerchant)
 	}
 
 	for _, v := range productIDs {
+		if status == constant.StatusApproved {
+			status = constant.StatusSubscribed
+		}
 		if err = db.Table("products").Where("id = ?", v).
 			Updates(map[string]interface{}{
 				"status":                 status,

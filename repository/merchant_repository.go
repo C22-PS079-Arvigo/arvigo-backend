@@ -89,6 +89,20 @@ func GetMerchantHomeProductByID(productID uint64) (res datastruct.MerchantHomeDe
 	}
 	merchantProducts.Images = strings.Split(merchantProducts.Image, ",")
 
+	var subscription string
+	if merchantProducts.Status == constant.StatusApproved {
+		if err := db.Debug().Table("detail_user_subscription_products dusp").
+			Select("CONCAT(DATE_FORMAT(dus.subscription_start, '%d %b %Y %H:%i'), ' - ', DATE_FORMAT(dus.subscription_end, '%d %b %Y %H:%i')) as subscription").
+			Joins("join detail_user_subscriptions dus on dusp.subscription_id = dus.id").
+			Where("product_id = ? AND dus.status = ?", productID, "APPROVED").
+			Order("dusp.id").
+			Limit(1).
+			Scan(&subscription).Error; err != nil {
+			return res, http.StatusInternalServerError, err
+		}
+	}
+	merchantProducts.Subscription = subscription
+
 	if err = db.Table("detail_product_marketplaces dpm").
 		Select("IFNULL(m.name, 'Offline') as name, clicked").
 		Joins("left join marketplaces m on dpm.marketplace_id = m.id").
