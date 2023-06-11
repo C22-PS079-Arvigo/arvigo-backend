@@ -456,10 +456,12 @@ func GetInitialProductByID(productID uint64) (res datastruct.InitialProductRespo
 			"p.rejected_note",
 			"c.name as category_name",
 			"b.name as brand_name",
+			"if(w.id, 1, 0) as is_wishlisted",
 		}).
 		Where("p.merchant_id = 0 AND p.id = ?", productID).
 		Joins("LEFT JOIN categories c on c.id = p.category_id").
 		Joins("LEFT JOIN brands b on b.id = p.brand_id").
+		Joins("left join wishlists w on p.id = w.product_id").
 		First(&products).
 		Error; err != nil {
 		return res, http.StatusInternalServerError, err
@@ -616,10 +618,12 @@ func GetMarketplaceProductByID(productID, userID uint64) (merchantProduct datast
 			"detail_product_marketplaces.link AS marketplace_link",
 			"detail_product_marketplaces.marketplace_id",
 			"detail_product_marketplaces.addresses_id",
+			"if(w.id, 1, 0) as is_wishlisted",
 		}).
 		Joins("LEFT JOIN products ON products.id = detail_product_marketplaces.product_id").
 		Joins("LEFT JOIN brands ON brands.id = products.brand_id").
 		Joins("LEFT JOIN merchants ON products.merchant_id = merchants.id").
+		Joins("left join wishlists w on detail_product_marketplaces.id = w.detail_product_marketplace_id").
 		Where("detail_product_marketplaces.id = ?", productID).
 		Find(&merchantProduct).Error; err != nil {
 		return merchantProduct, http.StatusInternalServerError, err

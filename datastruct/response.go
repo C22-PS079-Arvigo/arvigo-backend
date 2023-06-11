@@ -79,6 +79,7 @@ type (
 		LinkExternal         string `gorm:"column:link_external" json:"link_external"`
 		CategoryName         string `gorm:"column:category_name" json:"category_name"`
 		Status               string `gorm:"column:status" json:"status"`
+		IsWishlisted         bool   `gorm:"column:is_wishlisted" json:"is_wishlisted"`
 		IsSubscriptionActive bool   `gorm:"column:is_subscription_active" json:"is_subscription_active"`
 		RejectedNote         string `gorm:"column:rejected_note" json:"rejected_note"`
 		BrandName            string `gorm:"column:brand_name" json:"brand_name"`
@@ -151,6 +152,7 @@ type (
 		Description     string                  `gorm:"column:description" json:"description"`
 		Brand           string                  `gorm:"column:brand" json:"brand"`
 		Image           string                  `gorm:"column:images" json:"-"`
+		IsWishlisted    bool                    `gorm:"column:is_wishlisted" json:"is_wishlisted"`
 		Images          []string                `json:"images"`
 		Price           float64                 `gorm:"column:price" json:"price"`
 		Merchant        string                  `gorm:"column:merchant" json:"merchant"`
