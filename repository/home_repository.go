@@ -164,10 +164,7 @@ func GetHomeSearch(search string) (res []datastruct.HomeProduct, statusCode int,
 	db := Database()
 	statusCode = http.StatusOK
 
-	var (
-		pIDs []uint64
-	)
-
+	var pIDs []string
 	response, err := utils.FetchMachineLearningAPI("GET", fmt.Sprintf("/product_search?query=%s", search), nil)
 	if err != nil {
 		statusCode = http.StatusInternalServerError

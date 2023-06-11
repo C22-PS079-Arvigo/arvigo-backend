@@ -96,7 +96,7 @@ type (
 	}
 
 	ProductFromML struct {
-		ID uint64 `json:"id"`
+		ID string `json:"id"`
 	}
 )
 
