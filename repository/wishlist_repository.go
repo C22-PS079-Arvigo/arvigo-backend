@@ -39,7 +39,7 @@ func DeleteWhislistProduct(userID uint64, data datastruct.AddWhislistProductInpu
 			return http.StatusInternalServerError, err
 		}
 	} else if data.DetailProductMarketplaceID != nil {
-		if err = db.Where("detail_product_marketplace_id AND user_id = ?", data.DetailProductMarketplaceID, userID).Delete(&wishlist).Error; err != nil {
+		if err = db.Where("detail_product_marketplace_id = ? AND user_id = ?", data.DetailProductMarketplaceID, userID).Delete(&wishlist).Error; err != nil {
 			return http.StatusInternalServerError, err
 		}
 	}

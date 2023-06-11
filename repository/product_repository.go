@@ -490,7 +490,6 @@ func GetInitialProductByID(productID uint64) (res datastruct.InitialProductRespo
 
 	var merchantProduct []datastruct.ProductMarketplaceWishlist
 	if len(marketplaceDetailIDs) > 0 {
-
 		if err = db.Table("detail_product_marketplaces").
 			Select([]string{
 				"detail_product_marketplaces.id AS id",
@@ -786,7 +785,7 @@ func GetMerchantDashboard() (merchants []datastruct.HomeMerchantResponse, status
 
 		var merchantProducts []datastruct.MerchantProductDashboard
 		if err = db.Table("products p").
-			Select("p.id, images, name, price, status, sum(dpm.clicked) as clicked").
+			Select("p.id, images, name, price, status, rejected_note, sum(dpm.clicked) as clicked").
 			Joins("left join detail_product_marketplaces dpm on p.id = dpm.product_id").
 			Where("merchant_id = ?", v.MerchantID).
 			Group("p.id").
@@ -796,7 +795,28 @@ func GetMerchantDashboard() (merchants []datastruct.HomeMerchantResponse, status
 
 		for i, v := range merchantProducts {
 			merchantProducts[i].Images = strings.Split(v.Image, ",")
+
+			var marketplace []datastruct.MerchantMarketplace
+			if err = db.Debug().Table("detail_product_marketplaces dpm").
+				Select("IFNULL(m.name, 'Offline') as name,link, clicked, addresses_id").
+				Joins("left join marketplaces m on dpm.marketplace_id = m.id").
+				Where("product_id = ?", v.ID).
+				Scan(&marketplace).Error; err != nil {
+				return merchants, http.StatusInternalServerError, err
+			}
+
+			for i, v := range marketplace {
+				if v.Name == "Offline" && v.AddressID != 0 {
+					addr, _, _, err := GetAddressByID(v.AddressID)
+					if err == nil {
+						marketplace[i].Address = &addr
+					}
+				}
+			}
+
+			merchantProducts[i].Marketplace = marketplace
 		}
+
 		var interfaceSlice []interface{} = make([]interface{}, len(merchantProducts))
 		for i, v := range merchantProducts {
 			interfaceSlice[i] = v

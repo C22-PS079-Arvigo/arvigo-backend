@@ -20,13 +20,15 @@ type MerchantProduct struct {
 }
 
 type MerchantProductDashboard struct {
-	ID      uint64   `gorm:"column:id" json:"id"`
-	Image   string   `gorm:"column:images" json:"-"`
-	Images  []string `json:"images"`
-	Name    string   `gorm:"column:name" json:"name"`
-	Price   float64  `gorm:"column:price" json:"price"`
-	Status  string   `gorm:"column:status" json:"status"`
-	Clicked uint64   `gorm:"column:clicked" json:"clicked"`
+	ID           uint64                `gorm:"column:id" json:"id"`
+	Image        string                `gorm:"column:images" json:"-"`
+	Images       []string              `json:"images"`
+	Name         string                `gorm:"column:name" json:"name"`
+	Price        float64               `gorm:"column:price" json:"price"`
+	Status       string                `gorm:"column:status" json:"status"`
+	Clicked      uint64                `gorm:"column:clicked" json:"clicked"`
+	RejectedNote string                `gorm:"column:rejected_note" json:"rejected_note"`
+	Marketplace  []MerchantMarketplace `json:"marketplaces"`
 }
 
 type MerchantProductByID struct {

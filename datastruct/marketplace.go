@@ -11,8 +11,11 @@ type Marketplace struct {
 }
 
 type MerchantMarketplace struct {
-	Name    string `gorm:"column:name" json:"name"`
-	Clicked uint64 `gorm:"column:clicked" json:"clicked"`
+	Name      string  `gorm:"column:name" json:"name"`
+	Clicked   uint64  `gorm:"column:clicked" json:"clicked"`
+	Link      *string `gorm:"column:link" json:"link"`
+	Address   *string `gorm:"column:address" json:"address"`
+	AddressID uint64  `gorm:"column:addresses_id" json:"-"`
 }
 
 func (Marketplace) TableName() string {
