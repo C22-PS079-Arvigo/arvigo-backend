@@ -210,3 +210,39 @@ func VerifyPaymentMerchant(subsID uint64, data datastruct.VerifyPaymentMerchant)
 
 	return
 }
+
+func SubscriptionCronJob() (statusCode int, err error) {
+	db := Database()
+	statusCode = http.StatusOK
+	var subscriptions []datastruct.CronJobSubscription
+
+	if err := db.
+		Table("detail_user_subscriptions dus").
+		Select("dus.user_id, dusp.product_id, dus.subscription_end").
+		Joins("left join detail_user_subscription_products dusp on dus.id = dusp.subscription_id").
+		Find(&subscriptions).Error; err != nil {
+		return http.StatusInternalServerError, err
+	}
+
+	for _, v := range subscriptions {
+		if time.Now().After(v.SubscriptionEnd) {
+			if v.ProductID != nil {
+				if err = db.Table("products").Where("id = ?", v.ProductID).
+					Updates(map[string]interface{}{
+						"status":                 constant.StatusApproved,
+						"is_subscription_active": 0,
+					}).Error; err != nil {
+					return http.StatusInternalServerError, err
+				}
+			} else {
+				if err = db.Table("users").Where("id = ?", v.UserID).Updates(map[string]interface{}{
+					"is_subscription_active": 0,
+				}).Error; err != nil {
+					return http.StatusInternalServerError, err
+				}
+			}
+		}
+	}
+
+	return
+}

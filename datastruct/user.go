@@ -141,3 +141,9 @@ type UserPersonality struct {
 func (UserPersonality) TableName() string {
 	return "user_personalities"
 }
+
+type CronJobSubscription struct {
+	ProductID       *uint64
+	UserID          uint64
+	SubscriptionEnd time.Time
+}
