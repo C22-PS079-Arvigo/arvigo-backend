@@ -146,6 +146,7 @@ type (
 
 	ProductMarketplaceDetail struct {
 		ID              uint64                  `gorm:"column:id" json:"id"`
+		ProductID       uint64                  `gorm:"column:product_id" json:"-"`
 		Name            string                  `gorm:"column:name" json:"name"`
 		Description     string                  `gorm:"column:description" json:"description"`
 		Brand           string                  `gorm:"column:brand" json:"brand"`

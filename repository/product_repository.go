@@ -609,6 +609,7 @@ func GetMarketplaceProductByID(productID, userID uint64) (merchantProduct datast
 			"products.images",
 			"products.description",
 			"products.price",
+			"products.id as product_id",
 			"merchants.name AS merchant",
 			"merchants.id AS merchant_id",
 			"detail_product_marketplaces.link AS marketplace_link",
@@ -660,7 +661,7 @@ func GetMarketplaceProductByID(productID, userID uint64) (merchantProduct datast
 		Select([]string{
 			"initial_product_id",
 		}).
-		Where("merchant_product_id = ? ", productID).
+		Where("merchant_product_id = ? ", merchantProduct.ProductID).
 		Find(&initialProductID).
 		Error; err != nil {
 		return merchantProduct, http.StatusInternalServerError, err
@@ -675,7 +676,7 @@ func GetMarketplaceProductByID(productID, userID uint64) (merchantProduct datast
 				"is_primary_variant",
 				"product_id",
 			}).
-			Where("product_id = ? ", productID).
+			Where("product_id = ? ", initialProductID).
 			Find(&productVariants).
 			Error; err != nil {
 			return merchantProduct, http.StatusInternalServerError, err
