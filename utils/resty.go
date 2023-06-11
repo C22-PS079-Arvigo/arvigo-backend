@@ -2,6 +2,7 @@ package utils
 
 import (
 	"fmt"
+	"os"
 
 	"gopkg.in/resty.v1"
 )
@@ -17,7 +18,7 @@ func FetchMachineLearningAPI(method, path string, body interface{}) (res []byte,
 	// Create the request object
 	restyReq := client.R().
 		SetHeader("Content-Type", "application/json").
-		SetHeader("X-API-KEY", "05d27624-e862-4127-afc8-d382a137ec52")
+		SetHeader("X-API-KEY", os.Getenv("X_API_KEY_SECRET_ML"))
 
 	// Set the request method
 	var response *resty.Response

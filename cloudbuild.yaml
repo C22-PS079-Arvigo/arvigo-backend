@@ -17,6 +17,7 @@ steps:
     - 'JWT_SECRET=${_JWT_SECRET}'
     - 'SALT_SECRET=${_SALT_SECRET}'
     - 'X_API_KEY_SECRET=${_X_API_KEY_SECRET}'
+    - 'X_API_KEY_SECRET_ML=${_X_API_KEY_SECRET_ML}'
     - 'STORAGE_BUCKET_NAME=${_STORAGE_BUCKET_NAME}'
   args: ['.env']
 
