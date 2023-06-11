@@ -614,6 +614,34 @@ func GetMarketplaceProductByID(productID, userID uint64) (merchantProduct datast
 		return merchantProduct, http.StatusInternalServerError, err
 	}
 
+	var initialProductID uint64
+	if err := db.Table("detail_linked_products").
+		Select([]string{
+			"initial_product_id",
+		}).
+		Where("merchant_product_id = ? ", productID).
+		Find(&initialProductID).
+		Error; err != nil {
+		return merchantProduct, http.StatusInternalServerError, err
+	}
+
+	var productVariants []datastruct.InitialProductVariant
+	if initialProductID != 0 {
+		if err := db.Table("detail_product_variants").
+			Select([]string{
+				"name",
+				"link_ar",
+				"is_primary_variant",
+				"product_id",
+			}).
+			Where("product_id = ? ", productID).
+			Find(&productVariants).
+			Error; err != nil {
+			return merchantProduct, http.StatusInternalServerError, err
+		}
+	}
+
+	merchantProduct.Variants = productVariants
 	return
 }
 

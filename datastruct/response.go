@@ -137,20 +137,21 @@ type (
 	}
 
 	ProductMarketplaceDetail struct {
-		ID              uint64   `gorm:"column:id" json:"id"`
-		Name            string   `gorm:"column:name" json:"name"`
-		Brand           string   `gorm:"column:brand" json:"brand"`
-		Image           string   `gorm:"column:images" json:"-"`
-		Images          []string `json:"images"`
-		Price           float64  `gorm:"column:price" json:"price"`
-		Merchant        string   `gorm:"column:merchant" json:"merchant"`
-		MerchantID      uint64   `gorm:"column:merchant_id" json:"-"`
-		Type            string   `json:"store_type"`
-		Address         *string  `json:"address"`
-		Marketplace     *string  `json:"marketplace_name"`
-		MarketplaceLink *string  `gorm:"column:marketplace_link" json:"marketplace_link"`
-		MarketplaceID   uint64   `gorm:"column:marketplace_id" json:"-"`
-		AddressID       uint64   `gorm:"column:addresses_id" json:"-"`
+		ID              uint64                  `gorm:"column:id" json:"id"`
+		Name            string                  `gorm:"column:name" json:"name"`
+		Brand           string                  `gorm:"column:brand" json:"brand"`
+		Image           string                  `gorm:"column:images" json:"-"`
+		Images          []string                `json:"images"`
+		Price           float64                 `gorm:"column:price" json:"price"`
+		Merchant        string                  `gorm:"column:merchant" json:"merchant"`
+		MerchantID      uint64                  `gorm:"column:merchant_id" json:"-"`
+		Type            string                  `json:"store_type"`
+		Address         *string                 `json:"address"`
+		Marketplace     *string                 `json:"marketplace_name"`
+		MarketplaceLink *string                 `gorm:"column:marketplace_link" json:"marketplace_link"`
+		MarketplaceID   uint64                  `gorm:"column:marketplace_id" json:"-"`
+		AddressID       uint64                  `gorm:"column:addresses_id" json:"-"`
+		Variants        []InitialProductVariant `json:"variants"`
 	}
 
 	HomeMerchantResponse struct {
