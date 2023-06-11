@@ -491,7 +491,7 @@ func GetInitialProductByID(productID uint64) (res datastruct.InitialProductRespo
 
 	var merchantProduct []datastruct.ProductMarketplaceWishlist
 	if len(marketplaceDetailIDs) > 0 {
-		if err = db.Table("detail_product_marketplaces").
+		if err = db.Debug().Table("detail_product_marketplaces").
 			Select([]string{
 				"detail_product_marketplaces.id AS id",
 				"products.name",
@@ -507,6 +507,7 @@ func GetInitialProductByID(productID uint64) (res datastruct.InitialProductRespo
 			Joins("LEFT JOIN brands ON brands.id = products.brand_id").
 			Joins("LEFT JOIN merchants ON products.merchant_id = merchants.id").
 			Where("detail_product_marketplaces.id IN (?) AND products.status IN (?)", marketplaceDetailIDs, []string{constant.StatusApproved, constant.StatusSubscribed}).
+			Order("products.is_subscription_active DESC").
 			Find(&merchantProduct).Error; err != nil {
 			return res, http.StatusInternalServerError, err
 		}

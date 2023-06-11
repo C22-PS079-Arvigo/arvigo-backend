@@ -232,7 +232,7 @@ func GetHomeMerchant() (merchants []datastruct.HomeMerchantResponse, statusCode 
 		var (
 			merchantProduct []datastruct.ProductMarketplaceWishlist
 		)
-		if err = db.Table("detail_product_marketplaces").
+		if err = db.Debug().Table("detail_product_marketplaces").
 			Select([]string{
 				"detail_product_marketplaces.id AS id",
 				"products.name",
@@ -247,7 +247,8 @@ func GetHomeMerchant() (merchants []datastruct.HomeMerchantResponse, statusCode 
 			Joins("LEFT JOIN products ON products.id = detail_product_marketplaces.product_id").
 			Joins("LEFT JOIN brands ON brands.id = products.brand_id").
 			Joins("LEFT JOIN merchants ON products.merchant_id = merchants.id").
-			Where("products.merchant_id = ?", v.MerchantID).
+			Where("products.merchant_id = ? AND products.status IN (?)", v.MerchantID, []string{constant.StatusApproved, constant.StatusSubscribed}).
+			Order("products.is_subscription_active DESC").
 			Find(&merchantProduct).Error; err != nil {
 			return merchants, http.StatusInternalServerError, err
 		}
