@@ -491,7 +491,7 @@ func GetInitialProductByID(productID uint64) (res datastruct.InitialProductRespo
 
 	var merchantProduct []datastruct.ProductMarketplaceWishlist
 	if len(marketplaceDetailIDs) > 0 {
-		if err = db.Debug().Table("detail_product_marketplaces").
+		if err = db.Table("detail_product_marketplaces").
 			Select([]string{
 				"detail_product_marketplaces.id AS id",
 				"products.name",
@@ -847,7 +847,7 @@ func GetMerchantDashboard() (merchants []datastruct.HomeMerchantResponse, status
 			merchantProducts[i].Images = strings.Split(v.Image, ",")
 
 			var marketplace []datastruct.MerchantMarketplace
-			if err = db.Debug().Table("detail_product_marketplaces dpm").
+			if err = db.Table("detail_product_marketplaces dpm").
 				Select("IFNULL(m.name, 'Offline') as name,link, clicked, addresses_id").
 				Joins("left join marketplaces m on dpm.marketplace_id = m.id").
 				Where("product_id = ?", v.ID).

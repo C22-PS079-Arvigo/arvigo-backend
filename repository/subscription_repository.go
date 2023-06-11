@@ -14,7 +14,7 @@ func GetListPaymentUser() (res []datastruct.UserSubscriptionResponse, statusCode
 		db = Database()
 	)
 
-	if err := db.Debug().Table("detail_user_subscriptions dus").
+	if err := db.Table("detail_user_subscriptions dus").
 		Select([]string{
 			"users.full_name as user_name",
 			"dus.*",
@@ -37,7 +37,7 @@ func GetListPaymentMerchant() (res []datastruct.MerchantSubscriptionResponse, st
 		db = Database()
 	)
 
-	if err := db.Debug().Table("detail_user_subscriptions dus").
+	if err := db.Table("detail_user_subscriptions dus").
 		Select("users.full_name as user_name,dus.*, group_concat(p.name) as products").
 		Joins("JOIN users ON users.id = dus.user_id").
 		Joins("LEFT JOIN detail_user_subscription_products dusp ON dusp.subscription_id = dus.id").
@@ -140,7 +140,7 @@ func VerifyPaymentUser(subsID uint64, data datastruct.VerifyPaymentUser) (status
 		}
 
 		var userID uint64
-		if err := db.Debug().Table("detail_user_subscriptions dus").
+		if err := db.Table("detail_user_subscriptions dus").
 			Select([]string{
 				"dus.user_id",
 			}).

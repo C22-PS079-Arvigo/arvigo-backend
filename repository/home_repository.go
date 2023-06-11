@@ -232,7 +232,7 @@ func GetHomeMerchant() (merchants []datastruct.HomeMerchantResponse, statusCode 
 		var (
 			merchantProduct []datastruct.ProductMarketplaceWishlist
 		)
-		if err = db.Debug().Table("detail_product_marketplaces").
+		if err = db.Table("detail_product_marketplaces").
 			Select([]string{
 				"detail_product_marketplaces.id AS id",
 				"products.name",

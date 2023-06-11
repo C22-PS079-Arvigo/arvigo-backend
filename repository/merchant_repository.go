@@ -91,7 +91,7 @@ func GetMerchantHomeProductByID(productID uint64) (res datastruct.MerchantHomeDe
 
 	var subscription string
 	if merchantProducts.Status == constant.StatusApproved {
-		if err := db.Debug().Table("detail_user_subscription_products dusp").
+		if err := db.Table("detail_user_subscription_products dusp").
 			Select("CONCAT(DATE_FORMAT(dus.subscription_start, '%d %b %Y %H:%i'), ' - ', DATE_FORMAT(dus.subscription_end, '%d %b %Y %H:%i')) as subscription").
 			Joins("join detail_user_subscriptions dus on dusp.subscription_id = dus.id").
 			Where("product_id = ? AND dus.status = ?", productID, "APPROVED").
