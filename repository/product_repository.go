@@ -7,6 +7,7 @@ import (
 	"log"
 	"math/rand"
 	"net/http"
+	"strconv"
 	"strings"
 	"time"
 
@@ -546,14 +547,49 @@ func GetInitialProductByID(productID uint64) (res datastruct.InitialProductRespo
 		tags = append(tags, constant.GetTagNameByDetailTag[v]...)
 	}
 
-	res = datastruct.InitialProductResponse{
-		InitialProduct:  products,
-		Images:          strings.Split(products.Images, ","),
-		Variants:        productVariants,
-		ListMarketplace: merchantProduct,
-		Tags:            utils.RemoveDuplicates(tags),
+	response, err := utils.FetchMachineLearningAPI("GET", "/product_recommendation", nil)
+	if err != nil {
+		statusCode = http.StatusInternalServerError
+		return
 	}
 
+	var productsMLIDs map[string][]string
+	err = json.Unmarshal(response, &productsMLIDs)
+	if err != nil {
+		fmt.Println("Error parsing JSON:", err)
+		return
+	}
+
+	currentIDstr := strconv.Itoa(int(productID))
+	var recommendationProduct []datastruct.RecommendationProductML
+	if len(productsMLIDs[currentIDstr]) > 0 {
+		if err := db.Table("products p").
+			Select([]string{
+				"p.id",
+				"p.name",
+				"p.images",
+				"b.name as brand",
+			}).
+			Joins("LEFT JOIN brands b on b.id = p.brand_id").
+			Where("p.id IN (?)", productsMLIDs[currentIDstr]).
+			Find(&recommendationProduct).
+			Error; err != nil {
+			return res, http.StatusInternalServerError, err
+		}
+
+		for i, v := range recommendationProduct {
+			recommendationProduct[i].Images = strings.Split(v.Images, ",")[0]
+		}
+	}
+
+	res = datastruct.InitialProductResponse{
+		InitialProduct:        products,
+		Images:                strings.Split(products.Images, ","),
+		Variants:              productVariants,
+		ListMarketplace:       merchantProduct,
+		Tags:                  utils.RemoveDuplicates(tags),
+		RecommendationProduct: recommendationProduct,
+	}
 	return
 }
 

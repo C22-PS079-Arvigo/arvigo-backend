@@ -58,10 +58,18 @@ type (
 
 	InitialProductResponse struct {
 		InitialProduct
-		Images          []string                     `json:"images"`
-		Variants        []InitialProductVariant      `json:"variants"`
-		ListMarketplace []ProductMarketplaceWishlist `json:"marketplaces"`
-		Tags            []string                     `json:"tags"`
+		Images                []string                     `json:"images"`
+		Variants              []InitialProductVariant      `json:"variants"`
+		ListMarketplace       []ProductMarketplaceWishlist `json:"marketplaces"`
+		Tags                  []string                     `json:"tags"`
+		RecommendationProduct []RecommendationProductML    `json:"recommendation_product"`
+	}
+
+	RecommendationProductML struct {
+		ID        uint64 `gorm:"column:id" json:"id"`
+		Name      string `gorm:"column:name" json:"name"`
+		BrandName string `gorm:"column:brand_name" json:"brand_name"`
+		Images    string `gorm:"column:images" json:"image"`
 	}
 
 	InitialProduct struct {
