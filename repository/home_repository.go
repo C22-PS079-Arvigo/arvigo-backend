@@ -1,6 +1,7 @@
 package repository
 
 import (
+	"encoding/json"
 	"errors"
 	"fmt"
 	"net/http"
@@ -163,6 +164,32 @@ func GetHomeSearch(search string) (res []datastruct.HomeProduct, statusCode int,
 	db := Database()
 	statusCode = http.StatusOK
 
+	var (
+		pIDs []uint64
+	)
+
+	response, err := utils.FetchMachineLearningAPI("GET", fmt.Sprintf("/product_search?query=%s", search), nil)
+	if err != nil {
+		statusCode = http.StatusInternalServerError
+		return
+	}
+
+	var products []datastruct.ProductFromML
+	err = json.Unmarshal(response, &products)
+	if err != nil {
+		fmt.Printf("Error unmarshaling response body: %v", err)
+		return
+	}
+
+	if len(products) == 0 {
+		statusCode = http.StatusNotFound
+		return
+	}
+
+	for _, v := range products {
+		pIDs = append(pIDs, v.ID)
+	}
+
 	if err := db.Table("products p").
 		Select([]string{
 			"p.id",
@@ -171,7 +198,7 @@ func GetHomeSearch(search string) (res []datastruct.HomeProduct, statusCode int,
 			"b.name as brand",
 		}).
 		Joins("LEFT JOIN brands b on b.id = p.brand_id").
-		Where("p.merchant_id = 0 AND p.name LIKE ?", fmt.Sprintf("%%%s%%", search)).
+		Where("p.id IN (?)", pIDs).
 		Find(&res).
 		Error; err != nil {
 		return res, http.StatusInternalServerError, err
