@@ -28,7 +28,8 @@ type (
 	}
 
 	FaceTestRes struct {
-		Shape string `json:"shape"`
+		IsHuman bool   `json:"is_human"`
+		Shape   string `json:"shape"`
 	}
 )
 

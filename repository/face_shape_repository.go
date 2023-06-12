@@ -62,30 +62,27 @@ func FaceShapeRecognition(form *multipart.Form, userID uint64) (res datastruct.F
 	}
 	res.ImageUrl = publicURL
 
-	var (
-		isHumanRes  datastruct.IsHumanRes
-		faceTestRes datastruct.FaceTestRes
-	)
-	response, err := utils.FetchMachineLearningAPI("POST", "/is_human", datastruct.FaceShapeMachineLearningPayload{
-		Image: encodedImg,
-	})
+	var faceTestRes datastruct.FaceTestRes
+	// response, err := utils.FetchMachineLearningAPI("POST", "/is_human", datastruct.FaceShapeMachineLearningPayload{
+	// 	Image: encodedImg,
+	// })
 
-	if err != nil {
-		statusCode = http.StatusInternalServerError
-		return
-	}
+	// if err != nil {
+	// 	statusCode = http.StatusInternalServerError
+	// 	return
+	// }
 
-	err = json.Unmarshal(response, &isHumanRes)
-	if err != nil {
-		statusCode = http.StatusInternalServerError
-		return
-	}
+	// err = json.Unmarshal(response, &isHumanRes)
+	// if err != nil {
+	// 	statusCode = http.StatusInternalServerError
+	// 	return
+	// }
 
-	if !isHumanRes.Result {
-		statusCode = http.StatusBadRequest
-		err = errors.New("is not human")
-		return
-	}
+	// if !isHumanRes.Result {
+	// 	statusCode = http.StatusBadRequest
+	// 	err = errors.New("is not human")
+	// 	return
+	// }
 	responseFaceShape, err := utils.FetchMachineLearningAPI("POST", "/face_shape", datastruct.FaceShapeMachineLearningPayload{
 		Image: encodedImg,
 	})
@@ -101,6 +98,11 @@ func FaceShapeRecognition(form *multipart.Form, userID uint64) (res datastruct.F
 		return
 	}
 
+	if faceTestRes.Shape == "" {
+		statusCode = http.StatusBadRequest
+		err = errors.New("is not human")
+		return
+	}
 	faceShapeID := constant.GetIDByShape[faceTestRes.Shape]
 	if err = db.Model(&datastruct.User{}).
 		Where("id = ?", userID).
