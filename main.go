@@ -33,9 +33,17 @@ func main() {
 	// Connect to Redis
 	redisClient, err := cache.ConnectRedis()
 	if err != nil {
-		log.Fatal("Failed to connect to Redis:", err)
+		log.Println("Failed to connect to Redis:", err)
+		redisClient = nil
 	}
-	defer redisClient.Close()
+	defer func() {
+		if redisClient != nil {
+			err := redisClient.Close()
+			if err != nil {
+				log.Println("Failed to close Redis connection:", err)
+			}
+		}
+	}()
 
 	// Connect to the database and run migrations
 	db, err := database.ConnectDB()
