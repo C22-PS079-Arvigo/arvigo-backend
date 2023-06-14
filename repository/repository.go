@@ -1,6 +1,8 @@
 package repository
 
 import (
+	"context"
+	"encoding/json"
 	"errors"
 	"fmt"
 	"io"
@@ -8,11 +10,13 @@ import (
 	"log"
 	"mime/multipart"
 	"os"
+	"strconv"
 	"time"
 
 	"github.com/dgrijalva/jwt-go"
 	"github.com/spf13/viper"
 	"github.com/yusufwib/arvigo-backend/datastruct"
+	"github.com/yusufwib/arvigo-backend/pkg/cache"
 	"github.com/yusufwib/arvigo-backend/pkg/database"
 	"github.com/yusufwib/arvigo-backend/pkg/storage"
 	"gorm.io/gorm"
@@ -80,4 +84,27 @@ func UploadImageToGCS(fileHeader *multipart.FileHeader) (publicURL string, err e
 	}
 
 	return
+}
+
+func GetUserAuthFromRedis(userID uint64) (*datastruct.UserAuth, error) {
+	// Get the Redis client from the global variable or initialize it if not already done
+	redisClient, err := cache.ConnectRedis()
+	if err != nil {
+		return nil, err
+	}
+
+	// Retrieve userAuth data from Redis using the unique key
+	userAuthJSON, err := redisClient.Get(context.Background(), "userAuth:"+strconv.FormatUint(userID, 10)).Result()
+	if err != nil {
+		return nil, err
+	}
+
+	// Convert userAuth JSON string to struct
+	var userAuth datastruct.UserAuth
+	err = json.Unmarshal([]byte(userAuthJSON), &userAuth)
+	if err != nil {
+		return nil, err
+	}
+
+	return &userAuth, nil
 }

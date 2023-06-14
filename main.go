@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"log"
+	"net/http"
 	"os"
 	"os/signal"
 	"syscall"
@@ -12,12 +13,13 @@ import (
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 
+	"github.com/yusufwib/arvigo-backend/pkg/cache"
 	"github.com/yusufwib/arvigo-backend/pkg/database"
 	"github.com/yusufwib/arvigo-backend/route"
 )
 
 const (
-	version = "1.0.9" // release-arvigo-backend-1.0.9
+	version = "1.0.10" // release-arvigo-backend-1.0.10
 	appName = "arvigo-backend"
 )
 
@@ -28,22 +30,28 @@ func main() {
 		log.Fatal("Error loading .env file")
 	}
 
+	// Connect to Redis
+	redisClient, err := cache.ConnectRedis()
+	if err != nil {
+		log.Fatal("Failed to connect to Redis:", err)
+	}
+	defer redisClient.Close()
+
 	// Connect to the database and run migrations
 	db, err := database.ConnectDB()
 	if err != nil {
-		log.Fatal(err)
+		log.Fatal("Failed to connect to the database:", err)
 	}
 	defer func() {
 		sqlDB, err := db.DB()
 		if err != nil {
-			log.Fatal("Error closing database")
+			log.Fatal("Failed to close the database connection:", err)
 		}
 		sqlDB.Close()
 	}()
 
 	// Create a new Echo instance
 	e := echo.New()
-
 	// Add middleware
 	e.Use(middleware.Logger())
 	e.Use(middleware.Recover())
@@ -59,10 +67,11 @@ func main() {
 			port = "8080"
 		}
 
-		log.Printf("Server listening on port %s. \nThis %s service's is using version %s", port, appName, version)
-		err = e.Start(":" + port)
-		if err != nil {
-			log.Fatal(err)
+		addr := ":" + port
+		log.Printf("Server listening on %s. \nThis %s service is using version %s", addr, appName, version)
+		err = e.Start(addr)
+		if err != nil && err != http.ErrServerClosed {
+			log.Fatal("Failed to start the server:", err)
 		}
 	}()
 
@@ -80,7 +89,7 @@ func main() {
 	// Gracefully shutdown the server
 	err = e.Shutdown(ctx)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatal("Error shutting down the server:", err)
 	}
 
 	log.Println("Server gracefully stopped")

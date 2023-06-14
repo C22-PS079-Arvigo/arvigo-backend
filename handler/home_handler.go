@@ -22,9 +22,18 @@ func RegisterHomeRoutes(e *echo.Echo) {
 }
 
 func getHome(c echo.Context) error {
+	var userID uint64
 	userAuth := c.Get("userAuth").(*datastruct.UserAuth)
 
-	data, statusCode, err := repository.GetHome(userAuth.ID)
+	// Retrieve userAuth from Redis
+	redisUserAuth, err := repository.GetUserAuthFromRedis(userAuth.ID)
+	if err != nil {
+		userID = userAuth.ID
+	} else {
+		userID = redisUserAuth.ID
+	}
+
+	data, statusCode, err := repository.GetHome(userID)
 	if err != nil {
 		return utils.ResponseJSON(c, err.Error(), nil, statusCode)
 	}

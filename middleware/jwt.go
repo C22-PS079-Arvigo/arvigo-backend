@@ -1,14 +1,19 @@
 package middleware
 
 import (
+	"context"
+	"encoding/json"
 	"fmt"
+	"log"
 	"net/http"
 	"strings"
+	"time"
 
 	"github.com/dgrijalva/jwt-go"
 	"github.com/labstack/echo/v4"
 	"github.com/spf13/viper"
 	"github.com/yusufwib/arvigo-backend/datastruct"
+	"github.com/yusufwib/arvigo-backend/pkg/cache"
 	"github.com/yusufwib/arvigo-backend/utils"
 )
 
@@ -54,9 +59,37 @@ func AuthMiddleware(next echo.HandlerFunc) echo.HandlerFunc {
 			// Set to Context
 			c.Set("userAuth", &UserAuthData)
 
+			// Store data in Redis
+			err := storeUserAuthInRedis(userID, &UserAuthData)
+			if err != nil {
+				log.Println("Failed to store userAuth in Redis:", err)
+			}
+
 			return next(c)
 		} else {
 			return echo.NewHTTPError(http.StatusUnauthorized, "Invalid token")
 		}
 	}
+}
+
+func storeUserAuthInRedis(userID string, userAuth *datastruct.UserAuth) error {
+	// Get the Redis client from the global variable or initialize it if not already done
+	redisClient, err := cache.ConnectRedis()
+	if err != nil {
+		return err
+	}
+
+	// Convert userAuth data to JSON string
+	userAuthJSON, err := json.Marshal(userAuth)
+	if err != nil {
+		return err
+	}
+
+	// Store the userAuth data in Redis with a unique key
+	err = redisClient.Set(context.Background(), "userAuth:"+userID, userAuthJSON, 24*time.Hour).Err()
+	if err != nil {
+		return err
+	}
+
+	return nil
 }

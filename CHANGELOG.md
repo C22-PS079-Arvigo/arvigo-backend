@@ -82,7 +82,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Integrate questionnaire with ML
 - Update user profile
 
-## [Unreleased]
 ### [1.0.9] - yusufw2429@gmail.com
 #### Added
 - Delete wishlist
@@ -92,3 +91,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Merchant and products
 - subscription module
 - Add cronjob
+
+### [1.0.10] - yusufw2429@gmail.com
+#### Added
+- Add redis
+
+
+## [Unreleased]
