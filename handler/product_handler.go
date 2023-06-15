@@ -153,7 +153,7 @@ func getInitalProductByCategoryID(c echo.Context) error {
 
 	data, statusCode, err := repository.GetInitialProductByCategoryID(categoryID)
 	if err != nil {
-		return utils.ResponseJSON(c, err.Error(), nil, statusCode)
+		return utils.ResponseJSON(c, err.Error(), []uint64{}, statusCode)
 	}
 
 	return utils.ResponseJSON(c, "Success", data, statusCode)

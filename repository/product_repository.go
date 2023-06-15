@@ -399,7 +399,7 @@ func GetInitialProductByCategoryID(categoryID uint64) (res []datastruct.InitialP
 	}
 
 	if len(products) == 0 {
-		return res, http.StatusNotFound, errors.New("products not found")
+		return res, http.StatusOK, errors.New("products not found")
 	}
 
 	//collect product ids
