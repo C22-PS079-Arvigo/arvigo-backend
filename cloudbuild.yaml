@@ -21,8 +21,6 @@ steps:
     - 'STORAGE_BUCKET_NAME=${_STORAGE_BUCKET_NAME}'
     - 'REDIS_HOST=${_REDIS_HOST}'
     - 'REDIS_PORT=${_REDIS_PORT}'
-    - 'REDIS_USERNAME=${_REDIS_USERNAME}'
-    - 'REDIS_PASSWORD=${_REDIS_PASSWORD}'
     - 'REDIS_DB=${_REDIS_DB}'
 
   args: ['.env']
