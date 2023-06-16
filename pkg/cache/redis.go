@@ -19,14 +19,6 @@ func ConnectRedis() (*redis.Client, error) {
 		redisDB       = os.Getenv("REDIS_DB")
 	)
 
-	if redisHost == "" {
-		redisHost = "34.101.154.8"
-	}
-
-	if redisHost == "" {
-		redisPort = "6379"
-	}
-
 	// Create a Redis client
 	client := redis.NewClient(&redis.Options{
 		Addr:     redisHost + ":" + redisPort,
