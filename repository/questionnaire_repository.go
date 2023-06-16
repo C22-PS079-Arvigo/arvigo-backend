@@ -41,7 +41,7 @@ func GenerateQuestionnaireResult(data datastruct.QuestionnaireRequest, userID ui
 		return
 	}
 
-	top2 := getTop2FieldNames(res)
+	top2 := GetTop2FieldNames(res)
 	var resTagIDs []string
 	for _, v := range top2 {
 		tag := constant.GetPersonalityTag[v]
@@ -130,7 +130,7 @@ func GenerateQuestionnaireResult(data datastruct.QuestionnaireRequest, userID ui
 	return
 }
 
-func getTop2FieldNames(p datastruct.PersonalityPercentages) []string {
+func GetTop2FieldNames(p datastruct.PersonalityPercentages) []string {
 	// Initialize the top 2 highest values to the lowest possible value
 	top1 := math.Inf(-1)
 	top2 := math.Inf(-1)

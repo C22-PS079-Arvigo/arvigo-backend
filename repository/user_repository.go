@@ -72,6 +72,19 @@ func GetUserByID(id uint64) (res datastruct.UserDetailResponse, statusCode int, 
 		return res, http.StatusNotFound, errors.New("user not found")
 	}
 
+	if personality.Agreeable != 0 {
+		remapPersonality := datastruct.PersonalityPercentages{}
+
+		remapPersonality.Agreeable = personality.Agreeable
+		remapPersonality.Conscientious = personality.Conscientious
+		remapPersonality.Extraversion = personality.Extraversion
+		remapPersonality.Neurotic = personality.Neurotic
+		remapPersonality.Openness = personality.Openness
+		if len(GetTop2FieldNames(remapPersonality)) > 0 {
+			userDetail.PersonalityType = &GetTop2FieldNames(remapPersonality)[0]
+		}
+	}
+
 	res = datastruct.UserDetailResponse{
 		Address:                addressDetail,
 		UserDetail:             userDetail,

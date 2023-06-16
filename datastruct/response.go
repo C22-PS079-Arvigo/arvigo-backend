@@ -41,6 +41,7 @@ type (
 		PersonalityID             uint64     `gorm:"column:personality_id" json:"-"`
 		FaceShapeTagID            uint64     `gorm:"column:face_shape_id" json:"-"`
 		FaceShape                 *string    `json:"face_shape"`
+		PersonalityType           *string    `json:"personality_type"`
 		IsVerified                bool       `json:"is_verified"`
 		Avatar                    string     `json:"avatar"`
 		AddressID                 uint64     `json:"addresses_id"`
