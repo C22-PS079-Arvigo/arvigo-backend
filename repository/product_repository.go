@@ -614,7 +614,7 @@ func GetMarketplaceProductByID(productID, userID uint64) (merchantProduct datast
 			"products.price",
 			"products.id as product_id",
 			"merchants.name AS merchant",
-			"merchants.id AS merchant_id",
+			"products.merchant_id AS merchant_id",
 			"detail_product_marketplaces.link AS marketplace_link",
 			"detail_product_marketplaces.marketplace_id",
 			"detail_product_marketplaces.addresses_id",
